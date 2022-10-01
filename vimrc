@@ -1,13 +1,10 @@
 syntax on
+filetype plugin indent on
 set hidden
 set history=1000
 set path+=**
 let g:netrw_winsize=25
 set autoindent
-set expandtab
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
 set incsearch
 set nohlsearch
 set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
