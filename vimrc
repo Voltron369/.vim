@@ -6,6 +6,9 @@ set path+=**
 let g:netrw_winsize=25
 set autoindent
 set incsearch
+set list
+set listchars=tab:→\ ,trail:●,nbsp:⎵
+set showbreak=↪\ 
 set nohlsearch
 set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
 set wildmenu
