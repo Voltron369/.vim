@@ -48,9 +48,9 @@ call plug#end()
 au VimEnter * CompileDbPathIfExists compile_commands.json
 
 command! -nargs=1 C compiler <args> | Make
-noremap <leader>ml :Gclog! ...master<CR>
-noremap <leader>mn :Gclog! --name-only ...master<CR>
-noremap <leader>mf :cexpr system('git diff --name-only ...master')<CR>
+noremap <leader>ml :Gclog! -500 ...master<CR>
+noremap <leader>mn :Gclog! -500 --name-only ...master<CR>
+noremap <leader>mf :cexpr system('git diff -500 --name-only ...master')<CR>
 noremap <leader>md :G difftool -y ...master -- <cfile><CR>
 
 
