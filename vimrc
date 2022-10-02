@@ -48,13 +48,19 @@ call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
 
-command! -nargs=1 C compiler <args> | Make
+noremap <leader>gl :Gclog! -500 <CR>
 noremap <leader>ml :Gclog! -500 ...master<CR>
 noremap <leader>mn :Gclog! -500 --name-only ...master<CR>
 noremap <leader>mf :cexpr system('git diff -500 --name-only ...master')<CR>
 noremap <leader>md :G difftool -y ...master -- <cfile><CR>
 
 
+noremap <leader>ad :ALEGoToDefinition<CR>
+noremap <leader>ai :ALEGoToImplementation<CR>
+noremap <leader>aq :ALEPopulateQuickfix<CR>
+noremap <leader>ah :ALEHover<CR>
+noremap <leader>an :ALENextWrap<CR>
+noremap <leader>ap :ALEPreviousWrap<CR>
 
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
