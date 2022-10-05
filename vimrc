@@ -53,8 +53,10 @@ noremap <leader>c :tabprev \| +tabclose<CR>
 noremap <leader>gl :Gclog! -500<CR>
 noremap <leader>ml :Gclog! -500 master..<CR>
 noremap <leader>mn :Gclog! -500 --name-only master..<CR>
-noremap <leader>mf :cexpr system('git diff --name-only master...')<CR>
+noremap <leader>mf :cexpr system('git diff --name-only master...') \| copen<CR>
 noremap <leader>md :G difftool -y master... -- <cfile><CR>
+noremap <leader>m% :G difftool -y master... -- %<CR>
+noremap <leader>mD :!git difftool -y master...
 
 
 noremap <leader>ad :ALEGoToDefinition<CR>
