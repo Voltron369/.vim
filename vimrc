@@ -50,13 +50,31 @@ au VimEnter * CompileDbPathIfExists compile_commands.json
 
 noremap <leader>c :tabprev \| +tabclose<CR>
 
+" git log
 noremap <leader>gl :Gclog! -500<CR>
+
+" git staged vs HEAD
+noremap <leader>gc :!git difftool -y --staged<CR>
+
+" log HEAD vs master merge-base
 noremap <leader>ml :Gclog! -500 master..<CR>
 noremap <leader>mn :Gclog! -500 --name-only master..<CR>
-noremap <leader>mf :cexpr system('git diff --name-only master...') \| copen<CR>
-noremap <leader>md :G difftool -y master... -- <cfile><CR>
-noremap <leader>m% :G difftool -y master... -- %<CR>
-noremap <leader>mD :!git difftool -y master...
+noremap <leader>ms :Gclog! -500 --name-status master..<CR>
+
+" diff working vs HEAD
+noremap <leader>gF :G<CR>
+noremap <leader>gf :G difftool -y HEAD -- <cfile><CR>
+noremap <leader>gd :G difftool -y HEAD -- %<CR>
+noremap <leader>gD :!git difftool -y HEAD<CR>
+
+" diff working vs master merge-base
+noremap <leader>mF :cexpr system('git diff --name-only $(git merge-base master HEAD)') \| copen<CR>
+noremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- <cfile>'<CR>
+noremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
+noremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
+
+" checked in vs merge head (i.e., pr)
+" noremap <leader>mD :!git difftool -y master...
 
 
 noremap <leader>ad :ALEGoToDefinition<CR>
