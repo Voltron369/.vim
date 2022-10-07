@@ -73,6 +73,12 @@ noremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD'
 noremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
 noremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
 
+" diff HEAD vs master merge-base
+noremap <leader>pF :cexpr system('git diff --name-only master...') \| copen<CR>
+noremap <leader>pf :G difftool -y master... -- <cfile><CR>
+noremap <leader>pd :G difftool -y master... -- %<CR>
+noremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
+
 " checked in vs merge head (i.e., pr)
 " noremap <leader>mD :!git difftool -y master...
 
