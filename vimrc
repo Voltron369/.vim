@@ -44,6 +44,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-rooter'
+Plug 'vim-scripts/ReplaceWithRegister'
 call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
