@@ -9,7 +9,7 @@ set incsearch
 set list
 set listchars=tab:→\ ,trail:●,nbsp:⎵
 set showbreak=↪\ 
-set nohlsearch
+set hlsearch
 set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
 set wildmenu
 set updatetime=250
@@ -17,7 +17,7 @@ set scrolloff=8
 set noswapfile
 set number
 set relativenumber
-:set laststatus=2
+set laststatus=2
 let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
 set omnifunc=syntaxcomplete#Complete
 let g:ale_completion_enabled=1
@@ -92,5 +92,32 @@ noremap <leader>ah :ALEHover<CR>
 noremap <leader>an :ALENextWrap<CR>
 noremap <leader>ap :ALEPreviousWrap<CR>
 
+" From vim-sensible:
+" Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call
+" :diffupdate
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+
+" Delete comment character when joining commented lines.
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
+
+" From `:help :DiffOrig`.
+if exists(":DiffOrig") != 2
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+        \ | diffthis | wincmd p | diffthis
+endif
+
+" Enable the :Man command shipped inside Vim's man filetype plugin.
+if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
+  runtime ftplugin/man.vim
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
