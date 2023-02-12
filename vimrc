@@ -43,6 +43,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-rooter'
 Plug 'vim-scripts/ReplaceWithRegister'
 call plug#end()
