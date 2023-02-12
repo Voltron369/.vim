@@ -46,6 +46,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-rooter'
 Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'tpope/vim-rhubarb'
 call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
@@ -119,5 +120,7 @@ endif
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
+
+helptags ~/.vim/doc
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
