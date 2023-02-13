@@ -51,48 +51,48 @@ call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
 
-noremap <leader>c :tabprev \| +tabclose<CR>
+nnoremap <leader>c :tabprev \| +tabclose<CR>
 
 " git log
-noremap <leader>gl :Gclog! -500<CR>
+nnoremap <leader>gl :Gclog! -500<CR>
 
 " git staged vs HEAD
-noremap <leader>gc :!git difftool -y --staged<CR>
+nnoremap <leader>gc :!git difftool -y --staged<CR>
 
 " log HEAD vs master merge-base
-noremap <leader>ml :Gclog! -500 master..<CR>
-noremap <leader>mn :Gclog! -500 --name-only master..<CR>
-noremap <leader>ms :Gclog! -500 --name-status master..<CR>
+nnoremap <leader>ml :Gclog! -500 master..<CR>
+nnoremap <leader>mn :Gclog! -500 --name-only master..<CR>
+nnoremap <leader>ms :Gclog! -500 --name-status master..<CR>
 
 " diff working vs HEAD
-noremap <leader>gF :G<CR>
-noremap <leader>gf :G difftool -y HEAD -- <cfile><CR>
-noremap <leader>gd :G difftool -y HEAD -- %<CR>
-noremap <leader>gD :!git difftool -y HEAD<CR>
+nnoremap <leader>gF :G<CR>
+nnoremap <leader>gf :G difftool -y HEAD -- <cfile><CR>
+nnoremap <leader>gd :G difftool -y HEAD -- %<CR>
+nnoremap <leader>gD :!git difftool -y HEAD<CR>
 
 " diff working vs master merge-base
-noremap <leader>mF :cexpr system('git diff --name-only $(git merge-base master HEAD)') \| copen<CR>
-noremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- <cfile>'<CR>
-noremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
-noremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
+nnoremap <leader>mF :cexpr system('git diff --name-only $(git merge-base master HEAD)') \| copen<CR>
+nnoremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- <cfile>'<CR>
+nnoremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
+nnoremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " diff HEAD vs master merge-base
-noremap <leader>pF :cexpr system('git diff --name-only master...') \| copen<CR>
-noremap <leader>pf :G difftool -y master... -- <cfile><CR>
-noremap <leader>pd :G difftool -y master... -- %<CR>
-noremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
+nnoremap <leader>pF :cexpr system('git diff --name-only master...') \| copen<CR>
+nnoremap <leader>pf :G difftool -y master... -- <cfile><CR>
+nnoremap <leader>pd :G difftool -y master... -- %<CR>
+nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " checked in vs merge head (i.e., pr)
-" noremap <leader>mD :!git difftool -y master...
+" nnoremap <leader>mD :!git difftool -y master...
 
 
-noremap <leader>ad :ALEGoToDefinition<CR>
-noremap <leader>ai :ALEGoToImplementation<CR>
-noremap <leader>aq :ALEPopulateQuickfix<CR>
-noremap <leader>ah :ALEHover<CR>
-noremap <leader>an :ALENextWrap<CR>
-noremap <leader>ap :ALEPreviousWrap<CR>
-noremap <leader>ar :ALEFindReferences<CR>
+nnoremap <leader>ad :ALEGoToDefinition<CR>
+nnoremap <leader>ai :ALEGoToImplementation<CR>
+nnoremap <leader>aq :ALEPopulateQuickfix<CR>
+nnoremap <leader>ah :ALEHover<CR>
+nnoremap <leader>an :ALENextWrap<CR>
+nnoremap <leader>ap :ALEPreviousWrap<CR>
+nnoremap <leader>ar :ALEFindReferences<CR>
 
 " From vim-sensible:
 
