@@ -92,8 +92,10 @@ noremap <leader>aq :ALEPopulateQuickfix<CR>
 noremap <leader>ah :ALEHover<CR>
 noremap <leader>an :ALENextWrap<CR>
 noremap <leader>ap :ALEPreviousWrap<CR>
+noremap <leader>ar :ALEFindReferences<CR>
 
 " From vim-sensible:
+
 " Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call
 " :diffupdate
 if maparg('<C-L>', 'n') ==# ''

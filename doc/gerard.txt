@@ -34,10 +34,11 @@ Git Diff:                                                            *gitdiff*
 ALE: (see |ale|)                                                   *gerardale*
 \ad    ALEGoToDefinition
 \ai    ALEGoToImplementation
-\aq    ALEPopulateQuickfix
+\ar    ALEFindReferences
 \ah    ALEHover
 \an    ALENextWrap
 \ap    ALEPreviousWrap
+\aq    ALEPopulateQuickfix
 
 Vim-Sensible:
 %             Uses|matchit|
