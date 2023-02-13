@@ -1,27 +1,29 @@
-syntax on
 filetype plugin indent on
+
+" keep sorted
+let g:ale_completion_enabled=1
+let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
+let g:netrw_winsize=25
+let g:rooter_patterns = ['.git']
+set autoindent
 set hidden
 set history=1000
-set path+=**
-let g:netrw_winsize=25
-set autoindent
+set hlsearch
 set incsearch
+set laststatus=2
 set list
 set listchars=tab:→\ ,trail:●,nbsp:⎵
-set showbreak=↪\ 
-set hlsearch
-set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
-set wildmenu
-set updatetime=250
-set scrolloff=8
 set noswapfile
 set number
-set relativenumber
-set laststatus=2
-let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
 set omnifunc=syntaxcomplete#Complete
-let g:ale_completion_enabled=1
-let g:rooter_patterns = ['.git']
+set path+=**
+set relativenumber
+set scrolloff=8
+set showbreak=↪\ 
+set updatetime=250
+set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
+set wildmenu
+syntax on
 
 " Install Plugin Manager (vim-plug)
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -31,22 +33,23 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 " Load plugins
+" sort -t / -k2,2 -f
 call plug#begin()
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'dense-analysis/ale'
-Plug 'machakann/vim-highlightedyank'
-Plug 'martong/vim-compiledb-path'
-Plug 'kshenoy/vim-signature'
-Plug 'junegunn/gv.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
-Plug 'airblade/vim-rooter'
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'tpope/vim-rhubarb'
+    Plug 'dense-analysis/ale'
+    Plug 'junegunn/gv.vim'
+    Plug 'vim-scripts/ReplaceWithRegister'
+    Plug 'tpope/vim-commentary'
+    Plug 'martong/vim-compiledb-path'
+    Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'machakann/vim-highlightedyank'
+    Plug 'tpope/vim-rhubarb'
+    Plug 'airblade/vim-rooter'
+    Plug 'kshenoy/vim-signature'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-vinegar'
 call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
