@@ -9,6 +9,7 @@ set autoindent
 set hidden
 set history=1000
 set hlsearch
+set ignorecase
 set incsearch
 set laststatus=2
 set list
@@ -19,6 +20,7 @@ set omnifunc=syntaxcomplete#Complete
 set path+=**
 set relativenumber
 set scrolloff=8
+set smartcase
 set showbreak=↪\ 
 set updatetime=250
 set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
