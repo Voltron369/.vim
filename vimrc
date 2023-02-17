@@ -52,6 +52,8 @@ call plug#begin()
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 call plug#end()
 
 au VimEnter * CompileDbPathIfExists compile_commands.json
@@ -91,13 +93,15 @@ nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
 " nnoremap <leader>mD :!git difftool -y master...
 
 
-nnoremap <leader>ad :ALEGoToDefinition<CR>
-nnoremap <leader>ai :ALEGoToImplementation<CR>
-nnoremap <leader>aq :ALEPopulateQuickfix<CR>
-nnoremap <leader>ah :ALEHover<CR>
-nnoremap <leader>an :ALENextWrap<CR>
-nnoremap <leader>ap :ALEPreviousWrap<CR>
-nnoremap <leader>ar :ALEFindReferences<CR>
+nmap <leader>ad <Plug>(ale_go_to_definition)
+nmap <leader>ai <Plug>(ale_go_to_implementation)
+nmap <leader>aq :ALEPopulateQuickfix \| copen<CR>
+nmap <leader>ah <Plug>(ale_hover)
+nmap <leader>an <Plug>(ale_next_wrap)
+nmap <leader>ap <Plug>(ale_previous_wrap)
+nmap <leader>af <Plug>(ale_find_references)
+nmap <leader>ar :ALEFindReferences -quickfix \| copen<CR>
+nmap <leader>at <Plug>(ale_go_to_type_definition)
 
 " From vim-sensible:
 
