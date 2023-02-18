@@ -23,7 +23,10 @@ set scrolloff=8
 set smartcase
 set showbreak=↪\ 
 set updatetime=250
-set wildignore+=**/node_modules,**/build,*.obj,tags,*.a
+set wildignore+=*.obj,tags,*.a
+set wildignore+=**/node_modules/*
+set wildignore+=**/build/*
+set wildignorecase
 set wildmenu
 syntax on
 
@@ -33,6 +36,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+" undo vim-vinegar hide wildignore from netrw
+let my_netrw_list_hide = get(g:,'netrw_list_hide','')
+autocmd VimEnter * let g:netrw_list_hide = my_netrw_list_hide
 
 " Load plugins
 " sort -t / -k2,2 -f
