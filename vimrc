@@ -51,6 +51,8 @@ call plug#begin()
     Plug 'martong/vim-compiledb-path'
     Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-fugitive'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-gitgutter'
     Plug 'machakann/vim-highlightedyank'
     Plug 'tpope/vim-rhubarb'
@@ -60,8 +62,6 @@ call plug#begin()
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
@@ -70,6 +70,9 @@ nnoremap <leader>c :tabprev \| +tabclose<CR>
 
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
+
+" git find
+nnoremap <leader>f :GFiles<CR>
 
 " git staged vs HEAD
 nnoremap <leader>gc :!git difftool -y --staged<CR>
@@ -151,6 +154,24 @@ if !empty($COLORTERM) && has("termguicolors")
    hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
    hi LineNrBelow term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
    hi LineNr ctermfg=256 ctermbg=236 cterm=bold
+endif
+
+" implement :GFind {pattern}
+" https://vi.stackexchange.com/a/2589
+command! -nargs=1 -bang -complete=customlist,GitFindComplete
+      \ Gfind find<bang> <args>
+function! GitFindComplete(ArgLead, CmdLine, CursorPos)
+   let search_pattern = a:ArgLead
+   let shell_cmd = "git ls-files |  ~/.vim/plugged/fzf/bin/fzf --filter " . shellescape(search_pattern)
+   return split(system(shell_cmd), "\n")
+endfunction
+
+if exists('$TMUX')
+   " full screen:
+   " let g:fzf_layout = { 'tmux': '-p90%,60%' }
+
+   " split below
+   let g:fzf_layout = { 'tmux': '-d30%' }
 endif
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}

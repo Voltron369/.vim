@@ -6,6 +6,10 @@ CUSTOM BINDINGS                                                       *gerard*
 Tabs:
 \c     close tab and go to previous tab
 
+Find Files:
+\f                    |:GFiles|
+:GF[ind] {pattern}    wildmenu git files
+
 Git Log:                                                              *gitlog*
 \gl    git log in quickfix
 \ml    git log vs merge-base
