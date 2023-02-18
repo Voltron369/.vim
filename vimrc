@@ -48,6 +48,7 @@ call plug#begin()
     Plug 'machakann/vim-highlightedyank'
     Plug 'tpope/vim-rhubarb'
     Plug 'airblade/vim-rooter'
+    Plug 'lifepillar/vim-solarized8'
     Plug 'kshenoy/vim-signature'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-unimpaired'
@@ -56,7 +57,7 @@ call plug#begin()
     Plug 'junegunn/fzf.vim'
 call plug#end()
 
-au VimEnter * CompileDbPathIfExists compile_commands.json
+" au VimEnter * CompileDbPathIfExists compile_commands.json
 
 nnoremap <leader>c :tabprev \| +tabclose<CR>
 
@@ -133,5 +134,16 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 endif
 
 helptags ~/.vim/doc
+
+if !empty($COLORTERM) && has("termguicolors")
+   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+   set termguicolors
+   set background=dark
+   colorscheme solarized8
+   hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
+   hi LineNrBelow term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
+   hi LineNr ctermfg=256 ctermbg=236 cterm=bold
+endif
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
