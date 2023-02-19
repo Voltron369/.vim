@@ -9,6 +9,7 @@ Tabs:
 Find Files:
 \f                    |:GFiles|
 :GF[ind] {pattern}    wildmenu git files
+:GG[rep]              fzf git grep
 
 Git Log:                                                              *gitlog*
 \gl    git log in quickfix

@@ -166,6 +166,13 @@ function! GitFindComplete(ArgLead, CmdLine, CursorPos)
    return split(system(shell_cmd), "\n")
 endfunction
 
+" implement :GGrep
+" https://github.com/junegunn/fzf.vim#example-git-grep-wrapper
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
+
 if exists('$TMUX')
    " full screen:
    " let g:fzf_layout = { 'tmux': '-p90%,60%' }
@@ -173,5 +180,6 @@ if exists('$TMUX')
    " split below
    let g:fzf_layout = { 'tmux': '-d30%' }
 endif
+
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
