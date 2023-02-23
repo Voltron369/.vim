@@ -56,6 +56,7 @@ call plug#begin()
     Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-gitgutter'
     Plug 'machakann/vim-highlightedyank'
+    Plug 'ojroques/vim-oscyank'
     Plug 'tpope/vim-rhubarb'
     Plug 'airblade/vim-rooter'
     Plug 'lifepillar/vim-solarized8'
@@ -182,5 +183,7 @@ if exists('$TMUX')
    let g:fzf_layout = { 'tmux': '-d30%' }
 endif
 
+let g:oscyank_term = 'default'
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
