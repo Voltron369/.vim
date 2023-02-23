@@ -44,6 +44,7 @@ autocmd VimEnter * let g:netrw_list_hide = my_netrw_list_hide
 " Load plugins
 " sort -t / -k2,2 -f
 call plug#begin()
+    Plug 'tpope/vim-abolish'
     Plug 'dense-analysis/ale'
     Plug 'junegunn/gv.vim'
     Plug 'vim-scripts/ReplaceWithRegister'
