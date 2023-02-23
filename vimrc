@@ -147,16 +147,7 @@ endif
 
 helptags ~/.vim/doc
 
-if !empty($COLORTERM) && has("termguicolors")
-   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-   set termguicolors
-   set background=dark
-   colorscheme solarized8
-   hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
-   hi LineNrBelow term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
-   hi LineNr ctermfg=256 ctermbg=236 cterm=bold
-endif
+colorscheme gerard
 
 " implement :GFind {pattern}
 " https://vi.stackexchange.com/a/2589
