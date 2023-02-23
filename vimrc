@@ -75,6 +75,8 @@ nnoremap <leader>gl :Gclog! -500<CR>
 
 " git find
 nnoremap <leader>f :GFiles<CR>
+nnoremap <leader>gg :GGrep<CR>
+nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
 
 " git staged vs HEAD
 nnoremap <leader>gc :!git difftool -y --staged<CR>
