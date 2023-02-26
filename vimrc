@@ -1,6 +1,8 @@
 filetype plugin indent on
 
 " keep sorted
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 let g:ale_completion_enabled=1
 let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
 let g:netrw_winsize=25
@@ -46,6 +48,8 @@ autocmd VimEnter * let g:netrw_list_hide = my_netrw_list_hide
 " sort -t / -k2,2 -f
 call plug#begin()
     Plug 'tpope/vim-abolish'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
     Plug 'dense-analysis/ale'
     Plug 'junegunn/gv.vim'
     Plug 'vim-scripts/ReplaceWithRegister'
@@ -179,5 +183,13 @@ endif
 
 let g:oscyank_term = 'default'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+
+def g:Tapi_lcd(_, path: string)
+   if isdirectory(path)
+      execute 'silent lcd ' .. fnameescape(path)
+   endif
+enddef
+
+let &shell='/bin/bash --rcfile ~/.vim/bashrc'
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
