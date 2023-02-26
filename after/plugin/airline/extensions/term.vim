@@ -11,7 +11,7 @@ let s:spc = g:airline_symbols.space
 let s:section_a = airline#section#create_left(['terminal', 'tmode'])
 let s:section_z = airline#section#create(['linenr', 'maxlinenr'])
 
-function! airline#extensions#term#tile_home(path)
+function! airline#extensions#term#tilde_home(path)
   return substitute(a:path,'^' . $HOME, '~', '')
 endfunction
 
@@ -19,7 +19,7 @@ function! airline#extensions#term#apply(...) abort
   if &buftype ==? 'terminal' || bufname(a:2.bufnr)[0] ==? '!'
     call a:1.add_section_spaced('airline_a', s:section_a)
     call a:1.add_section_spaced('airline_b', '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}')
-    call a:1.add_section_spaced('airline_c', '%{airline#extensions#term#tile_home(getcwd())}')
+    call a:1.add_section_spaced('airline_c', '%{airline#extensions#term#tilde_home(getcwd())}')
     call a:1.split()
     call a:1.add_section_spaced('airline_x', s:neoterm_id(a:2.bufnr))
     call a:1.add_section('airline_term', s:spc.s:termname(a:2.bufnr))
