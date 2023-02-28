@@ -74,6 +74,7 @@ call plug#end()
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
 nnoremap <leader>c :tabprev \| +tabclose<CR>
+nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
