@@ -3,50 +3,52 @@
 ==============================================================================
 CUSTOM BINDINGS                                                       *gerard*
 
+<Leader> is <Space>
+
 Tabs:~
-\c     close tab and go to previous tab
+⎵ c     close tab and go to previous tab
 
 Find:~
 Ctrl-/                Search in File    |:BLines|
-\f                    Open Files        |:GFiles|
-\gg                   fzf git grep
+⎵ f                   Open Files        |:GFiles|
+⎵ gg                  fzf git grep
 :GG[rep]              fzf git grep
 :Gf[ind] {pattern}    wildmenu git files
                                                                       *gitlog*
 Git Log:~
-\gl    git log in quickfix
-\ml    git log vs merge-base
-\mn    git log vs merge-base (filenames only)
-\ms    git log vs merge-base (status only)
+⎵ gl    git log in quickfix
+⎵ ml    git log vs merge-base
+⎵ mn    git log vs merge-base (filenames only)
+⎵ ms    git log vs merge-base (status only)
 
                                                                      *gitdiff*
 Git Diff:~
               working vs HEAD~
-\gF    git status (see|fugitive-staging-maps|)
-\gf    git diff <|cfile|> working vs HEAD
-\gd    git diff current file working vs HEAD
-\gD    git diff all files working vs HEAD
+⎵ gF    git status (see|fugitive-staging-maps|)
+⎵ gf    git diff <|cfile|> working vs HEAD
+⎵ gd    git diff current file working vs HEAD
+⎵ gD    git diff all files working vs HEAD
 
             working vs merge-base~
-\mF    git diff names-only working vs merge-base
-\mf    git diff <|cfile|> working vs merge-base
-\md    git diff current file working vs merge-base
-\mD    git diff all files working vs merge-base
+⎵ mF    git diff names-only working vs merge-base
+⎵ mf    git diff <|cfile|> working vs merge-base
+⎵ md    git diff current file working vs merge-base
+⎵ mD    git diff all files working vs merge-base
 
               HEAD vs merge-base (PR)~
-\pF    git diff names-only HEAD vs merge-base
-\pf    git diff <|cfile|> HEAD vs merge-base
-\pd    git diff current file HEAD vs merge-base
-\pD    git diff all files HEAD vs merge-base
+⎵ pF    git diff names-only HEAD vs merge-base
+⎵ pf    git diff <|cfile|> HEAD vs merge-base
+⎵ pd    git diff current file HEAD vs merge-base
+⎵ pD    git diff all files HEAD vs merge-base
                                                                    *gerardale*
 ALE: (see |ale|)~
-\ad    ALEGoToDefinition
-\ai    ALEGoToImplementation
-\ar    ALEFindReferences
-\ah    ALEHover
-\an    ALENextWrap
-\ap    ALEPreviousWrap
-\aq    ALEPopulateQuickfix
+⎵ ad    ALEGoToDefinition
+⎵ ai    ALEGoToImplementation
+⎵ ar    ALEFindReferences
+⎵ ah    ALEHover
+⎵ an    ALENextWrap
+⎵ ap    ALEPreviousWrap
+⎵ aq    ALEPopulateQuickfix
 
 Vim-Sensible:~
 %             Uses |matchit|
