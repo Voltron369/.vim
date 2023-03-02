@@ -316,11 +316,7 @@ function! airline#extensions#branch#head()
 endfunction
 
 function! GitGetReponame()
-   let s:git_config_url = split(system('git config --get remote.origin.url'),'\n')
-   if len(s:git_config_url) == 0
-      return ''
-   endif
-   let s:git_url = s:git_config_url[0]
+   let s:git_url = FugitiveRemoteUrl()
    return matchstr(s:git_url, '/\([^/]*\).git$')[1:-5] . ' '
 endfunction
 
