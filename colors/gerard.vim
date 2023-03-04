@@ -9,6 +9,9 @@ if !empty($COLORTERM) && has("termguicolors")
    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
    set termguicolors
    set background=dark
+   " fix undercurl
+   let &t_Cs = "\e[4:3m"
+   let &t_Ce = "\e[4:0m"
    runtime colors/solarized8.vim
    let g:colors_name = "gerard"
    hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
