@@ -127,6 +127,10 @@ nmap <leader>ap <Plug>(ale_previous_wrap)
 nmap <leader>af <Plug>(ale_find_references)
 nmap <leader>ar :ALEFindReferences -quickfix \| copen<CR>
 nmap <leader>at <Plug>(ale_go_to_type_definition)
+nmap [R <Plug>(ale_first)
+nmap [r <Plug>(ale_previous_wrap)
+nmap ]r <Plug>(ale_next_wrap)
+nmap ]R <Plug>(ale_last)
 
 " From vim-sensible:
 

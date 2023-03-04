@@ -49,6 +49,10 @@ ALE: (see |ale|)~
 ⎵ an    ALENextWrap
 ⎵ ap    ALEPreviousWrap
 ⎵ aq    ALEPopulateQuickfix
+[R      ALEFirst
+[r      ALEPreviousWrap
+]r      ALENextWrap
+]R      ALELast
 
 Vim-Sensible:~
 %             Uses |matchit|
