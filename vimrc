@@ -58,6 +58,7 @@ call plug#begin()
     Plug 'tpope/vim-commentary'
     Plug 'martong/vim-compiledb-path'
     Plug 'tpope/vim-dispatch'
+    Plug 'milch/vim-fastlane'
     Plug 'tpope/vim-fugitive'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
@@ -69,6 +70,7 @@ call plug#begin()
     Plug 'lifepillar/vim-solarized8'
     Plug 'kshenoy/vim-signature'
     Plug 'tpope/vim-surround'
+    Plug 'mbbill/undotree'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
 call plug#end()
