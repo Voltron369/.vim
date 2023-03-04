@@ -201,4 +201,9 @@ enddef
 
 let &shell='/bin/bash --rcfile ~/.vim/bashrc'
 
+augroup markdownSpell
+   autocmd FileType gitcommit setlocal spell
+   autocmd FileType markdown setlocal spell
+augroup END
+
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
