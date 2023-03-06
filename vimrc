@@ -2,11 +2,14 @@ filetype plugin indent on
 
 let mapleader = "\ "
 
+" let g:ale_command_wrapper = '~/.vim/ale_command_wrapper'
+
 " keep sorted
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:ale_completion_enabled=1
 let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
+let g:ale_cpp_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
 let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
 set autoindent
