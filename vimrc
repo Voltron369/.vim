@@ -28,9 +28,14 @@ set omnifunc=syntaxcomplete#Complete
 set path+=**
 set relativenumber
 set scrolloff=8
+set sidescroll=0
+set sidescrolloff=8
 set smartcase
 set showbreak=↪\ 
+set undofile
+set undodir=~/.vim-undo
 set updatetime=250
+set viminfo^=!
 set wildignore+=*.obj,tags,*.a
 set wildignore+=**/node_modules/*
 set wildignore+=**/build/*
@@ -162,6 +167,10 @@ endif
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
+
+" Recover from accidental Ctrl-U
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
 
 helptags ~/.vim/doc
 
