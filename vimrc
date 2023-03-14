@@ -10,9 +10,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:ale_completion_enabled=1
 let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
 let g:ale_cpp_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
+let g:ale_linters = {'rust': ['analyzer']}
 let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
 set autoindent
+set autoread
 set fillchars+=vert:\ 
 set hidden
 set history=1000
