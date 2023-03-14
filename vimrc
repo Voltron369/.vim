@@ -72,6 +72,7 @@ call plug#begin()
     Plug 'airblade/vim-gitgutter'
     Plug 'machakann/vim-highlightedyank'
     Plug 'ojroques/vim-oscyank'
+    Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-rhubarb'
     Plug 'airblade/vim-rooter'
     Plug 'lifepillar/vim-solarized8'
