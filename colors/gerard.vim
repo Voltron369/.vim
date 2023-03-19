@@ -5,13 +5,21 @@ if exists("syntax_on")
 endif
 
 if !empty($COLORTERM) && has("termguicolors")
-   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+   if &term =~# 'xterm'
+      if exists('$TMUX')
+         " tmux truecolor
+         let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+         let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+      endif
+      " fix undercurl
+      let &t_Cs = "\e[4:3m"
+      let &t_Ce = "\e[4:0m"
+      " change cursor style in insert mode
+      let &t_SI = "\e[5 q"    " https://stackoverflow.com/questions/6488683/how-to-change-the-cursor-between-normal-and-insert-modes-in-vim
+      let &t_EI = "\e[2 q"
+   endif
    set termguicolors
    set background=dark
-   " fix undercurl
-   let &t_Cs = "\e[4:3m"
-   let &t_Ce = "\e[4:0m"
    runtime colors/solarized8.vim
    let g:colors_name = "gerard"
    hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
