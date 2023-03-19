@@ -2,6 +2,18 @@ filetype plugin indent on
 
 let mapleader = "\ "
 
+set spell
+augroup markdownSpell
+   autocmd FileType gitcommit setlocal spellcapcheck=
+   autocmd FileType git setlocal nospell
+augroup END
+
+" Does not work as intended:
+" augroup termLeave
+"   au!
+"   autocmd BufLeave * if &buftype ==# 'terminal' | call feedkeys("\<C-\>\<C-N>") | endif
+" augroup END
+
 " let g:ale_command_wrapper = '~/.vim/ale_command_wrapper'
 
 " keep sorted
@@ -215,10 +227,5 @@ def g:Tapi_lcd(_, path: string)
 enddef
 
 let &shell='/bin/bash --rcfile ~/.vim/bashrc'
-
-augroup markdownSpell
-   autocmd FileType gitcommit setlocal spell
-   autocmd FileType markdown setlocal spell
-augroup END
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
