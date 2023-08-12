@@ -227,6 +227,4 @@ def g:Tapi_lcd(_, path: string)
    endif
 enddef
 
-let &shell='/bin/bash --rcfile ~/.vim/bashrc'
-
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
