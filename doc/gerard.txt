@@ -17,6 +17,7 @@ Ctrl-/                Search in File    |:BLines|
                                                                       *gitlog*
 Git Log:~
 ⎵ gl    git log in quickfix
+⎵ gn    git log in quickfix (filenames only)
 ⎵ ml    git log vs merge-base
 ⎵ mn    git log vs merge-base (filenames only)
 ⎵ ms    git log vs merge-base (status only)
@@ -41,6 +42,15 @@ Git Diff:~
 ⎵ pd    git diff current file HEAD vs merge-base
 ⎵ pD    git diff all files HEAD vs merge-base
                                                                    *gerardale*
+            staged vs head~
+⎵ sD    git diff all files staged vs HEAD
+
+            commit vs commit~
+⎵ gb    set begin commit (older)
+⎵ gb    set end commit (newer)
+⎵ gc    git diff <|cfile|> begin vs end
+⎵ gC    git diff all files begin vs end
+
 ALE: (see |ale|)~
 ⎵ ad    ALEGoToDefinition
 ⎵ ai    ALEGoToImplementation

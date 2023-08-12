@@ -106,14 +106,12 @@ nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \
 
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
+nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
 " git find
 nnoremap <leader>f :GFiles<CR>
 nnoremap <leader>gg :GGrep<CR>
 nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
-
-" git staged vs HEAD
-nnoremap <leader>gc :!git difftool -y --staged<CR>
 
 " log HEAD vs master merge-base
 nnoremap <leader>ml :Gclog! -500 master..<CR>
@@ -137,6 +135,17 @@ nnoremap <leader>pF :cexpr system('git diff --name-only master...') \| copen<CR>
 nnoremap <leader>pf :G difftool -y master... -- <cfile><CR>
 nnoremap <leader>pd :G difftool -y master... -- %<CR>
 nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
+
+" git staged vs HEAD
+nnoremap <leader>sD :!git difftool -y --staged<CR>
+
+" git commit vs commit
+nnoremap <leader>gb :let gitbase=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
+nnoremap <leader>ge :let gitend=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
+nnoremap <leader>gc :exe '!git difftool -y ' gitbase gitend '-- <cfile>'<CR>
+nnoremap <leader>gC :exe '!git difftool -y ' gitbase gitend<CR>
+let gitbase=''
+let gitend=''
 
 " checked in vs merge head (i.e., pr)
 " nnoremap <leader>mD :!git difftool -y master...
