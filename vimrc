@@ -236,4 +236,15 @@ def g:Tapi_lcd(_, path: string)
    endif
 enddef
 
+" C-PageDown does not map properly on mac iterm2
+nnoremap <PageDown> <C-w>gt
+nnoremap <PageUp> <C-w>gT
+nnoremap <silent><C-Down> <C-w>j
+nnoremap <silent><C-Up> <C-w>k
+nnoremap <silent><C-Left> <C-w>h
+nnoremap <silent><C-Right> <C-w>l
+
+tnoremap <PageDown> <C-w>gt
+tnoremap <PageUp> <C-w>gT
+
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
