@@ -28,6 +28,7 @@ let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
 set autoindent
 set autoread
+set backspace=2
 set fillchars+=vert:\ 
 set hidden
 set history=1000
