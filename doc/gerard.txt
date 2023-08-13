@@ -49,6 +49,8 @@ Git Diff:~
 ⎵ pD    git diff all files HEAD vs merge-base
                                                                    *gerardale*
             staged vs head~
+⎵ sf    git diff <|cfile|> staged vs HEAD
+⎵ sd    git diff current file staged vs HEAD
 ⎵ sD    git diff all files staged vs HEAD
 
             commit vs commit~

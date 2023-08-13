@@ -140,6 +140,8 @@ nnoremap <leader>pd :G difftool -y master... -- %<CR>
 nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " git staged vs HEAD
+nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
+nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
 
 " git commit vs commit
