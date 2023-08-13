@@ -142,8 +142,8 @@ nnoremap <leader>sD :!git difftool -y --staged<CR>
 " git commit vs commit
 nnoremap <leader>gb :let gitbase=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
 nnoremap <leader>ge :let gitend=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
-nnoremap <leader>gc :exe '!git difftool -y ' gitbase gitend '-- <cfile>'<CR>
-nnoremap <leader>gC :exe '!git difftool -y ' gitbase gitend<CR>
+nnoremap <leader>gc :exe 'G difftool -y ' gitbase gitend '-- <cfile>'<CR>
+nnoremap <leader>gC :exe 'G difftool -y ' gitbase gitend<CR>
 let gitbase=''
 let gitend=''
 
