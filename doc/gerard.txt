@@ -5,6 +5,8 @@ CUSTOM BINDINGS                                                       *gerard*
 
 <Leader> is <Space>
 
+⎵ u       Toggle Undo Tree
+
 Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
 PgDown	  next tab

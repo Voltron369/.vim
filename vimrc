@@ -101,6 +101,8 @@ call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
+nnoremap <leader>u :UndotreeToggle<CR>
+
 nnoremap <leader>c :tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 
