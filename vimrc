@@ -111,6 +111,7 @@ nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
 " git find
+nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :GFiles<CR>
 nnoremap <leader>gg :GGrep<CR>
 nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
@@ -145,7 +146,7 @@ nnoremap <leader>sD :!git difftool -y --staged<CR>
 nnoremap <leader>gb :let gitbase=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
 nnoremap <leader>ge :let gitend=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
 nnoremap <leader>gc :exe 'G difftool -y ' gitbase gitend '-- <cfile>'<CR>
-nnoremap <leader>gC :exe 'G difftool -y ' gitbase gitend<CR>
+nnoremap <leader>gC :exe '!git difftool -y ' gitbase gitend<CR>
 let gitbase=''
 let gitend=''
 

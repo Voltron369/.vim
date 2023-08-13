@@ -15,6 +15,7 @@ C-Arrows  move windows (normal mode)
 
 Find:~
 Ctrl-/                Search in File    |:BLines|
+⎵ b                   Buffers           |:Buffers|
 ⎵ f                   Open Files        |:GFiles|
 ⎵ gg                  fzf git grep
 :GG[rep]              fzf git grep
