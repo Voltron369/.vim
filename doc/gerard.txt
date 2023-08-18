@@ -9,9 +9,10 @@ CUSTOM BINDINGS                                                       *gerard*
 
 Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
-PgDown	  next tab
-PgUp	  prev tab
-C-Arrows  move windows (normal mode)
+gq        close window.  If last, close tab and go to previous tab
+PgDown    next tab
+PgUp      prev tab
+C-Arrows  move to window (normal mode)
 
 Find:~
 Ctrl-/                Search in File    |:BLines|
@@ -31,33 +32,38 @@ Git Log:~
                                                                      *gitdiff*
 Git Diff:~
               working vs HEAD~
-⎵ gF    git status (see|fugitive-staging-maps|)
-⎵ gf    git diff <|cfile|> working vs HEAD
+⎵ gF    git status (see |fugitive-staging-maps|)
+⎵ gf    git diff <cfile> working vs HEAD
 ⎵ gd    git diff current file working vs HEAD
 ⎵ gD    git diff all files working vs HEAD
 
             working vs merge-base~
 ⎵ mF    git diff names-only working vs merge-base
-⎵ mf    git diff <|cfile|> working vs merge-base
+⎵ mf    git diff <cfile> working vs merge-base
 ⎵ md    git diff current file working vs merge-base
 ⎵ mD    git diff all files working vs merge-base
 
               HEAD vs merge-base (PR)~
 ⎵ pF    git diff names-only HEAD vs merge-base
-⎵ pf    git diff <|cfile|> HEAD vs merge-base
+⎵ pf    git diff <cfile> HEAD vs merge-base
 ⎵ pd    git diff current file HEAD vs merge-base
 ⎵ pD    git diff all files HEAD vs merge-base
                                                                    *gerardale*
             staged vs head~
-⎵ sf    git diff <|cfile|> staged vs HEAD
+⎵ sf    git diff <cfile> staged vs HEAD
 ⎵ sd    git diff current file staged vs HEAD
 ⎵ sD    git diff all files staged vs HEAD
 
-            commit vs commit~
-⎵ gb    set begin commit (older)
-⎵ gb    set end commit (newer)
-⎵ gc    git diff <|cfile|> begin vs end
-⎵ gC    git diff all files begin vs end
+            commit vs commit (using ⎵ gn or ⎵ gl)~
+⎵ go          git diff <cfile> for this commit
+⎵ gO          git diff all files for this commit
+⎵ g[          set begin commit (older)
+⎵ g]          set end commit (newer)
+⎵ gw          set end working
+⎵ gc          git diff <cfile> begin vs end
+⎵ gC          git diff all files begin vs end
+{range}⎵ gc   set range (then use ⎵ gc to diff file)
+{range}⎵ gC   git diff all files in range
 
 ALE: (see |ale|)~
 ⎵ ad    ALEGoToDefinition

@@ -144,11 +144,37 @@ nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
 nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
 
+function! GitDiffOpen()
+   let l:gitend=substitute(getline(search('^[0-9a-h]','cbn')), "|.*", "", "g")
+   exe 'G difftool -y ' l:gitend . '~1' l:gitend '--' substitute(getline("."), "|| ",  "", "")
+endfunction
+
+function! GitDiffOpenAll()
+   let l:gitend=substitute(getline(search('^[0-9a-h]','cbn')), "|.*", "", "g")
+   exe '!git difftool -y ' l:gitend . '~1' l:gitend
+endfunction
+
+function! GitSetDiffRange() range
+   let g:gitbase=substitute(getline(a:lastline), "|.*", "", "g")
+   let g:gitend=substitute(getline(a:firstline), "|.*", "", "g")
+endfunction
+
+function! GitDiffRange() range
+   let g:gitbase=substitute(getline(a:lastline), "|.*", "", "g")
+   let g:gitend=substitute(getline(a:firstline), "|.*", "", "g")
+   exe '!git difftool -y ' g:gitbase . '~1' g:gitend
+endfunction
+
 " git commit vs commit
-nnoremap <leader>gb :let gitbase=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
-nnoremap <leader>ge :let gitend=substitute(substitute(getline("."), "commit ",  "", ""), "\|.*", "", "g")<CR>
-nnoremap <leader>gc :exe 'G difftool -y ' gitbase gitend '-- <cfile>'<CR>
-nnoremap <leader>gC :exe '!git difftool -y ' gitbase gitend<CR>
+nnoremap <leader>go :call GitDiffOpen()<CR>
+nnoremap <leader>gO :call GitDiffOpenAll()<CR>
+nnoremap <leader>g[ :let gitbase=substitute(getline("."), "\|.*", "", "g")<CR>
+nnoremap <leader>g] :let gitend=substitute(getline("."), "\|.*", "", "g")<CR>
+nnoremap <leader>gw :let gitend=''<CR>
+nnoremap <leader>gc :exe 'G difftool -y ' gitbase . '~1' gitend '--'substitute(getline("."), "\|\| ",  "", "")<CR>
+nnoremap <leader>gC :exe '!git difftool -y ' gitbase . '~1' gitend<CR>
+vnoremap <leader>gc :call GitSetDiffRange()<CR>
+vnoremap <leader>gC :call GitDiffRange()<CR>
 let gitbase=''
 let gitend=''
 
@@ -251,5 +277,7 @@ nnoremap <silent><C-Right> <C-w>l
 
 tnoremap <PageDown> <C-w>gt
 tnoremap <PageUp> <C-w>gT
+
+command! Worktrees :G -p worktree list
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
