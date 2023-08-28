@@ -78,6 +78,10 @@ ALE: (see |ale|)~
 ]r      ALENextWrap
 ]R      ALELast
 
+:Merge      Show files with merge conflicts in new split
+<C-W><C-F>  Open file under cursor in new vertical split (and go to first merge conflict)
+]m          Next merge conflict
+[m          Previous merge conflict
 Vim-Sensible:~
 %             Uses |matchit|
 j             Delete comment character when joining commented lines.

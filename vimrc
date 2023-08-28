@@ -195,6 +195,13 @@ nmap [R <Plug>(ale_first)
 nmap [r <Plug>(ale_previous_wrap)
 nmap ]r <Plug>(ale_next_wrap)
 nmap ]R <Plug>(ale_last)
+nnoremap ]m /====<CR>
+nnoremap [m ?====<CR>
+
+augroup mergediffs
+   au!
+   autocmd VimEnter * if exists("$GIT_PREFIX") | let @/ = '====' | exec "normal /\<CR>" | endif
+augroup END
 
 " From vim-sensible:
 
@@ -279,5 +286,7 @@ tnoremap <PageDown> <C-w>gt
 tnoremap <PageUp> <C-w>gT
 
 command! Worktrees :G -p worktree list
+command! Merge G -p diff --name-only --diff-filter=U --relative
+nnoremap <C-W><C-F> <C-W>vgf/====<CR>
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
