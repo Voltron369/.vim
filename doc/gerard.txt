@@ -12,6 +12,7 @@ Tabs and Windows:~
 gq        close window.  If last, close tab and go to previous tab
 PgDown    next tab
 PgUp      prev tab
+["x]⎵t    mark tab in register x (use @x to go to tab)
 C-Arrows  move to window (normal mode)
 
 Find:~
@@ -48,8 +49,9 @@ Git Diff:~
 ⎵ pf    git diff <cfile> HEAD vs merge-base
 ⎵ pd    git diff current file HEAD vs merge-base
 ⎵ pD    git diff all files HEAD vs merge-base
-                                                                   *gerardale*
+
             staged vs head~
+⎵ sF    git diff names-only staged vs HEAD
 ⎵ sf    git diff <cfile> staged vs HEAD
 ⎵ sd    git diff current file staged vs HEAD
 ⎵ sD    git diff all files staged vs HEAD
@@ -64,7 +66,7 @@ Git Diff:~
 ⎵ gC          git diff all files begin vs end
 {range}⎵ gc   set range (then use ⎵ gc to diff file)
 {range}⎵ gC   git diff all files in range
-
+                                                                   *gerardale*
 ALE: (see |ale|)~
 ⎵ ad    ALEGoToDefinition
 ⎵ ai    ALEGoToImplementation
@@ -82,10 +84,11 @@ ALE: (see |ale|)~
 <C-W><C-F>  Open file under cursor in new vertical split (and go to first merge conflict)
 ]m          Next merge conflict
 [m          Previous merge conflict
+
 Vim-Sensible:~
 %             Uses |matchit|
 j             Delete comment character when joining commented lines.
-Ctrl-L        also clears search highlighting (|:noh|) and calls|:diffupdate|
+Ctrl-L        Also clears search highlighting (|:noh|) and calls|:diffupdate|
 :DiffOrig     Diff vs saved version of file (|:DiffOrig|)
 :Man {page}   Show man page in new split (|:Man})
 :PlugStatus   See plugins in use

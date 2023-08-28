@@ -111,6 +111,7 @@ nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
 " git find
+nnoremap <leader>ag :Ag<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :GFiles<CR>
 nnoremap <leader>gg :GGrep<CR>
@@ -140,6 +141,7 @@ nnoremap <leader>pd :G difftool -y master... -- %<CR>
 nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " git staged vs HEAD
+nnoremap <leader>sF :cexpr system('git diff --name-only --staged') \| copen<CR>
 nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
 nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
@@ -259,10 +261,10 @@ command! -bang -nargs=* GGrep
 
 if exists('$TMUX')
    " full screen:
-   " let g:fzf_layout = { 'tmux': '-p90%,60%' }
+   let g:fzf_layout = { 'tmux': '-p90%,60%' }
 
    " split below
-   let g:fzf_layout = { 'tmux': '-d30%' }
+   " let g:fzf_layout = { 'tmux': '-d30%' }
 endif
 
 let g:oscyank_term = 'default'
@@ -288,5 +290,14 @@ tnoremap <PageUp> <C-w>gT
 command! Worktrees :G -p worktree list
 command! Merge G -p diff --name-only --diff-filter=U --relative
 nnoremap <C-W><C-F> <C-W>vgf/====<CR>
+
+function! MarkWin(reg)
+   let l:reg = a:reg
+   if l:reg ==# '"'
+      let l:reg = input('Enter mark for tab [a-z]: ')
+   endif
+   exe 'let @' . l:reg '=":silent! call win_gotoid(' . win_getid() . ')\n"'
+endfunction
+nnoremap <leader>t :call MarkWin(v:register)<CR>
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
