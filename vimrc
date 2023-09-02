@@ -81,6 +81,7 @@ call plug#begin()
     Plug 'tomtom/tcomment_vim'
     Plug 'martong/vim-compiledb-path'
     Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-eunuch'
     Plug 'milch/vim-fastlane'
     Plug 'tpope/vim-fugitive'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -292,6 +293,7 @@ function! MarkWin(reg)
    endif
    exe 'let @' . l:reg '=":silent! call win_gotoid(' . win_getid() . ')\n"'
 endfunction
+command! MarkWin :call MarkWin("\"")
 nnoremap <leader>t :call MarkWin(v:register)<CR>
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
