@@ -197,8 +197,6 @@ nmap [R <Plug>(ale_first)
 nmap [r <Plug>(ale_previous_wrap)
 nmap ]r <Plug>(ale_next_wrap)
 nmap ]R <Plug>(ale_last)
-nnoremap ]m /====<CR>
-nnoremap [m ?====<CR>
 
 augroup mergediffs
    au!
@@ -279,10 +277,6 @@ enddef
 " C-PageDown does not map properly on mac iterm2
 nnoremap <PageDown> <C-w>gt
 nnoremap <PageUp> <C-w>gT
-nnoremap <silent><C-Down> <C-w>j
-nnoremap <silent><C-Up> <C-w>k
-nnoremap <silent><C-Left> <C-w>h
-nnoremap <silent><C-Right> <C-w>l
 
 tnoremap <PageDown> <C-w>gt
 tnoremap <PageUp> <C-w>gT
