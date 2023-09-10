@@ -79,7 +79,7 @@ call plug#begin()
     Plug 'dense-analysis/ale'
     Plug 'junegunn/gv.vim'
     Plug 'tomtom/tcomment_vim'
-    Plug 'martong/vim-compiledb-path'
+    " Plug 'martong/vim-compiledb-path'
     Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-eunuch'
     Plug 'milch/vim-fastlane'
@@ -105,7 +105,9 @@ call plug#end()
 nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <leader>c :tabprev \| +tabclose<CR>
+tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
+tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
@@ -113,10 +115,15 @@ nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
 " git find
 nnoremap <leader>ag :Ag<CR>
+tnoremap <C-w><leader>ag <C-w>:Ag<CR>
 nnoremap <leader>b :Buffers<CR>
+tnoremap <C-w><leader>b <C-w>:Buffers<CR>
 nnoremap <leader>f :GFiles<CR>
+tnoremap <C-w><leader>f <C-w>:GFiles<CR> | "requires fix to :GFiles command after let dir = : if &buftype ==# 'terminal' | let dir = getcwd() | endif
 nnoremap <leader>gg :GGrep<CR>
+tnoremap <C-w><leader>gg <C-w>:GGrep<CR>
 nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
+tnoremap <C-w><C-_> <C-w>:BLines<CR> | "actually Ctrl-/
 
 " log HEAD vs master merge-base
 nnoremap <leader>ml :Gclog! -500 master..<CR>
@@ -272,6 +279,7 @@ autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | exe
 def g:Tapi_lcd(_, path: string)
    if isdirectory(path)
       execute 'silent lcd ' .. fnameescape(path)
+      execute 'file !/bin/bash' getcwd() '(' .. win_getid() .. ')'
    endif
 enddef
 
@@ -295,5 +303,8 @@ function! MarkWin(reg)
 endfunction
 command! MarkWin :call MarkWin("\"")
 nnoremap <leader>t :call MarkWin(v:register)<CR>
+tnoremap <C-w><leader>t <C-w>:call MarkWin(v:register)<CR>
+tnoremap <C-w><C-@> <C-w>:@
+tnoremap <C-w>@ <C-w>:@
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
