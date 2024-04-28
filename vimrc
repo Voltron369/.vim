@@ -191,6 +191,17 @@ let gitend=''
 " checked in vs merge head (i.e., pr)
 " nnoremap <leader>mD :!git difftool -y master...
 
+function! GotoDefinition()
+    let l:linters = ale#linter#Get(&filetype)
+    if !empty(l:linters)
+        execute 'ALEGoToDefinition'
+    else
+        execute 'normal! gd'
+    endif
+endfunction
+
+" Remap gd to use custom GotoDefinition function
+nnoremap gd :call GotoDefinition()<CR>
 
 nmap <leader>ad <Plug>(ale_go_to_definition)
 nmap <leader>ai <Plug>(ale_go_to_implementation)
