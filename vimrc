@@ -107,6 +107,7 @@ nnoremap <leader>u :UndotreeToggle<CR>
 nnoremap <leader>c :tabprev \| +tabclose<CR>
 tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
+nnoremap dq <C-w>q<C-6>
 tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 
 " git log
