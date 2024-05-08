@@ -8,11 +8,14 @@ CUSTOM BINDINGS                                                       *gerard*
 ⎵ u       Toggle Undo Tree
 
 Tabs and Windows:~
+⎵ ⎵       update (write)
 ⎵ c       close tab and go to previous tab
 gq        close window.  If last, close tab and go to previous tab
 PgDown    next tab
 PgUp      prev tab
 ["x]⎵t    mark tab in register x (use @x to go to tab)
++ or \    open Git |fugitive|
+⎵ z       zoom window
 
 Find:~
 Ctrl-/                Search in File    |:BLines|

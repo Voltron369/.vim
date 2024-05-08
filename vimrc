@@ -125,6 +125,14 @@ nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
 
+nnoremap + <Cmd>Git<CR>
+nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
+augroup FugitiveToggle
+  autocmd!
+  autocmd Filetype fugitive nnoremap <buffer> + :close \| wincmd p<CR>
+  autocmd Filetype fugitive nnoremap <buffer> \ :close \| wincmd p<CR>
+augroup END
+
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
