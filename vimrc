@@ -102,13 +102,28 @@ call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
+function! Zoom()
+    if tabpagewinnr(tabpagenr(), '$') == 1
+        " If this is the only window in the tab, close the window
+        tabprev
+        +tabclose
+    else
+        " If there are other windows in the tab, split the window horizontally and move it to a new tab
+        tab split
+    endif
+endfunction
+
 nnoremap <leader>u :UndotreeToggle<CR>
 
+nnoremap <leader><leader> :update<CR>
 nnoremap <leader>c :tabprev \| +tabclose<CR>
 tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 nnoremap dq <C-w>q<C-6>
 tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
+nnoremap <leader>z :call Zoom()<CR>
+nnoremap <C-w><leader>z :call Zoom()<CR>
+tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
 
 " git log
 nnoremap <leader>gl :Gclog! -500<CR>
