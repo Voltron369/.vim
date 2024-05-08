@@ -303,12 +303,15 @@ endif
 let g:oscyank_term = 'default'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 
-def g:Tapi_lcd(_, path: string)
-   if isdirectory(path)
-      execute 'silent lcd ' .. fnameescape(path)
-      execute 'file !/bin/bash' getcwd() '(' .. win_getid() .. ')'
+function! g:Tapi_lcd(bufnum, path)
+   let l:orig_bufnum=bufnr('%')
+   if isdirectory(a:path)
+      execute 'buffer' a:bufnum
+      execute 'silent lcd ' . fnameescape(a:path)
+      execute 'file !/bin/bash' getcwd() '(' . win_getid() . ')'
+      execute 'buffer' l:orig_bufnum
    endif
-enddef
+endfunction
 
 " C-PageDown does not map properly on mac iterm2
 nnoremap <PageDown> <C-w>gt
