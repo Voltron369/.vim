@@ -5,6 +5,7 @@ CUSTOM BINDINGS                                                       *gerard*
 
 <Leader> is <Space>
 
+⎵ ?       This Help
 ⎵ u       Toggle Undo Tree
 
 Tabs and Windows:~
@@ -19,13 +20,17 @@ PgUp      prev tab
 
 Find:~
 Ctrl-/                Search in File    |:BLines|
+q:                    fzf commands      |q:|
+q/                    fzf search        |q/|
+q?                    fzf help          |:Helptags|
 ⎵ b                   Buffers           |:Buffers|
 ⎵ f                   Open Files        |:GFiles|
 ⎵ gg                  fzf git grep
 :GG[rep]              fzf git grep
-:Gf[ind] {pattern}    wildmenu git files
                                                                       *gitlog*
 Git Log:~
+⎵ gc    fzf git log
+⎵ gb    fzf git log %
 ⎵ gl    git log in quickfix
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ ml    git log vs merge-base
@@ -58,29 +63,20 @@ Git Diff:~
 ⎵ sd    git diff current file staged vs HEAD
 ⎵ sD    git diff all files staged vs HEAD
 
-            commit vs commit (using ⎵ gn or ⎵ gl)~
-⎵ go          git diff <cfile> for this commit
-⎵ gO          git diff all files for this commit
-⎵ g[          set begin commit (older)
-⎵ g]          set end commit (newer)
-⎵ gw          set end working
-⎵ gc          git diff <cfile> begin vs end
-⎵ gC          git diff all files begin vs end
-{range}⎵ gc   set range (then use ⎵ gc to diff file)
-{range}⎵ gC   git diff all files in range
                                                                    *gerardale*
 ALE: (see |ale|)~
-⎵ ad    ALEGoToDefinition
-⎵ ai    ALEGoToImplementation
-⎵ ar    ALEFindReferences
-⎵ ah    ALEHover
-⎵ an    ALENextWrap
-⎵ ap    ALEPreviousWrap
-⎵ aq    ALEPopulateQuickfix
-[R      ALEFirst
-[r      ALEPreviousWrap
-]r      ALENextWrap
-]R      ALELast
+gd      |ALEGoToDefinition| or default |gd|
+⎵ ad    |ALEGoToDefinition|
+⎵ ai    |ALEGoToImplementation|
+⎵ ar    |ALEFindReferences|
+⎵ ah    |ALEHover|
+⎵ an    |ALENextWrap|
+⎵ ap    |ALEPreviousWrap|
+⎵ aq    |ALEPopulateQuickfix|
+[R      |ALEFirst|
+[r      |ALEPreviousWrap|
+]r      |ALENextWrap|
+]R      |ALELast|
 
                                                                  *gerardmerge*
 Merge:~

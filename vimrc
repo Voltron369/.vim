@@ -113,6 +113,7 @@ function! Zoom()
     endif
 endfunction
 
+nnoremap <leader>? :he gerard<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <leader><leader> :update<CR>
@@ -134,6 +135,8 @@ augroup FugitiveToggle
 augroup END
 
 " git log
+nnoremap <leader>gc :Commits<CR>
+nnoremap <leader>gb :BCommits<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
@@ -148,6 +151,9 @@ nnoremap <leader>gg :GGrep<CR>
 tnoremap <C-w><leader>gg <C-w>:GGrep<CR>
 nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
 tnoremap <C-w><C-_> <C-w>:BLines<CR> | "actually Ctrl-/
+nnoremap q: :History:<CR>
+nnoremap q/ :History/<CR>
+nnoremap q? :Helptags<CR>
 
 " log HEAD vs master merge-base
 nnoremap <leader>ml :Gclog! -500 master..<CR>
@@ -177,43 +183,6 @@ nnoremap <leader>sF :cexpr system('git diff --name-only --staged') \| copen<CR>
 nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
 nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
-
-function! GitDiffOpen()
-   let l:gitend=substitute(getline(search('^[0-9a-h]','cbn')), "|.*", "", "g")
-   exe 'G difftool -y ' l:gitend . '~1' l:gitend '--' substitute(getline("."), "|| ",  "", "")
-endfunction
-
-function! GitDiffOpenAll()
-   let l:gitend=substitute(getline(search('^[0-9a-h]','cbn')), "|.*", "", "g")
-   exe '!git difftool -y ' l:gitend . '~1' l:gitend
-endfunction
-
-function! GitSetDiffRange() range
-   let g:gitbase=substitute(getline(a:lastline), "|.*", "", "g")
-   let g:gitend=substitute(getline(a:firstline), "|.*", "", "g")
-endfunction
-
-function! GitDiffRange() range
-   let g:gitbase=substitute(getline(a:lastline), "|.*", "", "g")
-   let g:gitend=substitute(getline(a:firstline), "|.*", "", "g")
-   exe '!git difftool -y ' g:gitbase . '~1' g:gitend
-endfunction
-
-" git commit vs commit
-nnoremap <leader>go :call GitDiffOpen()<CR>
-nnoremap <leader>gO :call GitDiffOpenAll()<CR>
-nnoremap <leader>g[ :let gitbase=substitute(getline("."), "\|.*", "", "g")<CR>
-nnoremap <leader>g] :let gitend=substitute(getline("."), "\|.*", "", "g")<CR>
-nnoremap <leader>gw :let gitend=''<CR>
-nnoremap <leader>gc :exe 'G difftool -y ' gitbase . '~1' gitend '--'substitute(getline("."), "\|\| ",  "", "")<CR>
-nnoremap <leader>gC :exe '!git difftool -y ' gitbase . '~1' gitend<CR>
-vnoremap <leader>gc :call GitSetDiffRange()<CR>
-vnoremap <leader>gC :call GitDiffRange()<CR>
-let gitbase=''
-let gitend=''
-
-" checked in vs merge head (i.e., pr)
-" nnoremap <leader>mD :!git difftool -y master...
 
 function! GotoDefinition()
     let l:linters = ale#linter#Get(&filetype)
@@ -282,16 +251,6 @@ inoremap <c-w> <c-g>u<c-w>
 helptags ~/.vim/doc
 
 colorscheme gerard
-
-" implement :GFind {pattern}
-" https://vi.stackexchange.com/a/2589
-command! -nargs=1 -bang -complete=customlist,GitFindComplete
-      \ Gfind find<bang> <args>
-function! GitFindComplete(ArgLead, CmdLine, CursorPos)
-   let search_pattern = a:ArgLead
-   let shell_cmd = "git ls-files |  ~/.vim/plugged/fzf/bin/fzf --filter " . shellescape(search_pattern)
-   return split(system(shell_cmd), "\n")
-endfunction
 
 " implement :GGrep
 " https://github.com/junegunn/fzf.vim#example-git-grep-wrapper
