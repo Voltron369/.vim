@@ -93,4 +93,6 @@ Ctrl-L        Also clears search highlighting (|:noh|) and calls|:diffupdate|
 :Man {page}   Show man page in new split (|:Man})
 :PlugStatus   See plugins in use
 
+text-object:~
+ic/ac/ih/ah   hunk                                           |gitgutter-ic|
 vim:tw=78:ts=8:ft=help:norl:

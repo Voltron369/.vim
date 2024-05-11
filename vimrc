@@ -248,6 +248,16 @@ endif
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" custom text-object
+omap ic <Plug>(GitGutterTextObjectInnerPending)
+omap ac <Plug>(GitGutterTextObjectOuterPending)
+xmap ic <Plug>(GitGutterTextObjectInnerVisual)
+xmap ac <Plug>(GitGutterTextObjectOuterVisual)
+omap ih <Plug>(GitGutterTextObjectInnerPending)
+omap ah <Plug>(GitGutterTextObjectOuterPending)
+xmap ih <Plug>(GitGutterTextObjectInnerVisual)
+xmap ah <Plug>(GitGutterTextObjectOuterVisual)
+
 helptags ~/.vim/doc
 
 colorscheme gerard
