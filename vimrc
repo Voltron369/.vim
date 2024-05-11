@@ -17,12 +17,18 @@ augroup END
 " let g:ale_command_wrapper = '~/.vim/ale_command_wrapper'
 
 " keep sorted
+let $FZF_DEFAULT_OPTS='--bind ctrl-f:page-down,ctrl-b:page-up,ctrl-y:yank,ctrl-u:half-page-up+refresh-preview,ctrl-d:half-page-down+refresh-preview'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:ale_completion_enabled=1
 let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
 let g:ale_cpp_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
 let g:ale_linters = {'rust': ['analyzer']}
+" let g:fzf_action = {
+"   \ 'ctrl-t': 'tab split',
+"   \ 'ctrl-x': 'split',
+"   \ 'ctrl-v': 'vsplit',
+"   \ 'ctrl-y': {lines -> setreg('*', join(lines, " "))}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
@@ -77,7 +83,8 @@ call plug#begin()
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'dense-analysis/ale'
-    Plug 'junegunn/gv.vim'
+    " use FZF :Commits instead of GV
+    " Plug 'junegunn/gv.vim'
     Plug 'tomtom/tcomment_vim'
     " Plug 'martong/vim-compiledb-path'
     Plug 'tpope/vim-dispatch'
@@ -89,6 +96,8 @@ call plug#begin()
     Plug 'airblade/vim-gitgutter'
     Plug 'machakann/vim-highlightedyank'
     Plug 'ojroques/vim-oscyank'
+    " load full vim-plug to get help file
+    Plug 'junegunn/vim-plug'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-rhubarb'
     Plug 'airblade/vim-rooter'
@@ -147,6 +156,8 @@ nnoremap <leader>b :Buffers<CR>
 tnoremap <C-w><leader>b <C-w>:Buffers<CR>
 nnoremap <leader>f :GFiles<CR>
 tnoremap <C-w><leader>f <C-w>:GFiles<CR> | "requires fix to :GFiles command after let dir = : if &buftype ==# 'terminal' | let dir = getcwd() | endif
+nnoremap <leader>F :Files<CR>
+tnoremap <C-w><leader>F <C-w>:Files<CR> | "requires fix to :GFiles command after let dir = : if &buftype ==# 'terminal' | let dir = getcwd() | endif
 nnoremap <leader>gg :GGrep<CR>
 tnoremap <C-w><leader>gg <C-w>:GGrep<CR>
 nnoremap <C-_> :BLines<CR> | "actually Ctrl-/
@@ -196,19 +207,19 @@ endfunction
 " Remap gd to use custom GotoDefinition function
 nnoremap gd :call GotoDefinition()<CR>
 
-nmap <leader>ad <Plug>(ale_go_to_definition)
-nmap <leader>ai <Plug>(ale_go_to_implementation)
-nmap <leader>aq :ALEPopulateQuickfix \| copen<CR>
-nmap <leader>ah <Plug>(ale_hover)
-nmap <leader>an <Plug>(ale_next_wrap)
-nmap <leader>ap <Plug>(ale_previous_wrap)
-nmap <leader>af <Plug>(ale_find_references)
-nmap <leader>ar :ALEFindReferences -quickfix \| copen<CR>
-nmap <leader>at <Plug>(ale_go_to_type_definition)
-nmap [R <Plug>(ale_first)
-nmap [r <Plug>(ale_previous_wrap)
-nmap ]r <Plug>(ale_next_wrap)
-nmap ]R <Plug>(ale_last)
+nnoremap <leader>ad <Plug>(ale_go_to_definition)
+nnoremap <leader>ai <Plug>(ale_go_to_implementation)
+nnoremap <leader>aq :ALEPopulateQuickfix \| copen<CR>
+nnoremap <leader>ah <Plug>(ale_hover)
+nnoremap <leader>an <Plug>(ale_next_wrap)
+nnoremap <leader>ap <Plug>(ale_previous_wrap)
+nnoremap <leader>af <Plug>(ale_find_references)
+nnoremap <leader>ar :ALEFindReferences -quickfix \| copen<CR>
+nnoremap <leader>at <Plug>(ale_go_to_type_definition)
+nnoremap [R <Plug>(ale_first)
+nnoremap [r <Plug>(ale_previous_wrap)
+nnoremap ]r <Plug>(ale_next_wrap)
+nnoremap ]R <Plug>(ale_last)
 
 augroup mergediffs
    au!
@@ -313,5 +324,10 @@ nnoremap <leader>t :call MarkWin(v:register)<CR>
 tnoremap <C-w><leader>t <C-w>:call MarkWin(v:register)<CR>
 tnoremap <C-w><C-@> <C-w>:@
 tnoremap <C-w>@ <C-w>:@
+
+augroup oldfiles
+   au!
+   " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
+augroup END
 
 ""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
