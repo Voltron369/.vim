@@ -106,14 +106,31 @@ call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
+function! SwitchToSecondDiffWindow()
+    if &diff && winnr('#') > winnr()
+        execute winnr('#') . 'wincmd w'
+    endif
+endfunction
+
 function! Zoom()
-    if tabpagewinnr(tabpagenr(), '$') == 1
-        " If this is the only window in the tab, close the window
+    let l:cur_win = winnr()
+    let l:cur_tab = tabpagenr()
+    let l:num_wins = tabpagewinnr(l:cur_tab, '$')
+    if l:num_wins == 1 || (&diff &&  l:num_wins == 2)
         tabprev
         +tabclose
     else
-        " If there are other windows in the tab, split the window horizontally and move it to a new tab
-        tab split
+       if &diff
+          call SwitchToSecondDiffWindow()
+          let l:other_win = winnr('#')
+          let l:other_buf = bufname(winbufnr(l:other_win))
+          execute l:other_win . 'wincmd c'
+          tab split
+          execute 'vertical diffsplit' l:other_buf
+          wincmd w
+      else
+          tab split
+       endif
     endif
 endfunction
 
@@ -125,7 +142,7 @@ nnoremap <leader>c :tabprev \| +tabclose<CR>
 tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
 tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
-nnoremap dq <C-w>q<C-6>
+nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
 nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
