@@ -41,8 +41,8 @@ Ctrl-y                Yank filename(s) to register * (clipboard)
 
                                                                       *gitlog*
 Git Log:~
-⎵ gc    fzf git log                    |:Commits|
-⎵ gb    fzf git log %                  |:BCommits|
+⎵ gc    fzf git log                                                |:Commits|
+⎵ gb    fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gl    git log in quickfix
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ ml    git log vs merge-base
@@ -75,20 +75,23 @@ Git Diff:~
 ⎵ sd    git diff current file staged vs HEAD
 ⎵ sD    git diff all files staged vs HEAD
 
-                                                                   *gerardale*
-ALE: (see |ale|)~
-gd      |ALEGoToDefinition| or default |gd|
-⎵ ad    |ALEGoToDefinition|
-⎵ ai    |ALEGoToImplementation|
-⎵ ar    |ALEFindReferences|
-⎵ ah    |ALEHover|
-⎵ an    |ALENextWrap|
-⎵ ap    |ALEPreviousWrap|
-⎵ aq    |ALEPopulateQuickfix|
-[R      |ALEFirst|
-[r      |ALEPreviousWrap|
-]r      |ALENextWrap|
-]R      |ALELast|
+                                                                   *gerardcoc*
+COC: (see |coc-introduction|)~
+gd            |CocAction('jumpDefinition')| or default |gd|
+gy            |CocAction('jumpTypeDefinition')|
+gi            |CocAction('jumpImplementation')|
+gr            |CocAction('jumpReferences')|
+K             |CocAction('doHover')| or default |K|
+⎵ rn          |CocAction('rename')|
+=             |CocAction('formatSelected')| or default |=|
+⎵ a{motion}   |CocAction('codeAction')| at selected
+⎵ ac          |CocAction('codeAction')| at cursor
+⎵ as          |CocAction('codeAction')| for buffer
+⎵ qf          |CocAction('doQuickfix')|
+⎵ re          |CocAction('refactor')|
+⎵ cl          |CocAction('codeLensAction')|
+[G [g         first/prev diagnostic
+]g ]G         next/last diagnostic
 
                                                                  *gerardmerge*
 Merge:~
@@ -109,10 +112,12 @@ Ctrl-L        Also clears search highlighting (|:noh|) and calls |:diffupdate|
 :PlugStatus   See plugins in use
 
 text-object:~
-ic/ac/ih/ah   hunk                                           |gitgutter-ic|
+ic/ac   classobj
+if/af   funcobj
+ih/ah   hunk (|gitgutter-ic|)
 
 colorscheme:~
 gerard        dark
 morning       bright
-    
+
 vim:tw=78:ts=8:ft=help:norl:

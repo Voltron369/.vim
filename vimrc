@@ -14,21 +14,15 @@ augroup END
 "   autocmd BufLeave * if &buftype ==# 'terminal' | call feedkeys("\<C-\>\<C-N>") | endif
 " augroup END
 
-" let g:ale_command_wrapper = '~/.vim/ale_command_wrapper'
-
 " keep sorted
 let $FZF_DEFAULT_OPTS='--bind ctrl-f:page-down,ctrl-b:page-up,ctrl-y:yank,ctrl-u:half-page-up+refresh-preview,ctrl-d:half-page-down+refresh-preview'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:ale_completion_enabled=1
-let g:ale_cpp_cc_executable='/usr/local/bin/g++-9'
-let g:ale_cpp_clangd_executable = '/usr/local/opt/llvm/bin/clangd'
-let g:ale_linters = {'rust': ['analyzer']}
-" let g:fzf_action = {
-"   \ 'ctrl-t': 'tab split',
-"   \ 'ctrl-x': 'split',
-"   \ 'ctrl-v': 'vsplit',
-"   \ 'ctrl-y': {lines -> setreg('*', join(lines, " "))}}
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit',
+  \ 'ctrl-y': {lines -> setreg('*', join(lines, " "))}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
@@ -52,6 +46,7 @@ set relativenumber
 set scrolloff=8
 set sidescroll=0
 set sidescrolloff=8
+set signcolumn=yes
 set smartcase
 set showbreak=↪\ 
 set undofile
@@ -82,7 +77,7 @@ call plug#begin()
     Plug 'tpope/vim-abolish'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    Plug 'dense-analysis/ale'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " use FZF :Commits instead of GV
     " Plug 'junegunn/gv.vim'
     Plug 'tomtom/tcomment_vim'
@@ -129,8 +124,8 @@ nnoremap <leader><leader> :update<CR>
 nnoremap <leader>c :tabprev \| +tabclose<CR>
 tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
 nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
-nnoremap dq <C-w>q<C-6>
 tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
+nnoremap dq <C-w>q<C-6>
 nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
@@ -149,7 +144,7 @@ nnoremap <leader>gb :BCommits<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
-" git find
+" fzf
 nnoremap <leader>ag :Ag<CR>
 tnoremap <C-w><leader>ag <C-w>:Ag<CR>
 nnoremap <leader>b :Buffers<CR>
@@ -195,31 +190,150 @@ nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
 nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
 
-function! GotoDefinition()
-    let l:linters = ale#linter#Get(&filetype)
-    if !empty(l:linters)
-        execute 'ALEGoToDefinition'
-    else
-        execute 'normal! gd'
-    endif
+" COC
+
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Remap gd to use custom GotoDefinition function
-nnoremap gd :call GotoDefinition()<CR>
+" Use <c-space> to trigger completion
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-nnoremap <leader>ad <Plug>(ale_go_to_definition)
-nnoremap <leader>ai <Plug>(ale_go_to_implementation)
-nnoremap <leader>aq :ALEPopulateQuickfix \| copen<CR>
-nnoremap <leader>ah <Plug>(ale_hover)
-nnoremap <leader>an <Plug>(ale_next_wrap)
-nnoremap <leader>ap <Plug>(ale_previous_wrap)
-nnoremap <leader>af <Plug>(ale_find_references)
-nnoremap <leader>ar :ALEFindReferences -quickfix \| copen<CR>
-nnoremap <leader>at <Plug>(ale_go_to_type_definition)
-nnoremap [R <Plug>(ale_first)
-nnoremap [r <Plug>(ale_previous_wrap)
-nnoremap ]r <Plug>(ale_next_wrap)
-nnoremap ]R <Plug>(ale_last)
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nnoremap <silent> [G gg<Plug>(coc-diagnostic-next)
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> ]G G<Plug>(coc-diagnostic-prev)
+
+" GoTo code navigation
+nnoremap <silent> gd :call GotoDefinition()<CR>
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! GotoDefinition()
+  if CocAction('hasProvider', 'definition')
+    call CocActionAsync('jumpDefinition')
+  else
+    execute 'normal! gd'
+  endif
+endfunction
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code
+xmap <leader>=  <Plug>(coc-format-selected)
+nmap <leader>=  <Plug>(coc-format-selected)
+xnoremap = :call Format()<CR>
+nnoremap = :call Format()<CR>
+
+function! Format()
+  if CocAction('hasProvider', 'format')
+    call CocAction('formatSelected')
+  else
+    execute 'normal! ='
+  endif
+endfunction
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s)
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying code actions to the selected code block
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying code actions at the cursor position
+nmap <leader>ac  <Plug>(coc-codeaction-cursor)
+" Remap keys for apply code actions affect whole buffer
+nmap <leader>as  <Plug>(coc-codeaction-source)
+" Apply the most preferred quickfix action to fix diagnostic on the current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Remap keys for applying refactor code actions
+nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+
+" Run the Code Lens action on the current line
+nmap <leader>cl  <Plug>(coc-codelens-action)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> to scroll float windows/popups
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges
+" Requires 'textDocument/selectionRange' support of language server
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 augroup mergediffs
    au!
@@ -260,10 +374,6 @@ inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
 " custom text-object
-omap ic <Plug>(GitGutterTextObjectInnerPending)
-omap ac <Plug>(GitGutterTextObjectOuterPending)
-xmap ic <Plug>(GitGutterTextObjectInnerVisual)
-xmap ac <Plug>(GitGutterTextObjectOuterVisual)
 omap ih <Plug>(GitGutterTextObjectInnerPending)
 omap ah <Plug>(GitGutterTextObjectOuterPending)
 xmap ih <Plug>(GitGutterTextObjectInnerVisual)
@@ -330,4 +440,3 @@ augroup oldfiles
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
 augroup END
 
-""let g:ale_cpp_ccls_init_options={'clang': {'extraArgs': ['-isystem /Library/Developer/CommandLineTools/usr/include/c++/v1']}}
