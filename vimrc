@@ -78,6 +78,7 @@ call plug#begin()
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'antoinemadec/coc-fzf'
     " use FZF :Commits instead of GV
     " Plug 'junegunn/gv.vim'
     Plug 'tomtom/tcomment_vim'
@@ -408,8 +409,10 @@ command! -bang -nargs=* GGrep
   \   fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
 
 if exists('$TMUX')
+   let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
    " full screen:
-   let g:fzf_layout = { 'tmux': '-p90%,60%' }
+   " let g:fzf_layout = { 'tmux': '-p90%,60%' }
 
    " split below
    " let g:fzf_layout = { 'tmux': '-d30%' }
