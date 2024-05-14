@@ -92,6 +92,8 @@ K             |CocAction('doHover')| or default |K|
 ⎵ cl          |CocAction('codeLensAction')|
 [G [g         first/prev diagnostic
 ]g ]G         next/last diagnostic
+gh          Switch hpp/cpp
+gH          VSplit hpp/cpp
 
                                                                  *gerardmerge*
 Merge:~

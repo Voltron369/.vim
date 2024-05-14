@@ -250,6 +250,8 @@ nnoremap <silent> gd :call GotoDefinition()<CR>
 nnoremap <silent> gy <Plug>(coc-type-definition)
 nnoremap <silent> gi <Plug>(coc-implementation)
 nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
+nnoremap <silent> gH :CocCommand clangd.switchSourceHeader vsplit<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>
