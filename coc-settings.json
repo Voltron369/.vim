@@ -1,4 +1,8 @@
 {
   "diagnostic.virtualText": true,
-  "diagnostic.virtualTextCurrentLineOnly": false
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.inlayHints": false,
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/18.1.3/clangd_18.1.3/bin/clangd",
+  "semanticTokens.enable": true,
+  "inlayHint.enable": false
 }
