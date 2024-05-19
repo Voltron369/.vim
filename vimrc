@@ -107,6 +107,30 @@ call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
+
+function! CloseTab()
+  " Get the current tab number and the total number of tabs
+  let current_tab = tabpagenr()
+  let total_tabs = tabpagenr('$')
+
+  if current_tab > 1
+    tabprev
+    +tabclose
+  elseif total_tabs > 1
+    tabclose
+  else
+    echo "last window, use :q!"
+  endif
+endfunction
+
+function! CloseWindow()
+  if tabpagewinnr(tabpagenr(), '$') > 1
+    close
+  else
+    call CloseTab()
+  endif
+endfunction
+
 function! SwitchToSecondDiffWindow()
     if &diff && winnr('#') > winnr()
         execute winnr('#') . 'wincmd w'
@@ -114,12 +138,10 @@ function! SwitchToSecondDiffWindow()
 endfunction
 
 function! Zoom()
-    let l:cur_win = winnr()
     let l:cur_tab = tabpagenr()
     let l:num_wins = tabpagewinnr(l:cur_tab, '$')
     if l:num_wins == 1 || (&diff &&  l:num_wins == 2)
-        tabprev
-        +tabclose
+        call CloseTab()
     else
        if &diff
           call SwitchToSecondDiffWindow()
@@ -139,10 +161,10 @@ nnoremap <leader>? :he gerard<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <leader><leader> :update<CR>
-nnoremap <leader>c :tabprev \| +tabclose<CR>
-tnoremap <C-W><leader>c <C-W>:tabprev \| +tabclose<CR>
-nnoremap gq :if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
-tnoremap <C-W>gq <C-W>:if tabpagewinnr(tabpagenr(), '$') > 1 \| close \| else \| tabprev \| +tabclose \| endif<CR>
+nnoremap <leader>c :call CloseTab()<CR>
+tnoremap <C-W><leader>c <C-W>:call CloseTab()<CR>
+nnoremap gq :call CloseWindow()<CR>
+tnoremap <C-W>gq <C-W>:call CloseWindow()<CR>
 " nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
 nnoremap dq :call fugitive#DiffClose()<CR>
 nnoremap <leader>z :call Zoom()<CR>
@@ -319,7 +341,8 @@ xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
 " Run the Code Lens action on the current line
-nmap <leader>cl  <Plug>(coc-codelens-action)
+" interferes with <leader>c
+" nmap <leader>cl  <Plug>(coc-codelens-action)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server
