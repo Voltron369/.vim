@@ -486,3 +486,12 @@ augroup oldfiles
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
 augroup END
 
+augroup my_vinegar
+  autocmd!
+  autocmd FileType netrw nmap <buffer> <Tab> mfj
+  autocmd FileType netrw nmap <buffer> <S-Tab> mfk
+  autocmd FileType netrw nnoremap <buffer> f<Space> :<C-U> <C-R>=join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " ")<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> gt<Space> :<C-U> <C-R>=shellescape(netrw#Expose("netrwmftgt"))<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> F<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> T<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
+augroup END

@@ -1,3 +1,5 @@
 autoload/
 plugged/
 tags
+/.netrwbook
+/sessions/

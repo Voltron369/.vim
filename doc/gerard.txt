@@ -126,4 +126,13 @@ colorscheme:~
 gerard        dark
 morning       bright
 
+netrw:~
+<Tab>        mark/unmark file and down
+<S-Tab>      mark/unmark file and move up
+f<Space>     Populate a command line with the marked files
+F<Space>     Populate a command line with the marked files, target directory
+gt<Space>    Populate a command line with the target directory
+:NetrwMB!    Clear (directory) bookmark list
+
+
 vim:tw=78:ts=8:ft=help:norl:
