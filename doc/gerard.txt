@@ -132,6 +132,7 @@ netrw:~
 f<Space>     Populate a command line with the marked files
 F<Space>     Populate a command line with the marked files, target directory
 gt<Space>    Populate a command line with the target directory
+qb           FZF (directory) bookmark list
 :NetrwMB!    Clear (directory) bookmark list
 
 

@@ -494,4 +494,5 @@ augroup my_vinegar
   autocmd FileType netrw nnoremap <buffer> gt<Space> :<C-U> <C-R>=shellescape(netrw#Expose("netrwmftgt"))<CR><HOME>
   autocmd FileType netrw nnoremap <buffer> F<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
   autocmd FileType netrw nnoremap <buffer> T<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
+  autocmd FileType netrw nmap <buffer> qb :Historyb<CR>
 augroup END
