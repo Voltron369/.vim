@@ -35,17 +35,12 @@ q?        fzf vim help |:Helptags|
 ⎵ F       |:Files|
 ⎵ gg      fzf git grep
 :GG[rep]  fzf git grep
+see |gerardfzf|
 
-FZF:~
-Ctrl-b    Page Up
-Ctrl-d    Page Down Half
-Ctrl-f    Page Down
-Ctrl-t    Open in Tab
-Ctrl-u    Page Up Half
-Ctrl-v    Open in vertical split
-Ctrl-x    Open in split
-Ctrl-y    Yank filename(s) to register * (clipboard)
-
+:GWorktree    fzf git worktree list
+:Messages     fzf |:messages|
+:CHistory     fzf quickfix history (|:chistory|)
+:GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                                                                       *gitlog*
 Git Log:~
 ⎵ gc    fzf git log                                                |:Commits|
@@ -55,7 +50,6 @@ Git Log:~
 ⎵ ml    git log vs merge-base
 ⎵ mn    git log vs merge-base (filenames only)
 ⎵ ms    git log vs merge-base (status only)
-
                                                                      *gitdiff*
 Git Diff:~
               working vs HEAD~
@@ -132,8 +126,24 @@ netrw:~
 f<Space>     Populate a command line with the marked files
 F<Space>     Populate a command line with the marked files, target directory
 gt<Space>    Populate a command line with the target directory
-qb           FZF (directory) bookmark list
+qb           FZF (directory) bookmark list (:Historyb)
 :NetrwMB!    Clear (directory) bookmark list
+
+JSON:~
+⎵ jq      preview pretty     (set filetype json)
+s         preview pretty     (for filetype json)
+⎵ jt      toggle pretty/mini (set filetype json)
+S         toggle pretty/mini (for filetype json)
+
+FZF:~                                                             *gerardfzf*
+Ctrl-b    Page Up
+Ctrl-d    Page Down Half
+Ctrl-f    Page Down
+Ctrl-t    Open in Tab
+Ctrl-u    Page Up Half
+Ctrl-v    Open in vertical split
+Ctrl-x    Open in split
+Ctrl-y    Yank filename(s) to register * (clipboard)
 
 
 vim:tw=78:ts=8:ft=help:norl:

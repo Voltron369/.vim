@@ -1,6 +1,7 @@
 
 " Function to toggle JSON formatting for the current line
 function! ToggleJsonFormat()
+    set filetype=json
     " Get the current line number
     let l:current_line = line('.')
 
@@ -32,11 +33,12 @@ endfunction
 
 " Map the toggle function to a key combination
 nnoremap <leader>jt :call ToggleJsonFormat()<CR>
-autocmd FileType json nmap <buffer> s :call ToggleJsonFormat()<CR>
+autocmd FileType json nmap <buffer> S :call ToggleJsonFormat()<CR>
 
 
 
 function! PreviewJqCmd()
+    set filetype=json
     let l:current_line = getline('.')
     let l:jq_result = system('echo ' . shellescape(l:current_line) . ' | python3 -m json.tool --indent 3')
 
@@ -65,4 +67,5 @@ function! PreviewJqCmd()
 endfunction
 
 nnoremap <leader>jq :call PreviewJqCmd()<CR>
+autocmd FileType json nmap <buffer> s :call PreviewJqCmd()<CR>
 

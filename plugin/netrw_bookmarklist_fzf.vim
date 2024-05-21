@@ -10,3 +10,4 @@ endfunction
 
 " Command to call the wrapper
 command! Historyb call s:fzf_netrw_bookmarklist()
+command! HistoryB call s:fzf_netrw_bookmarklist()

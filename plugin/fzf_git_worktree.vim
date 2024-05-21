@@ -45,4 +45,5 @@ function! s:OpenWorktreeFolder(worktree)
     execute 'e' fnameescape(l:worktree_path)
 endfunction
 
+command! Gworktree call OpenGitWorktree(function('s:OpenWorktreeFolder'))
 command! GWorktree call OpenGitWorktree(function('s:OpenWorktreeFolder'))

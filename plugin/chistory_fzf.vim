@@ -19,3 +19,4 @@ endfunction
 
 " Command to call the wrapper
 command! Chistory call s:fzf_chistory()
+command! CHistory call s:fzf_chistory()
