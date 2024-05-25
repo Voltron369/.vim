@@ -162,7 +162,7 @@ endfunction
 nnoremap <leader>? :he gerard<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
-nnoremap <leader><leader> :update<CR>
+nnoremap <leader><leader> :update \| call fugitive#ReloadStatus()<CR>
 nnoremap <leader>c :call CloseTab()<CR>
 tnoremap <C-W><leader>c <C-W>:call CloseTab()<CR>
 nnoremap gq :call CloseWindow()<CR>
