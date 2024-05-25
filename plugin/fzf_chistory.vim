@@ -5,7 +5,7 @@ function! s:fzf_chistory(...)
     call fzf#run(fzf#wrap({
         \ 'source': l:lines,
         \ 'sink*': function('s:chistory_handler'),
-        \ 'options': '--ansi',
+        \ 'options': '--tac --ansi',
         \ }))
 endfunction
 
