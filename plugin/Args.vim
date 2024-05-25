@@ -43,7 +43,7 @@ function! NumberArgs()
     let choice = input('Enter argument number (or 0 to exit): ')
     if choice =~ '^\d\+$'
         let choice = str2nr(choice)
-        if choice > 0 && choice <= n
+        if choice > 0
             execute 'argument' choice
        endif
     endif
