@@ -429,6 +429,13 @@ helptags ~/.vim/doc
 
 colorscheme gerard
 
+
+if executable('ag')
+    " Note we extract the column as well as the file and line number
+    set grepprg=ag\ --nogroup\ --nocolor\ --column
+    set grepformat=%f:%l:%c%m
+endif
+
 " implement :GGrep
 " https://github.com/junegunn/fzf.vim#example-git-grep-wrapper
 command! -bang -nargs=* GGrep
