@@ -10,8 +10,10 @@ CUSTOM BINDINGS                                                         *gerard*
 + or \    Toggle :Git |fugitive-summary|
 gd        Go To Definition or default |gd|           |CocAction('jumpDefinition')|
 gr        Fzf References                           |CocAction('jumpReferences')|
-⎵ gc      fzf git log                                                 |:Commits|
--         |:Explore|
+⎵ gc      |:Commits|
+⎵ f/F     |:GFiles|/|:Files|
+⎵ gg/ag   |:GGrep|/|:Ag|
+-         netrw |:Explore|
 m<CR>     |:Make|
 `<Space>  |:Dispatch|
 ⎵ u       Toggle Undo Tree
@@ -20,31 +22,47 @@ Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
 gq        quit window.  If last, close tab and go to previous tab
 dq        quit diff
-PgDown    next tab
-PgUp      prev tab
+C-PgDown  next tab
+C-PgUp    prev tab
+⎵ aa      append current buffer name to |args| ($|argadd|)
+⎵ ar      fzf |args|
+:Ar[gs]   |:args| with count and picker
 ["x]⎵t    mark tab in register x (use @x to go to tab)
 ⎵ z       zoom window or diff (toggle)
 
 Find:~
+⎵ b       |:Buffers|
+⎵ f       |:GFiles|
+⎵ F       |:Files|
+⎵ ag      |:Ag|
+⎵ gc      |:Commits|
+⎵ gC      |:BCommits|
+⎵ gg      fzf git grep
+⎵ gb      |:GBranches|
+⎵ gw      |:GWorktree|
 Ctrl-/    Search in File                                               |:BLines|
 q:        fzf command |:History|:                                 |q:| or |c_CTRL-F|
 q/        fzf search |:History|/                                  |q/|| or |c_CTRL-F|
 q?        fzf vim help |:Helptags|
-⎵ b       |:Buffers|
-⎵ f       |:GFiles|
-⎵ F       |:Files|
-⎵ gg      fzf git grep
-:GG[rep]  fzf git grep
 see |gerardfzf|
 
 :GWorktree    fzf git worktree list
-:Messages     fzf |:messages|
-:CHistory     fzf quickfix history (|:chistory|)
+                         :   populate command line with worktree path
+                         ;   populate command line with new worktree
+                    ctrl-n   new detached worktree of origin/master
+                  ctrl-d/r   remove worktree
+                    ctrl-y   yank
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
+                         :   populate command line with branch
+                         ;   populate command line new worktree
+                    ctrl-w   new worktree of branch
+                    ctrl-y   yank
+:Messages     fzf error |:messages|
+:CHistory     fzf quickfix |:chistory|
                                                                       *gitlog*
 Git Log:~
 ⎵ gc    fzf git log                                                |:Commits|
-⎵ gb    fzf git log %  (supports visual select of code lines)      |:BCommits|
+⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gl    git log in quickfix
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ ml    git log vs merge-base
@@ -123,9 +141,9 @@ morning       bright
 netrw:~
 <Tab>        mark/unmark file and down
 <S-Tab>      mark/unmark file and move up
-f<Space>     Populate a command line with the marked files
-F<Space>     Populate a command line with the marked files, target directory
-gt<Space>    Populate a command line with the target directory
+:            Populate a command line with the marked files, target directory
+;            Populate a command line with the marked files
+g:           Populate a command line with the target directory
 qb           FZF (directory) bookmark list (:Historyb)
 :NetrwMB!    Clear (directory) bookmark list
 
@@ -136,14 +154,17 @@ s         preview pretty     (for filetype json)
 S         toggle pretty/mini (for filetype json)
 
 FZF:~                                                             *gerardfzf*
-Ctrl-b    Page Up
-Ctrl-d    Page Down Half
-Ctrl-f    Page Down
+     :    Populate command line
+Ctrl-y    Yank filename(s)
+
 Ctrl-t    Open in Tab
-Ctrl-u    Page Up Half
 Ctrl-v    Open in vertical split
 Ctrl-x    Open in split
-Ctrl-y    Yank filename(s) to register * (clipboard)
+
+Ctrl-b    Page Up
+Ctrl-u    Page Up Half
+Ctrl-d    Page Down Half
+Ctrl-f    Page Down
 
 
 vim:tw=78:ts=8:ft=help:norl:

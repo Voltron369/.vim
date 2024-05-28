@@ -42,7 +42,7 @@ function! s:HandleFzfSelection(lines)
   if len(l:selected_indices) > 1
      let entries = []
      for l:index in l:selected_indices
-       call add(entries, {'filename': argv()[l:index-1], 'lnum': 1, 'col': 1})
+       call add(entries, {'filename': argv()[l:index-1], 'lnum': 0, 'col': 0})
      endfor
      call setqflist([], ' ', {'items': entries})
   endif

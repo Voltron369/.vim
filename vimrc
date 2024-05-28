@@ -22,7 +22,8 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit',
-  \ 'ctrl-y': {lines -> setreg('*', join(lines, " "))}}
+  \ ':': {lines -> feedkeys(": " .. join(map(copy(lines), 'fnameescape(v:val)')) .. "\<C-b>", 'n')},
+  \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 let g:netrw_winsize=25
 let g:rooter_patterns = ['.git']
@@ -159,7 +160,7 @@ function! Zoom()
     endif
 endfunction
 
-nnoremap <leader>? :he gerard<CR>
+nnoremap <leader>? :vert he gerard \| vertical resize 90<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <leader><leader> :update \| call fugitive#ReloadStatus()<CR>
@@ -183,7 +184,11 @@ augroup END
 
 " git log
 nnoremap <leader>gc :Commits<CR>
-nnoremap <leader>gb :BCommits<CR>
+nnoremap <leader>gC :BCommits<CR>
+inoremap <leader>gC :BCommits<CR>
+xnoremap <leader>gC :BCommits<CR>
+nnoremap <leader>gb :GBranches<CR>
+nnoremap <leader>gw :GWorktree<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 
@@ -204,6 +209,10 @@ nnoremap q: :History:<CR>
 nnoremap q/ :History/<CR>
 nnoremap q? :Helptags<CR>
 
+function! s:CoutToQF(cout)
+   call setqflist([], ' ', {'items': map(split(a:cout,'\n'), '{"filename": v:val, "lnum": 0, "col": 0}')})
+endfunction
+
 " log HEAD vs master merge-base
 nnoremap <leader>ml :Gclog! -500 master..<CR>
 nnoremap <leader>mn :Gclog! -500 --name-only master..<CR>
@@ -216,19 +225,19 @@ nnoremap <leader>gd :G difftool -y HEAD -- %<CR>
 nnoremap <leader>gD :!git difftool -y HEAD<CR>
 
 " diff working vs master merge-base
-nnoremap <leader>mF :cexpr system('git diff --name-only $(git merge-base master HEAD)') \| copen<CR>
+nnoremap <leader>mF :call <sid>CoutToQF(system('git diff --name-only $(git merge-base master HEAD)')) \| copen<CR>
 nnoremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- <cfile>'<CR>
 nnoremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
 nnoremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " diff HEAD vs master merge-base
-nnoremap <leader>pF :cexpr system('git diff --name-only master...') \| copen<CR>
+nnoremap <leader>pF :call <sid>CoutToQF(system('git diff --name-only master...')) \| copen<CR>
 nnoremap <leader>pf :G difftool -y master... -- <cfile><CR>
 nnoremap <leader>pd :G difftool -y master... -- %<CR>
 nnoremap <leader>pD :!git difftool -y $(git merge-base master HEAD)<CR>
 
 " git staged vs HEAD
-nnoremap <leader>sF :cexpr system('git diff --name-only --staged') \| copen<CR>
+nnoremap <leader>sF :call <sid>CoutToQF(system('git diff --name-only --staged')) \| copen<CR>
 nnoremap <leader>sf :G difftool -y --staged HEAD -- <cfile><CR>
 nnoremap <leader>sd :G difftool -y --staged HEAD -- %<CR>
 nnoremap <leader>sD :!git difftool -y --staged<CR>
@@ -466,13 +475,6 @@ function! g:Tapi_lcd(bufnum, path)
    endif
 endfunction
 
-" C-PageDown does not map properly on mac iterm2
-nnoremap <PageDown> <C-w>gt
-nnoremap <PageUp> <C-w>gT
-
-tnoremap <PageDown> <C-w>gt
-tnoremap <PageUp> <C-w>gT
-
 command! Worktrees :G -p worktree list
 command! Merge G -p diff --name-only --diff-filter=U --relative
 nnoremap <C-W><C-F> <C-W>vgf/====<CR>
@@ -495,13 +497,75 @@ augroup oldfiles
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
 augroup END
 
+let NAList = {list -> {type(""): [], type([]): list}[type(list)]}
+let NAString = {list -> list ==# 'n/a' ? '' : list}
+
 augroup my_vinegar
   autocmd!
   autocmd FileType netrw nmap <buffer> <Tab> mfj
   autocmd FileType netrw nmap <buffer> <S-Tab> mfk
-  autocmd FileType netrw nnoremap <buffer> f<Space> :<C-U> <C-R>=join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " ")<CR><HOME>
-  autocmd FileType netrw nnoremap <buffer> gt<Space> :<C-U> <C-R>=shellescape(netrw#Expose("netrwmftgt"))<CR><HOME>
-  autocmd FileType netrw nnoremap <buffer> F<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
-  autocmd FileType netrw nnoremap <buffer> T<Space> :<C-U> <C-R>=join([join(map(copy(netrw#Expose("netrwmarkfilelist")), 'shellescape(v:val)'), " "),shellescape(netrw#Expose("netrwmftgt"))]," ")<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> ; :<C-U> <C-R>=join(map(copy(NAList(netrw#Expose("netrwmarkfilelist"))), 'fnameescape(v:val)'), " ")<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> g: :<C-U> <C-R>=fnameescape(NAString(netrw#Expose("netrwmftgt")))<CR><HOME>
+  autocmd FileType netrw nnoremap <buffer> : :<C-U> <C-R>=join([join(map(copy(NAList(netrw#Expose("netrwmarkfilelist"))), 'fnameescape(v:val)'), " "),fnameescape(NAString(netrw#Expose("netrwmftgt")))]," ")<CR><HOME>
   autocmd FileType netrw nmap <buffer> qb :Historyb<CR>
 augroup END
+
+function! PopulateWorktree(git_bin, branch, input)
+   let l:cwd = fugitive#repo().tree()
+   call feedkeys(':' .. a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch, "n")
+endfunction
+
+function! NewWorktree(git_bin, branch, input)
+   let l:cwd = fugitive#repo().tree()
+   let l:target_file = l:cwd . '/../' . a:branch . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
+   let out = system(a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch)
+   if v:shell_error
+      echo out
+      call input('Error.  Press <CR> to dismiss.')
+      return
+   endif
+   if filereadable(l:target_file)
+     execute 'e' fnameescape(l:target_file)
+     echo "Switched to" l:target_file
+  else
+     execute 'cd' l:cwd . '/../' . a:branch
+     execute 'e .'
+     echo "Could not find" l:target_file
+  endif
+endfunction
+
+autocmd VimEnter * let g:fzf_branch_actions['create_new_worktree'] = {
+         \ 'prompt': 'create new worktree> ',
+         \ 'keymap': 'ctrl-w',
+         \ 'execute': function('NewWorktree'),
+         \ 'multiple': v:false,
+         \ 'required': ['branch'],
+         \ 'confirm': v:true
+         \ }
+
+autocmd VimEnter * let g:fzf_branch_actions['yank'] = {
+         \ 'prompt': 'yank> ',
+         \ 'keymap': 'ctrl-y',
+         \ 'execute': 'eval map(["*",''"''], {key, val -> setreg(val, fnameescape("{branch}"))})',
+         \ 'multiple': v:false,
+         \ 'required': ['branch'],
+         \ 'confirm': v:false
+         \ }
+
+autocmd VimEnter * let g:fzf_branch_actions['populate_:'] = {
+         \ 'prompt': 'command> ',
+         \ 'keymap': ':',
+         \ 'execute': 'call feedkeys(": {branch}\<C-b>", "n")',
+         \ 'multiple': v:false,
+         \ 'required': ['branch'],
+         \ 'confirm': v:false
+         \ }
+
+autocmd VimEnter * let g:fzf_branch_actions['populate_;'] = {
+         \ 'prompt': 'command> ',
+         \ 'keymap': ';',
+         \ 'execute': function('PopulateWorktree'),
+         \ 'multiple': v:false,
+         \ 'required': ['branch'],
+         \ 'confirm': v:false
+         \ }
