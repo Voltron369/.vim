@@ -111,6 +111,8 @@ call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
 
+tnoremap <C-PageDown> <C-w>gt
+tnoremap <C-PageUp> <C-w>gT
 
 function! CloseTab()
   " Get the current tab number and the total number of tabs
