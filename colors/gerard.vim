@@ -27,4 +27,6 @@ if !empty($COLORTERM) && has("termguicolors")
    hi LineNr ctermfg=256 ctermbg=236 cterm=bold guifg=darkorange
    hi StatusLineTerm ctermbg=24 ctermfg=254 guibg=#004f87 guifg=#e4e4e4
    hi StatusLineTermNC ctermbg=252 ctermfg=238 guibg=#d0d0d0 guifg=#444444
+   hi CocErrorVirtualText cterm=undercurl ctermfg=12 ctermbg=16 guifg=#ff0000 guibg=#002b36
+   hi CocWarningVirtualText cterm=undercurl ctermfg=6 ctermbg=16 guifg=#ff922b guibg=#002b36
 endif

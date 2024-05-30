@@ -48,15 +48,19 @@ see |gerardfzf|
 
 :GWorktree    fzf git worktree list
                          :   populate command line with worktree path
-                         ;   populate command line with new worktree
-                    ctrl-n   new detached worktree of origin/master
+                  {input};   populate command line with new worktree
+             {input}ctrl-n   new detached worktree of origin/master
                   ctrl-d/r   remove worktree
-                    ctrl-y   yank
+                    ctrl-y   yank worktree path
+
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                          :   populate command line with branch
-                         ;   populate command line new worktree
+                         ;   populate command line with add worktree
+                    ctrl-n   reName
                     ctrl-w   new worktree of branch
-                    ctrl-y   yank
+                    ctrl-y   yank branch
+              checkout from origin to detach head
+
 :Messages     fzf error |:messages|
 :CHistory     fzf quickfix |:chistory|
                                                                       *gitlog*
@@ -126,7 +130,7 @@ Sensible:~
 j             Delete comment character when joining commented lines.
 Ctrl-L        Also clears search highlighting (|:noh|) and calls |:diffupdate|
 :DiffOrig     Diff vs saved version of file (|:DiffOrig|)
-:Man {page}   Show man page in new split (|:Man})
+:Man {page}   Show man page in new split (|:Man|)
 :PlugStatus   See plugins in use
 
 text-object:~

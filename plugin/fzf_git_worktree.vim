@@ -37,7 +37,7 @@ function! OpenGitWorktree()
   call fzf#run(fzf#wrap({
         \ 'source': l:formatted_worktrees,
         \ 'sink*': function('s:OpenWorktreeFolder'),
-        \ 'options': '--prompt="Select a Git worktree> " --ansi --expect "ctrl-d,ctrl-r,ctrl-y,:,;,ctrl-n" --header "<CR> go to worktree, ctrl-n: new worktree, ctrl-d/r: remove, ctrl-y: yank, "":"" populate :"',
+        \ 'options': '--print-query --multi --prompt="Select a Git worktree> " --ansi --expect "ctrl-d,ctrl-r,ctrl-y,:,;,ctrl-n" --header "<CR> go to worktree, ctrl-n: new worktree, ctrl-d/r: remove, ctrl-y: yank, "":"" populate :"',
         \ }))
 
 endfunction
@@ -57,15 +57,13 @@ endfunction
 function! s:OpenWorktreeFolder(lines)
   if len(a:lines) < 2 | return | endif
 
-  let key = a:lines[0]
-  let l:selected_lines = a:lines[1:]
+  let l:input = trim(shellescape(a:lines[0]), " \r\t\n\"'")
+  let l:key = a:lines[1]
+  let l:selected_lines = a:lines[2:]
 
   let l:GetPath = {line -> substitute(line, ".*\\['\\(.*\\)'].*$", '\1', '')}
 
-  let l:worktree = l:selected_lines[0]
-  let l:worktree_path = l:GetPath(l:worktree)
-
-  if key == 'ctrl-d'
+  if l:key == 'ctrl-d'
      for l:worktree in l:selected_lines
        let out = system('git worktree remove ' .. fnameescape(l:GetPath(l:worktree)))
        if v:shell_error
@@ -78,28 +76,32 @@ function! s:OpenWorktreeFolder(lines)
      return
   endif
 
-  if key == 'ctrl-y'
-     let l:worktrees = map(copy(l:selected_lines), 'fnameescape(l:GetPath(v:val))')
+  if l:key == 'ctrl-y'
+     let l:worktrees = map(copy(l:selected_lines), 'nameescape(l:GetPath(v:val))')
      eval map(['*','"','+','0'], "setreg(v:val, join(l:worktrees))")
      return
   endif
 
-  if key == ':'
+  if l:key == ':'
      cal feedkeys(": " .. join(map(copy(l:selected_lines), 'fnameescape(l:GetPath(v:val))')) .. "\<C-b>", 'n')
      return
   endif
 
-  if key == ';'
+  if l:key == ';'
      let l:old_worktree_path = fugitive#repo().tree()
      let l:worktree  = strftime('master_%Y_%m_%d_%H_%M_%S')
      let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
-     cal feedkeys(":!git worktree add " .. l:worktree_path .. " origin/master\<C-b>", 'n')
+     if len(l:input)
+        call feedkeys(":!git worktree add -b " .. l:input .. ' ' .. l:worktree_path .. " origin/master\<C-b>", 'n')
+     else
+        call feedkeys(":!git worktree add " .. l:worktree_path .. " origin/master\<C-b>", 'n')
+     endif
      return
   endif
 
-  if key == 'ctrl-n'
+  if l:key == 'ctrl-n'
      let l:old_worktree_path = fugitive#repo().tree()
-     let l:worktree  = strftime('master_%Y_%m_%d_%H_%M_%S')
+     let l:worktree  = strftime('%Y_%m_%d_%H_%M_%S')
      let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
      let out = system('git fetch origin master')
      if v:shell_error
@@ -107,7 +109,11 @@ function! s:OpenWorktreeFolder(lines)
         call input('Error.  Press <CR> to dismiss.')
         return
      endif
-     let out = system('git worktree add ' .. l:worktree_path .. ' origin/master')
+     if len(l:input)
+        let out = system('git worktree add -b ' .. l:input .. ' ' .. l:worktree_path .. ' origin/master')
+     else
+        let out = system('git worktree add ' .. l:worktree_path .. ' origin/master')
+     endif
      if v:shell_error
         echo out
         call input('Error.  Press <CR> to dismiss.')
@@ -116,7 +122,12 @@ function! s:OpenWorktreeFolder(lines)
      call <sid>SwitchToWorktree(l:worktree_path, l:worktree)
   endif
 
-  call <sid>SwitchToWorktree(l:worktree_path, l:worktree)
+  if len(l:selected_lines)
+     let l:worktree = l:selected_lines[0]
+     let l:worktree_path = l:GetPath(l:worktree)
+
+     call <sid>SwitchToWorktree(l:worktree_path, l:worktree)
+  endif
 endfunction
 
 command! Gworktree call OpenGitWorktree()

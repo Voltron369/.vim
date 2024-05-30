@@ -26,6 +26,7 @@ let g:fzf_action = {
   \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 let g:netrw_winsize=25
+let g:netrw_altfile=1
 let g:rooter_patterns = ['.git']
 set autoindent
 set autoread
@@ -518,11 +519,28 @@ endfunction
 function! NewWorktree(git_bin, branch, input)
    let l:cwd = fugitive#repo().tree()
    let l:target_file = l:cwd . '/../' . a:branch . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
-   let out = system(a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch)
+   let l:out = system(a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch)
    if v:shell_error
-      echo out
-      call input('Error.  Press <CR> to dismiss.')
-      return
+      if (-1 != match(l:out, "is already checked out at"))
+         let l:in = input(l:out .. "\n(S)witch to existing worktree or create (N)ew worktree with detached head: ")
+         if (l:in ==# 'S')
+            let l:path = split(l:out,"'")[3]
+            let l:target_file = l:path . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
+         elseif (l:in ==# 'N')
+            let l:old_worktree_path = fugitive#repo().tree()
+            let l:worktree  = strftime('%Y_%m_%d_%H_%M_%S')
+            let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
+            let out = system('git worktree add --detach ' .. l:worktree_path .. ' ' .. a:branch)
+            let l:target_file = l:worktree_path . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
+            if v:shell_error
+               echo out
+               call input('Error.  Press <CR> to dismiss.')
+               return
+            endif
+         endif
+      else
+         return
+      endif
    endif
    if filereadable(l:target_file)
      execute 'e' fnameescape(l:target_file)
@@ -540,7 +558,7 @@ autocmd VimEnter * let g:fzf_branch_actions['create_new_worktree'] = {
          \ 'execute': function('NewWorktree'),
          \ 'multiple': v:false,
          \ 'required': ['branch'],
-         \ 'confirm': v:true
+         \ 'confirm': v:false
          \ }
 
 autocmd VimEnter * let g:fzf_branch_actions['yank'] = {
@@ -567,5 +585,14 @@ autocmd VimEnter * let g:fzf_branch_actions['populate_;'] = {
          \ 'execute': function('PopulateWorktree'),
          \ 'multiple': v:false,
          \ 'required': ['branch'],
+         \ 'confirm': v:false
+         \ }
+
+autocmd VimEnter * let g:fzf_branch_actions['reName'] = {
+         \ 'prompt': 'rename> ',
+         \ 'keymap': 'ctrl-n',
+         \ 'execute': function('fzf_checkout#run', ['{git} -C {cwd} branch -m {input}']),
+         \ 'multiple': v:false,
+         \ 'required': ['input'],
          \ 'confirm': v:false
          \ }
