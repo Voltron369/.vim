@@ -58,6 +58,7 @@ see |gerardfzf|
                          ;   populate command line with add worktree
                     ctrl-n   reName
                     ctrl-w   new worktree of branch
+                    ctrl-t   new tracking worktree of branch
                     ctrl-y   yank branch
               checkout from origin to detach head
 

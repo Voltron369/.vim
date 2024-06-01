@@ -22,7 +22,7 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit',
-  \ ':': {lines -> feedkeys(": " .. join(map(copy(lines), 'fnameescape(v:val)')) .. "\<C-b>", 'n')},
+  \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
   \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 let g:netrw_winsize=25
@@ -513,27 +513,26 @@ augroup my_vinegar
   autocmd FileType netrw nmap <buffer> qb :Historyb<CR>
 augroup END
 
-function! PopulateWorktree(git_bin, branch, input)
+function! NewWorktree(istrack, git_bin, branch, input)
+   let l:worktree_common_dir = <sid>GetWorktreePath()
+   if !len(l:worktree_common_dir) | return | endif
+   let l:worktree_path = <sid>GetWorktreePath() . a:branch
    let l:cwd = fugitive#repo().tree()
-   call feedkeys(':' .. a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch, "n")
-endfunction
-
-function! NewWorktree(git_bin, branch, input)
-   let l:cwd = fugitive#repo().tree()
-   let l:target_file = l:cwd . '/../' . a:branch . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
-   let l:out = system(a:git_bin .. ' -C ' .. l:cwd .. ' worktree add ../' .. a:branch .. ' ' .. a:branch)
+   let l:branch =  a:istrack ==# 'track' ? substitute(a:branch, 'origin/', '', '') : a:branch
+   let l:out = system(a:git_bin . ' -C ' . l:cwd . ' worktree add '  . l:worktree_path . ' ' . l:branch )
    if v:shell_error
-      if (-1 != match(l:out, "is already checked out at"))
-         let l:in = input(l:out .. "\n(S)witch to existing worktree or create (N)ew worktree with detached head: ")
-         if (l:in ==# 'S')
-            let l:path = split(l:out,"'")[3]
-            let l:target_file = l:path . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
-         elseif (l:in ==# 'N')
+      if (-1 != match(l:out, "is already checked out at") || -1 != match(l:out, "already exists"))
+         let l:in = tolower(input(l:out . "\n(S)witch to existing worktree or create (N)ew worktree with detached head: "))
+         if (l:in ==# 's')
+            if (-1 != match(l:out, "is already checked out at"))
+               let l:worktree_path = split(l:out,"'")[3]
+            elseif (-1 != match(l:out, "already exists"))
+               let l:worktree_path = split(l:out,"'")[1]
+            endif
+         elseif (l:in ==# 'n')
             let l:old_worktree_path = fugitive#repo().tree()
-            let l:worktree  = strftime('%Y_%m_%d_%H_%M_%S')
-            let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
-            let out = system('git worktree add --detach ' .. l:worktree_path .. ' ' .. a:branch)
-            let l:target_file = l:worktree_path . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
+            let l:worktree_path = <sid>GetWorktreePath() . strftime('%Y_%m_%d_%H_%M_%S')
+            let out = system(a:git_bin . ' -C ' . l:cwd . ' worktree add --detach ' . l:worktree_path . ' ' . a:branch)
             if v:shell_error
                echo out
                call input('Error.  Press <CR> to dismiss.')
@@ -541,23 +540,74 @@ function! NewWorktree(git_bin, branch, input)
             endif
          endif
       else
+         echo out
+         call input('Error.  Press <CR> to dismiss.')
          return
       endif
+   else
+      if <sid>IsDetached(l:worktree_path)
+         let l:old_worktree_path = l:worktree_path
+         let l:worktree = strftime('%Y_%m_%d_%H_%M_%S')
+         let l:worktree_path = <sid>GetWorktreePath() .. l:worktree
+         let out = system(a:git_bin . ' -C ' . l:cwd . ' worktree move ' .. l:old_worktree_path .. ' ' .. l:worktree_path)
+         if v:shell_error
+            echo out
+            call input('Error.  Press <CR> to dismiss.')
+            return
+         endif
+      endif
    endif
-   if filereadable(l:target_file)
+   call <sid>SwitchToWorktree(l:worktree_path)
+endfunction
+
+function! s:SwitchToWorktree(worktree_path)
+  let l:cwd = fugitive#repo().tree()
+  let l:git_filename = substitute(expand('%:p'), '^' . l:cwd . '/', '', '')
+  let l:target_file = a:worktree_path .. '/' .. l:git_filename
+  if filereadable(l:target_file)
      execute 'e' fnameescape(l:target_file)
-     echo "Switched to" l:target_file
+     echo "Switched to" target_file
   else
-     execute 'cd' l:cwd . '/../' . a:branch
+     execute 'cd' a:worktree_path
      execute 'e .'
      echo "Could not find" l:target_file
   endif
 endfunction
 
+function! s:IsDetached(worktree_path) abort
+  let l:output = system('git -C ' . shellescape(a:worktree_path) . ' status --porcelain=v2 --branch | grep "^# branch.head"')
+  return l:output =~# '\(detached\)'
+endfunction
+
+function! s:GetWorktreePath()
+  let l:out = system('git rev-parse --git-common-dir')
+  if v:shell_error
+     echo out
+     call input('Error.  Press <CR> to dismiss.')
+     echoerr out
+     return ""
+  endif
+  return substitute(out,'\n$','','') . '/../../worktrees/'
+endfunction
+
+function! PopulateWorktree(git_bin, branch, input)
+   let l:cwd = fugitive#repo().tree()
+   call feedkeys(':!' . a:git_bin . ' -C ' . l:cwd . ' worktree add ' . <sid>GetWorktreePath() . a:branch . ' ' . a:branch, "n")
+endfunction
+
 autocmd VimEnter * let g:fzf_branch_actions['create_new_worktree'] = {
          \ 'prompt': 'create new worktree> ',
          \ 'keymap': 'ctrl-w',
-         \ 'execute': function('NewWorktree'),
+         \ 'execute': function('NewWorktree', ['notrack']),
+         \ 'multiple': v:false,
+         \ 'required': ['branch'],
+         \ 'confirm': v:false
+         \ }
+
+autocmd VimEnter * let g:fzf_branch_actions['create_new_worktree_tracking'] = {
+         \ 'prompt': 'create new worktree tracking> ',
+         \ 'keymap': 'ctrl-t',
+         \ 'execute': function('NewWorktree', ['track']),
          \ 'multiple': v:false,
          \ 'required': ['branch'],
          \ 'confirm': v:false
