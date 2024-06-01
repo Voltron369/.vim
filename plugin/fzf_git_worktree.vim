@@ -42,8 +42,21 @@ function! OpenGitWorktree()
 
 endfunction
 
+function! s:GetWorktreePath()
+  let l:out = system('git rev-parse --git-common-dir')
+  if v:shell_error
+     echo out
+     call input('Error.  Press <CR> to dismiss.')
+     echoerr out
+     return ""
+  endif
+  return substitute(out,'\n$','','') .. '/../../worktrees/'
+endfunction
+
 function! s:SwitchToWorktree(worktree_path, worktree)
-  let l:target_file = a:worktree_path . '/' . substitute(expand('%:p'), '^' . getcwd() . '/', '', '')
+  let l:cwd = fugitive#repo().tree()
+  let l:git_filename = substitute(expand('%:p'), '^' . l:cwd . '/', '', '')
+  let l:target_file = a:worktree_path .. '/' .. l:git_filename
   if filereadable(l:target_file)
      execute 'e' fnameescape(l:target_file)
      echo "Switched to" a:worktree
@@ -88,21 +101,23 @@ function! s:OpenWorktreeFolder(lines)
   endif
 
   if l:key == ';'
-     let l:old_worktree_path = fugitive#repo().tree()
-     let l:worktree  = strftime('master_%Y_%m_%d_%H_%M_%S')
-     let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
+     let l:worktree_common_dir = <sid>GetWorktreePath()
+     if !len(l:worktree_common_dir) | return | endif
      if len(l:input)
+        let l:worktree = l:input
+        let l:worktree_path = l:worktree_common_dir .. l:worktree
         call feedkeys(":!git worktree add -b " .. l:input .. ' ' .. l:worktree_path .. " origin/master\<C-b>", 'n')
      else
+        let l:worktree = strftime('%Y_%m_%d_%H_%M_%S')
+        let l:worktree_path = l:worktree_common_dir .. l:worktree
         call feedkeys(":!git worktree add " .. l:worktree_path .. " origin/master\<C-b>", 'n')
      endif
      return
   endif
 
   if l:key == 'ctrl-n'
-     let l:old_worktree_path = fugitive#repo().tree()
-     let l:worktree  = strftime('%Y_%m_%d_%H_%M_%S')
-     let l:worktree_path = l:old_worktree_path . '/../' . l:worktree
+     let l:worktree_common_dir = <sid>GetWorktreePath()
+     if !len(l:worktree_common_dir) | return | endif
      let out = system('git fetch origin master')
      if v:shell_error
         echo out
@@ -110,8 +125,12 @@ function! s:OpenWorktreeFolder(lines)
         return
      endif
      if len(l:input)
+        let l:worktree = l:input
+        let l:worktree_path = l:worktree_common_dir .. l:worktree
         let out = system('git worktree add -b ' .. l:input .. ' ' .. l:worktree_path .. ' origin/master')
      else
+        let l:worktree = strftime('%Y_%m_%d_%H_%M_%S')
+        let l:worktree_path = l:worktree_common_dir .. l:worktree
         let out = system('git worktree add ' .. l:worktree_path .. ' origin/master')
      endif
      if v:shell_error
@@ -120,6 +139,7 @@ function! s:OpenWorktreeFolder(lines)
         return
      endif
      call <sid>SwitchToWorktree(l:worktree_path, l:worktree)
+     return
   endif
 
   if len(l:selected_lines)
