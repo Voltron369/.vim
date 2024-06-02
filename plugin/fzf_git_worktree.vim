@@ -17,10 +17,16 @@ function! OpenGitWorktree()
 
   let l:formatted_worktrees = []
   let l:current_worktree = ['', '']
+  let l:cwd = "'" . fugitive#repo().tree() . "'"
+  let l:header = ""
   for l:line in l:worktrees
     if l:line =~# '^worktree '
       if !empty(l:current_worktree[0])
-        call add(l:formatted_worktrees, l:current_worktree[1] . ' [' . l:current_worktree[0] . ']')
+         if l:current_worktree[0] ==# l:cwd
+           let l:header = l:current_worktree[1] . " [" . l:current_worktree[0] . "]\n"
+         else
+           call add(l:formatted_worktrees, l:current_worktree[1] . ' [' . l:current_worktree[0] . ']')
+         endif
       endif
       let l:worktree_path = shellescape(substitute(l:line, '^worktree \+', '', ''))
       let l:current_worktree = [l:worktree_path, '']
@@ -31,13 +37,31 @@ function! OpenGitWorktree()
     endif
   endfor
   if !empty(l:current_worktree[0])
-    call add(l:formatted_worktrees, l:current_worktree[1] . ' [' . l:current_worktree[0] . ']')
+    if l:current_worktree[0] ==# l:cwd
+      let l:header = l:current_worktree[1] . " [" . l:current_worktree[0] . "]\n"
+    else
+       call add(l:formatted_worktrees, l:current_worktree[1] . ' [' . l:current_worktree[0] . ']')
+     endif
   endif
-
+  let l:header .= ":: <CR> go to worktree, ctrl-n: new worktree, ctrl-d: delete selected, ctrl-r: remove current, ctrl-y: yank, \":\" populate :"
+  let l:prompt = "Select a Git worktree> "
+  let l:valid_keys = "ctrl-d,ctrl-r,ctrl-y,:,;,ctrl-n"
+  let l:fzf_options = [
+        \ '--print-query',
+        \ '--multi',
+        \ '--prompt', l:prompt,
+        \ '--ansi',
+        \ '--expect', l:valid_keys,
+        \ '--header', l:header,
+        \ '--preview', 'git -C $(echo {} | sed -e "s/^.*\[''\(.*\)''\]/\1/") reflog',
+        \]
+  " "s/^.*\['\(.*\)'\]$/\1/"
+        " \ '--preview', 'echo "{}" | sed -e "s/^.*\[''\(.*\)''\]/\1/") | xargs -I {} git -C {} reflog',
+        " \ '--preview', 'echo "s/^.*\[''\(.*\)''\]$/\1/"',
   call fzf#run(fzf#wrap({
         \ 'source': l:formatted_worktrees,
         \ 'sink*': function('s:OpenWorktreeFolder'),
-        \ 'options': '--print-query --multi --prompt="Select a Git worktree> " --ansi --expect "ctrl-d,ctrl-r,ctrl-y,:,;,ctrl-n" --header "<CR> go to worktree, ctrl-n: new worktree, ctrl-d/r: remove, ctrl-y: yank, "":"" populate :"',
+        \ 'options': l:fzf_options
         \ }))
 
 endfunction
@@ -140,6 +164,16 @@ function! s:OpenWorktreeFolder(lines)
      endif
      call <sid>SwitchToWorktree(l:worktree_path, l:worktree)
      return
+  endif
+
+  if l:key == 'ctrl-r'
+     let l:cwd = fugitive#repo().tree()
+     let out = system('git worktree remove ' .. l:cwd)
+     if v:shell_error
+        echo out
+        call input('Error.  Press <CR> to dismiss.')
+        return
+     endif
   endif
 
   if len(l:selected_lines)
