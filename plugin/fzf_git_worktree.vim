@@ -43,7 +43,8 @@ function! OpenGitWorktree()
        call add(l:formatted_worktrees, l:current_worktree[1] . ' [' . l:current_worktree[0] . ']')
      endif
   endif
-  let l:header .= ":: <CR> go to worktree, ctrl-n: new worktree, ctrl-d: delete selected, ctrl-r: remove current, ctrl-y: yank, \":\" populate :"
+  let l:header .= ":: <CR>:go_to_worktree, ctrl-n:_new_worktree, ctrl-d:_delete_selected, ctrl-r:_remove_current, ctrl-y:_yank, \":\":populate_:"
+  let l:header = substitute(l:header, '\(.\{80\}\)\ ', '\1\n:: ', '')
   let l:prompt = "Select a Git worktree> "
   let l:valid_keys = "ctrl-d,ctrl-r,ctrl-y,:,;,ctrl-n"
   let l:fzf_options = [

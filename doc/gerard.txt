@@ -46,13 +46,6 @@ q/        fzf search |:History|/                                  |q/|| or |c_CT
 q?        fzf vim help |:Helptags|
 see |gerardfzf|
 
-:GWorktree    fzf git worktree list
-                         :   populate command line with worktree path
-                  {input};   populate command line with new worktree
-             {input}ctrl-n   new detached worktree of origin/master
-                  ctrl-d/r   remove worktree
-                    ctrl-y   yank worktree path
-
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                          :   populate command line with branch
                          ;   populate command line with add worktree
@@ -61,6 +54,14 @@ see |gerardfzf|
                     ctrl-t   new tracking worktree of branch
                     ctrl-y   yank branch
               checkout from origin to detach head
+
+:GWorktree    fzf git worktree list
+                         :   populate command line with worktree path
+                  {input};   populate command line with new worktree
+             {input}ctrl-n   new detached worktree of origin/master
+                    ctrl-d   remove selected worktree
+             {input}ctrl-r   remove current worktree and switch to input
+                    ctrl-y   yank worktree path
 
 :Messages     fzf error |:messages|
 :CHistory     fzf quickfix |:chistory|

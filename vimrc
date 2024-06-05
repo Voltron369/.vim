@@ -18,6 +18,18 @@ augroup END
 let $FZF_DEFAULT_OPTS='--bind ctrl-f:page-down,ctrl-b:page-up,ctrl-y:yank,ctrl-u:half-page-up+refresh-preview,ctrl-d:half-page-down+refresh-preview'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_detect_spell=0
+let g:airline#extensions#coc#enabled = 0
+let g:airline#extensions#hunks#enabled=0
+let g:airline#extensions#default#section_truncate_width = {
+      \ 'b': 45,
+      \ 'x': 45,
+      \ 'y': 45,
+      \ 'z': 45,
+      \ 'warning': 1000,
+      \ 'error': 1000,
+      \ }
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
