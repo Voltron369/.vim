@@ -159,7 +159,8 @@ s         preview pretty     (for filetype json)
 ⎵ jt      toggle pretty/mini (set filetype json)
 S         toggle pretty/mini (for filetype json)
 
-FZF:~                                                             *gerardfzf*
+                                                                  *gerardfzf*
+FZF:~
      :    Populate command line
 Ctrl-y    Yank filename(s)
 

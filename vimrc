@@ -29,6 +29,10 @@ let g:airline#extensions#default#section_truncate_width = {
       \ 'warning': 1000,
       \ 'error': 1000,
       \ }
+function! AirlineWinnr(...)
+    call a:1.add_section_spaced('airline_a', '%{winnr()}')
+endfunction
+autocmd VimEnter * call airline#add_inactive_statusline_func('AirlineWinnr')
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
