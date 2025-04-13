@@ -123,6 +123,7 @@ call plug#begin()
     Plug 'mbbill/undotree'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
+    Plug 'vim-scripts/argtextobj.vim'
 call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
