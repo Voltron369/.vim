@@ -17,6 +17,9 @@ m<CR>     |:Make|
 `<Space>  |:Dispatch|
 ⎵ gc      |:Commits|
 ⎵ u       Toggle Undo Tree
+⎵ s       |:AbortDispatch|
+⎵ S       |:AbortDispatchAll|   kills all other tmux panes     *AbortDispatchAll*
+
 
 Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
@@ -44,8 +47,15 @@ Ctrl-/    Search in File                                               |:BLines|
 q:        fzf command |:History|:                                 |q:| or |c_CTRL-F|
 q/        fzf search |:History|/                                  |q/|| or |c_CTRL-F|
 q?        fzf vim help |:Helptags|
+
+
+:Messages   fzf error |:messages|
+:CHistory   fzf quickfix |:chistory|
 see |gerardfzf|
 
+                                                                      *gerardgit*
+Git~
+/ or +         Toggle :Git |fugitive-summary|
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                          :   populate command line with branch
                          ;   populate command line with add worktree
@@ -134,6 +144,12 @@ Ctrl-L        Also clears search highlighting (|:noh|) and calls |:diffupdate|
 :DiffOrig     Diff vs saved version of file (|:DiffOrig|)
 :Man {page}   Show man page in new split (|:Man|)
 :PlugStatus   See plugins in use
+
+Git-Gutter:~
+⎵ hs    hunk stage (|gitgutter-<Leader>hs|)
+⎵ hu    hunk undo  (|gitgutter-<Leader>hu|)
+] c     next hunk  (|gitgutter-]c|>
+[ c     prev hunk  (|gitgutter-[c|>
 
 text-object:~
 ic/ac   classobj

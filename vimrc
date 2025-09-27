@@ -41,6 +41,8 @@ let g:fzf_action = {
   \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
   \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
+" let g:netrw_list_hide='^\.'
+let g:netrw_list_hide='\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_winsize=25
 let g:netrw_altfile=1
 let g:rooter_patterns = ['.git']
@@ -123,7 +125,7 @@ call plug#begin()
     Plug 'mbbill/undotree'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
-    Plug 'vim-scripts/argtextobj.vim'
+    " Plug 'vim-scripts/argtextobj.vim'
 call plug#end()
 
 " au VimEnter * CompileDbPathIfExists compile_commands.json
@@ -131,6 +133,7 @@ call plug#end()
 tnoremap <C-PageDown> <C-w>gt
 tnoremap <C-PageUp> <C-w>gT
 
+" I think this can be replaced with autocmd TabClosed * tabprev
 function! CloseTab()
   " Get the current tab number and the total number of tabs
   let current_tab = tabpagenr()
@@ -160,6 +163,7 @@ function! SwitchToSecondDiffWindow()
     endif
 endfunction
 
+" To zoom manually, use Ctrl-W s Ctrl-W T
 function! Zoom()
     let l:cur_tab = tabpagenr()
     let l:num_wins = tabpagewinnr(l:cur_tab, '$')
@@ -185,6 +189,8 @@ nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <leader><leader> :update \| call fugitive#ReloadStatus()<CR>
 nnoremap <leader>c :call CloseTab()<CR>
+nnoremap <leader>s :AbortDispatch<CR>
+nnoremap <leader>S :AbortDispatchAll<CR>
 tnoremap <C-W><leader>c <C-W>:call CloseTab()<CR>
 nnoremap gq :call CloseWindow()<CR>
 tnoremap <C-W>gq <C-W>:call CloseWindow()<CR>
@@ -481,6 +487,8 @@ if exists('$TMUX')
    " split below
    " let g:fzf_layout = { 'tmux': '-d30%' }
 endif
+
+command! AbortDispatchAll exe ':!tmux kill-pane -a -t $TMUX_PANE'
 
 let g:oscyank_term = 'default'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
