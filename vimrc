@@ -38,8 +38,8 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit',
-  \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
   \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
+  " \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 " let g:netrw_list_hide='^\.'
 let g:netrw_list_hide='\(^\|\s\s\)\zs\.\S\+'
@@ -524,6 +524,8 @@ augroup oldfiles
    au!
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
 augroup END
+command! -nargs=0 OldFiles History
+command! -nargs=0 Oldfiles History
 
 let NAList = {list -> {type(""): [], type([]): list}[type(list)]}
 let NAString = {list -> list ==# 'n/a' ? '' : list}
@@ -538,3 +540,16 @@ augroup my_vinegar
   autocmd FileType netrw nmap <buffer> qb :Historyb<CR>
 augroup END
 
+function! UpdateBLines()
+   if &modified
+      nnoremap <buffer> <C-_> :BLines<CR> | " actually Ctrl-/
+      nnoremap <buffer> <leader>/ :BLines<CR>
+   else
+      execute 'nnoremap <buffer> <C-_> :Ag<CR>''' . expand("%") . ": "
+      execute 'nnoremap <buffer> <leader>/ :Ag<CR>''' . expand("%") . ": "
+   endif
+endfunction
+augroup BLines
+   autocmd!
+   autocmd VimEnter,BufEnter,BufWritePost,TextChanged,TextChangedI,DirChanged * call UpdateBLines()
+augroup END
