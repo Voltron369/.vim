@@ -81,6 +81,7 @@ Git Log:~
 ⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gl    git log in quickfix
 ⎵ gn    git log in quickfix (filenames only)
+⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
 ⎵ mn    git log vs merge-base (filenames only)
 ⎵ ms    git log vs merge-base (status only)

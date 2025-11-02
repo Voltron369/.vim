@@ -29,6 +29,7 @@ let g:airline#extensions#default#section_truncate_width = {
       \ 'warning': 1000,
       \ 'error': 1000,
       \ }
+let g:airline_section_y = '[%{$BUILD}] [%{$VIMCOMPILER}] [%{$TEST_FILENAME}]'
 function! AirlineWinnr(...)
     call a:1.add_section_spaced('airline_a', '%{winnr()}')
 endfunction
@@ -46,6 +47,8 @@ let g:netrw_list_hide='\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_winsize=25
 let g:netrw_altfile=1
 let g:rooter_patterns = ['.git']
+let g:termdebug_wide=1
+" let g:termdebugger=
 set autoindent
 set autoread
 set backspace=2
@@ -217,6 +220,7 @@ nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gw :GWorktree<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
+nnoremap <leader>gB :GBrowse<CR>
 
 " fzf
 nnoremap <leader>ag :Ag<CR>
@@ -491,7 +495,10 @@ endif
 command! AbortDispatchAll exe ':!tmux kill-pane -a -t $TMUX_PANE'
 
 let g:oscyank_term = 'default'
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+augroup oscyank
+au!
+   autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+augroup END
 
 function! g:Tapi_lcd(bufnum, path)
    let l:orig_bufnum=bufnr('%')
@@ -502,6 +509,115 @@ function! g:Tapi_lcd(bufnum, path)
       execute 'buffer' l:orig_bufnum
    endif
 endfunction
+
+function! g:Tapi_gdb(_, files)
+   packadd termdebug
+   let cwd = getcwd()
+   let bin = a:files[0]
+   echo bin
+   let args = join(a:files[1:], ' ')
+   if !exists(':Gdb')
+      exec 'tabnew | silent! Termdebug'
+   endif
+   exe 'Gdb'
+   call term_sendkeys(bufndr('%'), 'set args' . args . '')
+   call term_sendkeys(bufndr('%'), 'cd ' . cwd . '')
+   call term_sendkeys(bufndr('%'), 'set confirm off')
+   call term_sendkeys(bufndr('%'), 'file ' . bin . '')
+   call term_sendkeys(bufndr('%'), 'set confitm on')
+endfunction
+
+function! g:Tapi_vimdiff(_, files)
+   execute ':!vimdiff ' . join(map(a:files, 'shellescape(v:val)'),' ')
+endfunction
+
+" https://stackoverflow.com/questions/9464844/how-to-get-group-name-of-highlighting-under-cursor-in-vim
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+if !exists('g:COMPILER_MAP')
+   let g:COMPILER_MAP={}
+   let g:BUILD_MAP={}
+   let g:TESTFILE_MAP={}
+endif
+
+function! GitGetRepoName() abort
+   if exists('*FugitiveRemoteUrl')
+      let s:git_url = FugitiveRemoteUrl()
+      return matchstr(s:git_url, '/\([^/]*\).git$')[1:-5] . ' '
+   endif
+endfunction
+
+let g:compiler_defaults = {}
+" let g:compiler_defaults['target ']='target'
+function! MyRooter()
+   if !exists('*GitGetRepoName')
+      return
+   endif
+
+   execute 'Rooter'
+
+   if has_key(g:BUILD_MAP, getcwd())
+      let $BUILD=g:BUILD_MAP[getcwd()]
+   elseif has_key(g:compiler_defaults, GitGetRepoName())
+      let $BUILD='debug'
+      let g:BUILD_MAP[getcwd()]=$BUILD
+   else
+      let $BUILD=''
+   endif
+
+   if has_key(g:TESTFILE_MAP, getcwd())
+      let l:test_file=g:TESTFILE_MAP[getcwd()]
+   else
+      let l:test_file=''
+   endif
+
+   if has_key(g:COMPILER_MAP, getcwd()) && !empty(g:COMPILER_MAP[getcwd()])
+      for item in split(g:COMPILER_MAP[getcwd()])
+         execute 'compiler '.item
+      endfor
+   elseif has_key(g:compiler_defaults, getcwd()) && !empty(g:compiler_defaults[getcwd()])
+         execute 'compiler '.g:compiler_defaults[getcwd()]
+   else
+      execute 'compiler none'
+   endif
+
+   let $TEST_FILENAME=l:test_file
+   if has_key(g:TESTFILE_MAP, getcwd())
+      let g:TESTFILE_MAP[getcwd()]=l:test_file
+   endif
+endfunction
+
+augroup ale
+   au!
+   autocmd VimEnter,BufReadPost,BufEnter * nested call MyRooter()
+   autocmd BufWritePost * nested call MyRooter()
+augroup END
+
+function! BuildChanged()
+   let g:BUILD_MAP[getcwd()]=$BUILD
+endfunction
+
+function! CompilerChanged()
+   let g:COMPILER_MAP[getcwd()]=$VIMCOMPILER
+   let g:TESTFILE_MAP[getcwd()]=''
+   let $TEST_FILENAME=''
+   if !has_key(g:BUILD_MAP, getcwd())
+      let $BUILD='debug'
+      let g:BUILD_MAP[getcwd()]=$BUILD
+   endif
+endfunction
+
+function! SetTestfile(testfile)
+   call CompilerChanged()
+   let $TEST_FILENAME=a:testfile
+   let g:TESTFILE_MAP[getcwd()=a:testfile
+endfunction
+
 
 command! Worktrees :G -p worktree list
 command! Merge G -p diff --name-only --diff-filter=U --relative

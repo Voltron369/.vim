@@ -1,0 +1,2 @@
+let &makeprg=''
+let $VIMCOMPILER=''
