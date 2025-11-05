@@ -203,6 +203,8 @@ nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
 
+cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos()-1))<CR>
+
 nnoremap + <Cmd>Git<CR>
 nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
 augroup FugitiveToggle
