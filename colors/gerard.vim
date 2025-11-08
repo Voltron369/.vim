@@ -10,6 +10,9 @@ if !empty($COLORTERM) && has("termguicolors")
          " tmux truecolor
          let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
          let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+         " tmux italic
+         let &t_ZH="\e[3m"
+         let &t_ZR="\e[23m"
       endif
       " fix undercurl
       let &t_Cs = "\e[4:3m"
@@ -22,11 +25,14 @@ if !empty($COLORTERM) && has("termguicolors")
    set background=dark
    runtime colors/solarized8.vim
    let g:colors_name = "gerard"
-   hi LineNrAbove term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
-   hi LineNrBelow term=underline cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
+   hi LineNrAbove term=NONE cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
+   hi LineNrBelow term=NONE cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
    hi LineNr ctermfg=256 ctermbg=236 cterm=bold guifg=darkorange
    hi StatusLineTerm ctermbg=24 ctermfg=254 guibg=#004f87 guifg=#e4e4e4
    hi StatusLineTermNC ctermbg=252 ctermfg=238 guibg=#d0d0d0 guifg=#444444
-   hi CocErrorVirtualText cterm=undercurl ctermfg=12 ctermbg=16 guifg=#ff0000 guibg=#002b36
-   hi CocWarningVirtualText cterm=undercurl ctermfg=6 ctermbg=16 guifg=#ff922b guibg=#002b36
+   hi CocErrorVirtualText cterm=undercurl,italic ctermfg=9 ctermbg=235 guifg=#ff0000 guibg=#002b36
+   hi CocWarningVirtualText cterm=undercurl,italic ctermfg=130 ctermbg=235 guifg=#ff922b guibg=#002b36
+   hi CocInfoVirtualText cterm=italic ctermfg=11 ctermbg=235 guifg=#fab005 guibg=#002b36
+   hi CocHintVirtualText cterm=italic ctermfg=12 ctermbg=235 guifg=#15aabf guibg=#002b36
+   hi Comment cterm=italic term=italic ctermfg=11 gui=italic guifg=#586e75
 endif
