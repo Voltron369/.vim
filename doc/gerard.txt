@@ -3,7 +3,7 @@
 ==============================================================================
 CUSTOM BINDINGS                                                         *gerard*
 
-<Leader> is <Space>
+<Leader> is <Space> (shown as ⎵ here)
 
 ⎵ ?       This Help
 ⎵ ⎵       |:update|
@@ -121,7 +121,7 @@ gh          Switch hpp/cpp
 gH          VSplit hpp/cpp
 K           Hover or default |K|                            |CocAction('doHover')|
 ⎵ rn        Rename                                         |CocAction('rename')|
-==          Format or default |==|                   |CocAction('formatSelected')|
+{count}==   Format or default |==|                   |CocAction('formatSelected')|
 ={motion}   Format or default |=|                    |CocAction('formatSelected')|
 {visual}=   Format or default |v_=|                  |CocAction('formatSelected')|
 ⎵ a{motion} Code Action (selected)                     |CocAction('codeAction')|
@@ -133,6 +133,8 @@ K           Hover or default |K|                            |CocAction('doHover'
 [G [g       first/prev diagnostic
 ]g ]G       next/last diagnostic
 :Format     Format                                         |CocAction('format')|
+
+use after/|ftplugin|  files for |filetype| tabs/spaces indent config
 
                                                                  *gerardmerge*
 Merge:~
