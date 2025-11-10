@@ -613,19 +613,6 @@ command! Worktrees :G -p worktree list
 command! Merge G -p diff --name-only --diff-filter=U --relative
 nnoremap <C-W><C-F> <C-W>vgf/====<CR>
 
-function! MarkWin(reg)
-   let l:reg = a:reg
-   if l:reg ==# '"'
-      let l:reg = input('Enter mark for tab [a-z]: ')
-   endif
-   exe 'let @' . l:reg '=":silent! call win_gotoid(' . win_getid() . ')\n"'
-endfunction
-command! MarkWin :call MarkWin("\"")
-nnoremap <leader>t :call MarkWin(v:register)<CR>
-tnoremap <C-w><leader>t <C-w>:call MarkWin(v:register)<CR>
-tnoremap <C-w><C-@> <C-w>:@
-tnoremap <C-w>@ <C-w>:@
-
 augroup oldfiles
    au!
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
@@ -633,88 +620,3 @@ augroup END
 command! -nargs=0 OldFiles History
 command! -nargs=0 Oldfiles History
 
-let NAList = {list -> {type(""): [], type([]): list}[type(list)]}
-let NAString = {list -> list ==# 'n/a' ? '' : list}
-
-augroup my_vinegar
-  autocmd!
-  autocmd FileType netrw nmap <buffer> <Tab> mfj
-  autocmd FileType netrw nmap <buffer> <S-Tab> mfk
-  autocmd FileType netrw nnoremap <buffer> ; :<C-U> <C-R>=join(map(copy(NAList(netrw#Expose("netrwmarkfilelist"))), 'fnameescape(v:val)'), " ")<CR><HOME>
-  autocmd FileType netrw nnoremap <buffer> g: :<C-U> <C-R>=fnameescape(NAString(netrw#Expose("netrwmftgt")))<CR><HOME>
-  autocmd FileType netrw nnoremap <buffer> : :<C-U> <C-R>=join([join(map(copy(NAList(netrw#Expose("netrwmarkfilelist"))), 'fnameescape(v:val)'), " "),fnameescape(NAString(netrw#Expose("netrwmftgt")))]," ")<CR><HOME>
-  autocmd FileType netrw nmap <buffer> qb :Historyb<CR>
-augroup END
-
-function! UpdateBLines()
-   if &modified
-      nnoremap <buffer> <C-_> :BLines<CR> | " actually Ctrl-/
-      nnoremap <buffer> <leader>/ :BLines<CR>
-   else
-      execute 'nnoremap <buffer> <C-_> :Ag<CR>''' . expand("%") . ": "
-      execute 'nnoremap <buffer> <leader>/ :Ag<CR>''' . expand("%") . ": "
-   endif
-endfunction
-augroup BLines
-   autocmd!
-   autocmd VimEnter,BufEnter,BufWritePost,TextChanged,TextChangedI,DirChanged * call UpdateBLines()
-augroup END
-
-
-augroup COCHasFormatMappings
-   autocmd!
-   autocmd VimEnter,BufEnter,BufReadPost * call CocFormatMappings()
-augroup END
-
-function! CocFormatMappings()
-   if exists('*CocAction')
-      try
-         if !CocAction('hasProvider', 'format')
-            return
-         endif
-      catch
-         return
-      endtry
-   endif
-   xmap <buffer> <silent> = :<C-U>call CocActionAsync('formatSelected', visualmode())<CR>
-   nmap <buffer> <silent> = <Plug>(coc-format-operator)
-   nmap <buffer> <silent> == :<C-U>call <SID>FormatLinesWithCount(v:count)<CR>
-endfunction
-
-function! s:FormatLinesWithCount(count)
-   if !exists('*CocAction')
-      return
-   endif
-   let line_count = a:count == 0 ? 1 : a:count
-   if line_count == 1
-      normal =_
-   else
-      let end_line_offset = line_count - 1
-      execute "normal =".end_line_offset."j"
-   endif
-endfunction
-
-function! s:format_op(type)
-   if !exists('*CocAction')
-      return
-   endif
-   if a:type == 'line'
-      call CocActionAsync('formatSelected', 'line')
-   elseif a:type == 'char'
-      call CocActionAsync('formatSelected', 'char')
-   elseif a:type == 'block'
-      call CocActionAsync('formatSelected', 'char')
-   endif
-endfunction
-nmap <silent> <Plug>(coc-format-operator) :set operatorfunc=<SID>format_op<CR>g@
-
-
-" reload fugitive if git gutter stage hunk
-function s:reload_fugitive_index()
-   for w in getwininfo()
-      if bufname(w.bufnr) =~ "^fugitive://.*\.git/.*"
-         exec w.winnr . "windo e | wincmd p"
-      endif
-   endfor
-endfunction
-autocmd User GitGutterStage nested call s:reload_fugitive_index()
