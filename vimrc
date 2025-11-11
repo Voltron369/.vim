@@ -620,3 +620,7 @@ augroup END
 command! -nargs=0 OldFiles History
 command! -nargs=0 Oldfiles History
 
+augroup my_airline_plugins
+   au!
+   autocmd VimEnter * runtime! my_airline_plugins/airline/**/*.vim
+augroup END
