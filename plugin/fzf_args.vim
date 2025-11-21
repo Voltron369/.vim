@@ -51,7 +51,7 @@ endfunction
 
 " Map a key sequence to call the function
 command! FArgs call <sid>FzfFromArgv()
-nnoremap <leader>ar :call <sid>FzfFromArgv()<CR>
-nnoremap <leader>aa :$argadd<CR>
-tnoremap <C-W><leader>ar <C-W>:call <sid>FzfFromArgv()<CR>
-tnoremap <C-W><leader>aa <C-W>:$argadd<CR>
+nnoremap <leader>AR :call <sid>FzfFromArgv()<CR>
+nnoremap <leader>AA :$argadd<CR>
+tnoremap <C-W><leader>AR <C-W>:call <sid>FzfFromArgv()<CR>
+tnoremap <C-W><leader>AA <C-W>:$argadd<CR>

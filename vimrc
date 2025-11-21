@@ -199,8 +199,8 @@ nnoremap <leader>S :AbortDispatchAll<CR>
 tnoremap <C-W><leader>c <C-W>:call CloseTab()<CR>
 nnoremap gq :call CloseWindow()<CR>
 tnoremap <C-W>gq <C-W>:call CloseWindow()<CR>
-nnoremap <leader>q :call CloseWindow()<CR>
-nnoremap <C-W><leader>q <C-W>:call CloseWindow()<CR>
+nnoremap <leader>qq :call CloseWindow()<CR>
+nnoremap <C-W><leader>qq <C-W>:call CloseWindow()<CR>
 " nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
 nnoremap dq :call fugitive#DiffClose()<CR>
 nnoremap <leader>z :call Zoom()<CR>
