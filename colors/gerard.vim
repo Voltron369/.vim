@@ -21,6 +21,10 @@ if !empty($COLORTERM) && has("termguicolors")
       let &t_SI = "\e[5 q"    " https://stackoverflow.com/questions/6488683/how-to-change-the-cursor-between-normal-and-insert-modes-in-vim
       let &t_EI = "\e[2 q"
    endif
+   " underdouble, underdotted and underdashed
+   let &t_Us = "\e[4:2m"
+   let &t_ds = "\e[4:4m"
+   let &t_Ds = "\e[4:5m"
    set termguicolors
    set background=dark
    runtime colors/solarized8.vim
@@ -36,3 +40,15 @@ if !empty($COLORTERM) && has("termguicolors")
    hi CocHintVirtualText cterm=italic ctermfg=12 ctermbg=235 guifg=#15aabf guibg=#002b36
    hi Comment cterm=italic term=italic ctermfg=11 gui=italic guifg=#586e75
 endif
+
+
+if 0
+   hi Class term=NONE cterm=bold ctermfg=Magenta guifg=Magenta
+   hi Namespace term=NONE cterm=NONE ctermfg=DarkMagenta guifg=DarkMagenta
+else
+   hi Class term=NONE cterm=bold ctermfg=LightGreen guifg=#4EC9B0 | " BlueGreen
+   hi Namespace term=NONE cterm=NONE ctermfg=DarkGreen guifg=DarkGreen
+endif
+
+hi link CocSemTypeNamespace Namespace
+hi link CocSemTypeClass Class
