@@ -50,5 +50,18 @@ else
    hi Namespace term=NONE cterm=NONE ctermfg=DarkGreen guifg=DarkGreen
 endif
 
-hi link CocSemTypeNamespace Namespace
-hi link CocSemTypeClass Class
+hi! link CocSemTypeNamespace Namespace
+hi! link CocSemTypeClass Class
+
+" change background only
+hi DiffBackground ctermbg=1 guibg=#073642 guisp=#859900
+hi! link GitGutterAddLine DiffBackground
+hi! link GitGutterChangeLine DiffBackground
+hi! link GitGutterDeleteLine DiffBackground
+hi! link GitGutterChangleDeleteLine DiffBackground
+
+" keep color for sign column
+hi! link GitGutterAdd DiffAdd
+hi! link GitGutterChange DiffChange
+hi! link GitGutterDelete DiffDelete
+

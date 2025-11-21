@@ -41,6 +41,8 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit',
   \ 'ctrl-y': {lines ->  map(['*','"'], "setreg(v:val, join(map(copy(lines), 'fnameescape(v:val)')))")}}
   " \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
+let g:coc_default_semantic_highlight_groups=1
+let g:gitgutter_highlight_lines=1
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 " let g:netrw_list_hide='^\.'
 let g:netrw_list_hide='\(^\|\s\s\)\zs\.\S\+'
