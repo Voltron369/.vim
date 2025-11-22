@@ -6,6 +6,7 @@ set spell
 augroup markdownSpell
    autocmd FileType gitcommit setlocal spellcapcheck=
    autocmd FileType git setlocal nospell
+   autocmd Filetype man setlocal nolist
 augroup END
 
 " Does not work as intended:
