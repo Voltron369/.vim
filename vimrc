@@ -57,6 +57,7 @@ let g:termdebug_wide=1
 set autoindent
 set autoread
 set backspace=2
+set diffopt+=vertical
 set fillchars+=vert:\ 
 set hidden
 set history=1000
