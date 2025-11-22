@@ -194,9 +194,13 @@ Ctrl-v    Open in vertical split
 Ctrl-x    Open in split
 
 Ctrl-b    Page Up
-Ctrl-u    Page Up Half
-Ctrl-d    Page Down Half
 Ctrl-f    Page Down
+
+Ctrl-/    Preview Toggle
+Ctrl-u    Preview Page Up Half
+Ctrl-d    Preview Page Down Half
+Shift-up  Preview Up
+Shift-dn  Preview Down
 
 
 vim:tw=78:ts=8:ft=help:norl:

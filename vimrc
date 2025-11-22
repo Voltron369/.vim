@@ -16,7 +16,7 @@ augroup END
 " augroup END
 
 " keep sorted
-let $FZF_DEFAULT_OPTS='--bind ctrl-f:page-down,ctrl-b:page-up,ctrl-y:yank,ctrl-u:half-page-up+refresh-preview,ctrl-d:half-page-down+refresh-preview'
+let $FZF_DEFAULT_OPTS='--bind ctrl-f:page-down,ctrl-b:page-up,ctrl-y:yank,ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=0
