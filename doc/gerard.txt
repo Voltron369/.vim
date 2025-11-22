@@ -80,7 +80,9 @@ Git~
 Git Log:~
 ⎵ gc    fzf git log                                                |:Commits|
 ⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
-⎵ gl    git log in quickfix
+⎵ gl    git log in quickfix                                        |:Gclog|
+{v}⎵ gl git log for range of current file in quickfix (|:diffs| #)
+⎵ gL    git log of current file in quickfix (|:diffs| #)
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
@@ -114,26 +116,26 @@ Git Diff:~
 
                                                                   *gerard-coc*
 COC: (see |coc-introduction|)~
-gd          Go To Definition or default |gd|         |CocAction('jumpDefinition')|
-gy          Go To Type Definition              |CocAction('jumpTypeDefinition')|
-gi          Go To Implementation               |CocAction('jumpImplementation')|
-gr          Fzf References                         |CocAction('jumpReferences')|
-gh          Switch hpp/cpp
-gH          VSplit hpp/cpp
-K           Hover or default |K|                            |CocAction('doHover')|
-⎵ rn        Rename                                         |CocAction('rename')|
-{count}==   Format or default |==|                   |CocAction('formatSelected')|
-={motion}   Format or default |=|                    |CocAction('formatSelected')|
-{visual}=   Format or default |v_=|                  |CocAction('formatSelected')|
-⎵ a{motion} Code Action (selected)                     |CocAction('codeAction')|
-⎵ ac        Code Action (cursor)                       |CocAction('codeAction')|
-⎵ as        Code Action (buffer)                       |CocAction('codeAction')|
-⎵ qf        Quick Fix                                  |CocAction('doQuickfix')|
-⎵ re        Refactor                                     |CocAction('refactor')|
-⎵ cl        Code Lens                              |CocAction('codeLensAction')|
-[G [g       first/prev diagnostic
-]g ]G       next/last diagnostic
-:Format     Format                                         |CocAction('format')|
+gd      Go To Definition or default |gd|           |CocAction('jumpDefinition')|
+gy      Go To Type Definition                |CocAction('jumpTypeDefinition')|
+gi      Go To Implementation                 |CocAction('jumpImplementation')|
+gr      Fzf References                           |CocAction('jumpReferences')|
+gh      Switch hpp/cpp
+gH      VSplit hpp/cpp
+K       Hover or default |K|                              |CocAction('doHover')|
+⎵ rn    Rename                                           |CocAction('rename')|
+{c}==   Format or default |==|                     |CocAction('formatSelected')|
+={m}    Format or default |=|                      |CocAction('formatSelected')|
+{v}=    Format or default |v_=|                    |CocAction('formatSelected')|
+⎵ a{m}  Code Action (selected)                       |CocAction('codeAction')|
+⎵ ac    Code Action (cursor)                         |CocAction('codeAction')|
+⎵ as    Code Action (buffer)                         |CocAction('codeAction')|
+⎵ qf    Quick Fix                                    |CocAction('doQuickfix')|
+⎵ re    Refactor                                       |CocAction('refactor')|
+⎵ cl    Code Lens                                |CocAction('codeLensAction')|
+[G [g   first/prev diagnostic
+]g ]G   next/last diagnostic
+:Format Format                                           |CocAction('format')|
 
 use after/|ftplugin|  files for |filetype| tabs/spaces indent config
 

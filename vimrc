@@ -230,6 +230,9 @@ xnoremap <leader>gC :BCommits<CR>
 nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gw :GWorktree<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
+xnoremap <leader>gl :Gclog! -500<CR>
+nnoremap <leader>gL :Gclog! -500 -- %<CR>
+xnoremap <leader>gL :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 nnoremap <leader>gB :GBrowse<CR>
 
