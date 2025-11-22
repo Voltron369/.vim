@@ -64,4 +64,4 @@ hi! link GitGutterChangleDeleteLine DiffBackground
 hi! link GitGutterAdd DiffAdd
 hi! link GitGutterChange DiffChange
 hi! link GitGutterDelete DiffDelete
-
+hi DiffAdd guifg=green

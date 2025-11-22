@@ -43,6 +43,9 @@ let g:fzf_action = {
   " \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
 let g:coc_default_semantic_highlight_groups=1
 let g:gitgutter_highlight_lines=1
+let g:gitgutter_sign_added='┃'
+let g:gitgutter_sign_modified='┃'
+let g:gitgutter_sign_modified_removed='┻'
 let g:netrw_bufsettings='noma nomod nu nobl nowrap ro'
 " let g:netrw_list_hide='^\.'
 let g:netrw_list_hide='\(^\|\s\s\)\zs\.\S\+'
