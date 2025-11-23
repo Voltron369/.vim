@@ -92,6 +92,9 @@ Git Log:~
                                                                      *gitdiff*
 Git Diff:~
 
+do      git gutter diff orig or diff obtain (|do|)          |:GitGutterDiffOrig|
+dq      quit diff
+dQ      quit diff and go to current                                   |:Gedit|
 ⎵ dd    git gutter diff                                   |:GitGutterDiffOrig|
 ⎵ df    git gutter fold                                       |:GitGutterFold|
 ⎵ dl    diff last                                               |:diffsplit| #

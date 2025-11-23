@@ -450,6 +450,7 @@ nnoremap <leader>dl :diffsplit #<CR>
 nnoremap <leader>do :GitGutterDiffOrig<CR>
 nnoremap <leader>dp :Gdiffsplit !~1<CR>
 nnoremap <leader>ds :Gdiffsplit<CR>
+nnoremap do :if &diff<bar>execute "normal! do"<bar>else<bar>GitGutterDiffOrig<bar>endif<CR>
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
