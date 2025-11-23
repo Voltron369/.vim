@@ -26,6 +26,7 @@ Tabs and Windows:~
 ⎵ qq      close tab and go to previous tab
 gq        quit window.  If last, close tab and go to previous tab
 dq        quit diff
+dQ        quit diff and go to current (|:Gedit|)
 C-PgDown  |:tabnext|
 C-PgUp    |:tabprev|
 ⎵ AA      append current buffer name to |args| ($|argadd|)

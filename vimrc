@@ -208,6 +208,7 @@ nnoremap <leader>qq :call CloseWindow()<CR>
 nnoremap <C-W><leader>qq <C-W>:call CloseWindow()<CR>
 " nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
 nnoremap dq :call fugitive#DiffClose()<CR>
+nnoremap dQ :call fugitive#DiffClose() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
 nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
