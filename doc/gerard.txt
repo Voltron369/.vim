@@ -90,6 +90,12 @@ Git Log:~
 ⎵ ms    git log vs merge-base (status only)
                                                                      *gitdiff*
 Git Diff:~
+
+⎵ dd    git gutter diff                                   |:GitGutterDiffOrig|
+⎵ df    git gutter fold                                       |:GitGutterFold|
+⎵ do    git gutter diff                                   |:GitGutterDiffOrig|
+⎵ dp    git diff previous                                        |:Gdiffsplit|
+
               working vs HEAD~
 ⎵ gF    git status (see |fugitive-staging-maps|)
 ⎵ gf    git diff <cfile> working vs HEAD
