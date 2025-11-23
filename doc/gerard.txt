@@ -81,8 +81,8 @@ Git Log:~
 ⎵ gc    fzf git log                                                |:Commits|
 ⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gl    git log in quickfix                                        |:Gclog|
-{v}⎵ gl git log for range of current file in quickfix (|:diffs| #)
-⎵ gL    git log of current file in quickfix (|:diffs| #)
+{v}⎵ gl git log for range of current file in quickfix ⎵ dl (|:diffs| #)
+⎵ gL    git log of current file in quickfix ⎵ dl (|:diffs| #)
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
@@ -93,8 +93,10 @@ Git Diff:~
 
 ⎵ dd    git gutter diff                                   |:GitGutterDiffOrig|
 ⎵ df    git gutter fold                                       |:GitGutterFold|
+⎵ dl    diff last                                               |:diffsplit| #
 ⎵ do    git gutter diff                                   |:GitGutterDiffOrig|
-⎵ dp    git diff previous                                        |:Gdiffsplit|
+⎵ dp    git diff previous                                    |:Gdiffsplit| !~1
+⎵ ds    diff split                                               |:Gdiffsplit|
 
               working vs HEAD~
 ⎵ gF    git status (see |fugitive-staging-maps|)

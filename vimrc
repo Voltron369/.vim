@@ -443,10 +443,12 @@ if exists(":DiffOrig") != 2
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
         \ | diffthis | wincmd p | diffthis
 endif
-nnoremap <leader>do :GitGutterDiffOrig<CR>
 nnoremap <leader>dd :GitGutterDiffOrig<CR>
 nnoremap <leader>df :GitGutterFold<CR>
+nnoremap <leader>dl :diffsplit #<CR>
+nnoremap <leader>do :GitGutterDiffOrig<CR>
 nnoremap <leader>dp :Gdiffsplit !~1<CR>
+nnoremap <leader>ds :Gdiffsplit<CR>
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
