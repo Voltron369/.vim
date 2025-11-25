@@ -253,6 +253,7 @@ tnoremap <C-w><C-_> <C-w>:BLines<CR> | "actually Ctrl-/
 nnoremap q: :History:<CR>
 nnoremap q/ :History/<CR>
 nnoremap q? :Helptags<CR>
+imap <c-x><c-f> <plug>(fzf-complete-path)
 
 function! s:CoutToQF(cout)
    call setqflist([], ' ', {'items': map(split(a:cout,'\n'), '{"filename": v:val, "lnum": 0, "col": 0}')})
