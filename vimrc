@@ -197,6 +197,14 @@ function! Zoom()
     endif
 endfunction
 
+function! CloseDiff()
+  if &buftype ==# 'nofile'
+    call CloseWindow()
+  else
+    call fugitive#DiffClose()
+  endif
+endfunction
+
 nnoremap <leader>? :vert he gerard \| vertical resize 90<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
@@ -210,8 +218,8 @@ tnoremap <C-W>gq <C-W>:call CloseWindow()<CR>
 nnoremap <leader>qq :call CloseWindow()<CR>
 nnoremap <C-W><leader>qq <C-W>:call CloseWindow()<CR>
 " nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
-nnoremap dq :call fugitive#DiffClose()<CR>
-nnoremap dQ :call fugitive#DiffClose() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
+nnoremap dq :call CloseDiff()<CR>
+nnoremap dQ :call CloseDiff() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
 nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
@@ -450,7 +458,7 @@ if exists(":DiffOrig") != 2
 endif
 nnoremap <leader>dd :GitGutterDiffOrig<CR>
 nnoremap <leader>df :GitGutterFold<CR>
-nnoremap <leader>dl :diffsplit #<CR>
+nnoremap <leader>dl :diffsplit #<CR><C-w>x<C-w><C-w>
 nnoremap <leader>do :GitGutterDiffOrig<CR>
 nnoremap <leader>dp :Gdiffsplit !~1<CR>
 nnoremap <leader>ds :Gdiffsplit<CR>
@@ -639,7 +647,6 @@ augroup oldfiles
    au!
    " autocmd VimEnter * if !argc() | call timer_start(200, { -> execute('History') }) | endif
 augroup END
-command! -nargs=0 OldFiles History
 command! -nargs=0 Oldfiles History
 
 augroup my_airline_plugins
