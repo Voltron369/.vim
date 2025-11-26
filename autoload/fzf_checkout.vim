@@ -1,3 +1,5 @@
+" PATCH: switch to worktree if already checked out
+
 scriptencoding utf-8
 
 let s:wide = 120
