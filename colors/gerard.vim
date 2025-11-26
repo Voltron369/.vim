@@ -29,6 +29,10 @@ if !empty($COLORTERM) && has("termguicolors")
    set background=dark
    runtime colors/solarized8.vim
    let g:colors_name = "gerard"
+   hi CocErrorSign ctermfg=12 guifg=#ff0000 ctermbg=1 guibg=#073642
+   hi CocWarningSign ctermfg=6 guifg=#ff922b ctermbg=1 guibg=#073642
+   hi CocHintSign ctermfg=9 guifg=#15aabf ctermbg=1 guibg=#073642
+   hi CocInfoSign ctermfg=14 guifg=#fab005 ctermbg=1 guibg=#073642
    hi LineNrAbove term=NONE cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
    hi LineNrBelow term=NONE cterm=NONE ctermfg=166 ctermbg=236 guifg=#839496 guibg=#073642
    hi LineNr ctermfg=256 ctermbg=236 cterm=bold guifg=darkorange
@@ -54,7 +58,7 @@ hi! link CocSemTypeNamespace Namespace
 hi! link CocSemTypeClass Class
 
 " change background only
-hi DiffBackground ctermbg=1 guibg=#073642 guisp=#859900
+hi DiffBackground ctermbg=1 guibg=#073642
 hi! link GitGutterAddLine DiffBackground
 hi! link GitGutterChangeLine DiffBackground
 hi! link GitGutterDeleteLine DiffBackground

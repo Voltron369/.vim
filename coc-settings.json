@@ -1,6 +1,10 @@
 {
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.warningSign": "❗",
+  "diagnostic.errorSign": "❌",
+  "diagnostic.infoSign": "💡".
+  "diagnostic.hintSign": "💬".
   "semanticTokens.enable": true,
   "inlayHint.enable": false,
 }
