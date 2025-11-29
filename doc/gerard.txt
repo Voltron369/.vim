@@ -93,14 +93,12 @@ Git Log:~
 Git Diff:~
 
 do      git gutter diff orig or diff obtain (|do|)          |:GitGutterDiffOrig|
+dp      diff previous or diff put (|dp|)                          |:diffsplit| #
 dq      quit diff
 dQ      quit diff and go to current                                   |:Gedit|
-⎵ dd    git gutter diff                                   |:GitGutterDiffOrig|
 ⎵ df    git gutter fold                                       |:GitGutterFold|
-⎵ dl    diff last                                               |:diffsplit| #
-⎵ do    git gutter diff                                   |:GitGutterDiffOrig|
-⎵ dp    git diff previous                                    |:Gdiffsplit| !~1
-⎵ ds    diff split                                               |:Gdiffsplit|
+⎵ do    git gutter diff orig (new tab)                    |:GitGutterDiffOrig|
+⎵ dp    diff previous (new tab)                                 |:diffsplit| #
 
               working vs HEAD~
 ⎵ gF    git status (see |fugitive-staging-maps|)
