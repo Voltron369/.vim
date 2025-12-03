@@ -138,6 +138,7 @@ call plug#begin()
     Plug 'mbbill/undotree'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-vinegar'
+    Plug 'Voltron369/markdown-headers.vim'
     " Plug 'vim-scripts/argtextobj.vim'
 call plug#end()
 
