@@ -44,9 +44,9 @@ let g:fzf_action = {
   " \ ':': {lines -> feedkeys(": " . join(map(copy(lines), 'fnameescape(v:val)')) . "\<C-b>", 'n')},
 let g:coc_default_semantic_highlight_groups=1
 let g:gitgutter_highlight_lines=1
-let g:gitgutter_sign_added='┃'
-let g:gitgutter_sign_modified='┃'
-let g:gitgutter_sign_modified_removed='┻'
+let g:gitgutter_sign_added=' ▌' | " has unicode space
+let g:gitgutter_sign_modified=' ▌' | " has unicode space
+let g:gitgutter_sign_modified_removed='▁▌'
 let g:gitgutter_sign_removed='▁▁'
 let g:gitgutter_sign_removed_first_line='▔▔'
 let g:gitgutter_sign_removed_above_and_below='▁▔'
