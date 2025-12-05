@@ -653,7 +653,3 @@ augroup my_airline_plugins
    autocmd VimEnter * runtime! my_airline_plugins/airline/**/*.vim
 augroup END
 
-augroup my_gitgutter_patch
-   au!
-   autocmd VimEnter * runtime! my_gitgutter_patch/gitgutter.vim
-augroup END
