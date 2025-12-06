@@ -70,7 +70,7 @@ set ignorecase
 set incsearch
 set laststatus=2
 set list
-set listchars=tab:→\ ,trail:●,nbsp:⎵
+set listchars=tab:→\ ,trail:●,nbsp:⎵,extends:❯,precedes:❮
 set matchpairs+=<:>
 set noswapfile
 set number
