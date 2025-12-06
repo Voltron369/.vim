@@ -460,8 +460,8 @@ endif
 nnoremap <leader>df :GitGutterFold<CR>
 nnoremap <leader>do :wincmd s<bar>wincmd T<bar>GitGutterDiffOrig<CR>
 nnoremap <leader>dp :wincmd s<bar>wincmd T<bar>diffsplit #<bar>wincmd x<bar>wincmd p<CR>
-nnoremap do :if &diff<bar>execute "normal! do"<bar>else<bar>GitGutterDiffOrig<bar>endif<CR>
-nnoremap dp :if &diff<bar>execute "normal! dp"<bar>else<bar>diffsplit #<bar>wincmd x<bar>wincmd p<bar>endif<CR>
+nnoremap do :<C-U>if &diff<bar>execute "normal! " . (v:count ? v:count : "") . "do"<bar>else<bar>GitGutterDiffOrig<bar>endif<CR>
+nnoremap dp :<C-U>if &diff<bar>execute "normal! " . (v:count ? v:count : "") . "dp"<bar>else<bar>diffsplit #<bar>wincmd x<bar>wincmd p<bar>endif<CR>
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
