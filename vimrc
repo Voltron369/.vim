@@ -547,7 +547,7 @@ function! g:Tapi_gdb(_, files)
 endfunction
 
 function! g:Tapi_vimdiff(_, files)
-   execute ':!vimdiff ' . join(map(a:files, 'shellescape(v:val)'),' ')
+   execute ':!vimdiff ' . join(map(a:files, 'v:val[0:0]==#"-"?v:val:shellescape(v:val)'),' ')
 endfunction
 
 " https://stackoverflow.com/questions/9464844/how-to-get-group-name-of-highlighting-under-cursor-in-vim
