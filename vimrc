@@ -459,10 +459,34 @@ if exists(":DiffOrig") != 2
         \ | diffthis | wincmd p | diffthis
 endif
 nnoremap <leader>df :GitGutterFold<CR>
-nnoremap <leader>do :wincmd s<bar>wincmd T<bar>GitGutterDiffOrig<CR>
-nnoremap <leader>dp :wincmd s<bar>wincmd T<bar>diffsplit #<bar>wincmd x<bar>wincmd p<CR>
-nnoremap do :<C-U>if &diff<bar>execute "normal! " . (v:count ? v:count : "") . "do"<bar>else<bar>GitGutterDiffOrig<bar>endif<CR>
-nnoremap dp :<C-U>if &diff<bar>execute "normal! " . (v:count ? v:count : "") . "dp"<bar>else<bar>diffsplit #<bar>wincmd x<bar>wincmd p<bar>endif<CR>
+
+function! DiffObtainOrGitGutter(count)
+  if &diff
+    try
+      let l:count_str = a:count ? a:count : ""
+      execute "normal! " . l:count_str . "do"
+    catch /E101/
+      " E101: More than two buffers in diff mode, don't know which one to use
+       call feedkeys(":diffget ", 'n')
+    endtry
+  else
+    GitGutterDiffOrig
+  endif
+endfunction
+
+function! DiffPutOrSplit(count)
+  if &diff
+    let l:count_str = a:count ? a:count : ""
+    execute "normal! " . l:count_str . "dp"
+  else
+    diffsplit #
+    wincmd x
+    wincmd p
+  endif
+endfunction
+
+nnoremap <silent> do :<C-U>call DiffObtainOrGitGutter(v:count)<CR>
+nnoremap <silent> dp :<C-U>call DiffPutOrSplit(v:count)<CR>
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
