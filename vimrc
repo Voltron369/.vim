@@ -467,7 +467,7 @@ function! DiffObtainOrGitGutter(count)
       execute "normal! " . l:count_str . "do"
     catch /E101/
       " E101: More than two buffers in diff mode, don't know which one to use
-       call feedkeys(":diffget ", 'n')
+       call feedkeys(":diffget \<Tab>\<Tab>", 't')
     endtry
   else
     GitGutterDiffOrig
