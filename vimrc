@@ -198,14 +198,6 @@ function! Zoom()
     endif
 endfunction
 
-function! CloseDiff()
-  if &buftype ==# 'nofile'
-    call CloseWindow()
-  else
-    call fugitive#DiffClose()
-  endif
-endfunction
-
 nnoremap <leader>? :vert he gerard \| vertical resize 90<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
@@ -215,40 +207,128 @@ nnoremap <leader>s :AbortDispatch<CR>
 nnoremap <leader>S :AbortDispatchAll<CR>
 tnoremap <C-W><leader>c <C-W>:call CloseTab()<CR>
 nnoremap gq :call CloseWindow()<CR>
-nnoremap gQ :<C-U>Gedit<CR>
 tnoremap <C-W>gq <C-W>:call CloseWindow()<CR>
 nnoremap <leader>qq :call CloseWindow()<CR>
 nnoremap <C-W><leader>qq <C-W>:call CloseWindow()<CR>
 " nnoremap dq :call SwitchToSecondDiffWindow() \| exe winnr('#') . 'wincmd c'<CR>
-nnoremap dq :call CloseDiff()<CR>
-nnoremap dQ :call CloseDiff() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
 nnoremap <leader>z :call Zoom()<CR>
 nnoremap <C-w><leader>z :call Zoom()<CR>
 tnoremap <C-w><leader>z <C-w>:call Zoom()<CR>
 
 cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos()-1))<CR>
 
-nnoremap + <Cmd>Git<CR>
-nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
 augroup FugitiveToggle
   autocmd!
   autocmd Filetype fugitive nnoremap <buffer> + :close \| wincmd p<CR>
   autocmd Filetype fugitive nnoremap <buffer> \ :close \| wincmd p<CR>
 augroup END
 
+function! CloseDiff()
+  if &buftype ==# 'nofile'
+    call CloseWindow()
+  else
+    call fugitive#DiffClose()
+  endif
+endfunction
+
+function! MyDVMap()
+   " do a three way diff
+   " for head or merge head, diff vs merge base
+   let l:side = matchstr(expand("%"), '//\zs[23]\ze/')
+   if l:side !=# ''
+      Gvdiffsplit :1
+      if l:side ==# '3'
+         wincmd x
+      else
+         wincmd p
+      endif
+   else
+      Gvdiffsplit!
+   endif
+endfunction
+
+augroup AutoCloseLocList
+   autocmd!
+   autocmd WinClosed * lclose
+augroup END
+
+" git maps
+nnoremap + <Cmd>Git<CR>
+nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
+nnoremap dq :call CloseDiff()<CR>
+nnoremap dQ :call CloseDiff() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
+nnoremap dv :call MyDVMap()<CR>
+" open git blame, or close it if inside blame window
+nnoremap gb :if &filetype==#'fugitiveblame'<bar>execute 'normal gq'<bar>else<bar>execute 'G blame'<bar>endif<CR>
+nnoremap gQ :<C-U>Gedit<CR>
+
+" Range-aware Glog function for normal and visual mode.
+function! s:RunGlogRelevantSide(forceFromStart) range
+  let l:fname = expand('%')
+  let l:side = matchstr(l:fname, '/\zs[23]\ze/')
+  let l:target = l:side ==# '2' ? 'HEAD'
+        \: l:side ==# '3' ? 'MERGE_HEAD'
+        \: ''
+  let l:range_prefix = a:forceFromStart ? ':0' : a:firstline != a:lastline ? printf(":%d,%d", a:firstline, a:lastline) : ''
+
+  if l:target ==# ''
+    execute l:range_prefix . 'Gllog! -500'
+  else
+    " for HEAD or MERGE_HEAD show commits to MERGE_BASE
+
+    " Get merge base SHA
+    let l:mb = trim(system('git merge-base MERGE_HEAD HEAD'))
+    let l:winid = win_getid()
+
+    " Get ancestry path location list
+    execute l:range_prefix . 'Gllog! ' . l:mb . '..' . l:target '--ancestry-path'
+    let l:loc_items_range = getloclist(l:winid)
+
+    " MERGE_BASE entry
+    execute l:range_prefix . 'Gllog! -1 ' . l:mb
+    let l:loc_items_base = getloclist(l:winid)
+    let l:loc_items_base[0]['text'] = '( MERGE_BASE )'
+
+    " get top entry for HEAD or MERGE_HEAD
+    let l:top = [{'lnum': a:forceFromStart ? '' : a:firstline, 'bufnr': bufnr('%'), 'end_lnum': 0, 'pattern': '', 'valid': 1, 'vcol': 0, 'nr': 0, 'module': '/' . l:side . ':' .  fnamemodify(FugitiveReal(expand("%")), ":p:."), 'type': '', 'end_col': 0, 'col': 0, 'text': '( ' . l:target . ' )'}]
+
+    " Concat (ancestry commits first, then merge base)
+    let l:new_loc = l:top + l:loc_items_range + l:loc_items_base
+
+    " Update location list
+    call setloclist(l:winid, l:new_loc, 'r')
+  endif
+endfunction
+
+nnoremap <leader>gl :Gclog! -500<CR>
+xnoremap <leader>gl :call <SID>RunGlogRelevantSide(0)<CR>
+nnoremap <leader>gL :call <SID>RunGlogRelevantSide(1)<CR>
+xnoremap <leader>gL :call <SID>RunGlogRelevantSide(0)<CR>
+
 " git log
 nnoremap <leader>gc :Commits<CR>
+xnoremap <leader>gc :BCommits<CR>
 nnoremap <leader>gC :BCommits<CR>
 inoremap <leader>gC :BCommits<CR>
 xnoremap <leader>gC :BCommits<CR>
 nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gw :GWorktree<CR>
-nnoremap <leader>gl :Gclog! -500<CR>
-xnoremap <leader>gl :Gclog! -500<CR>
-nnoremap <leader>gL :0Gclog! -500<CR>
-xnoremap <leader>gL :Gclog! -500<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 nnoremap <leader>gB :GBrowse<CR>
+
+function! DiffCommand(cmd)
+   if &diff
+      execute a:cmd
+      diffthis
+   else
+      execute a:cmd
+   endif
+endfunction
+
+nnoremap [L :call DiffCommand('lfirst')<CR>
+nnoremap [l :call DiffCommand('lprev')<CR>
+nnoremap ]l :call DiffCommand('lnext')<CR>
+nnoremap ]L :call DiffCommand('llast')<CR>
 
 " fzf
 nnoremap <leader>ag :Ag<CR>
@@ -487,6 +567,7 @@ endfunction
 
 nnoremap <silent> do :<C-U>call DiffObtainOrGitGutter(v:count)<CR>
 nnoremap <silent> dp :<C-U>call DiffPutOrSplit(v:count)<CR>
+nnoremap <silent> dP :<C-U>diffsplit #<bar>wincmd x<bar>wincmd p<CR>
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
