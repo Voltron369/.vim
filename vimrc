@@ -231,36 +231,52 @@ function! CloseDiff()
   endif
 endfunction
 
-function! MyDVMap()
+function! MyDVMap(cmd)
    " do a three way diff
    " for head or merge head, diff vs merge base
    let l:side = matchstr(expand("%"), '//\zs[23]\ze/')
    if l:side !=# ''
-      Gvdiffsplit :1
+      execute a:cmd ':1'
       if l:side ==# '3'
          wincmd x
       else
          wincmd p
       endif
    else
-      Gvdiffsplit!
+      execute a:cmd . '!'
    endif
 endfunction
 
+
 augroup AutoCloseLocList
    autocmd!
-   autocmd WinClosed * lclose
+   autocmd WinClosed * call s:AutoCloseLocList()
 augroup END
+
+function! s:AutoCloseLocList()
+    let winid = str2nr(expand('<amatch>'))
+    let wininfo = getwininfo(winid)
+
+    " Close location list unless it was the quickfix window (not loclist)
+    if empty(wininfo) || !get(wininfo[0], 'quickfix', 0) || get(wininfo[0], 'loclist', 0)
+        lclose
+    endif
+endfunction
 
 " git maps
 nnoremap + <Cmd>Git<CR>
 nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
+nnoremap dh :call MyDVMap('Ghdiffsplit')<CR>
 nnoremap dq :call CloseDiff()<CR>
 nnoremap dQ :call CloseDiff() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
-nnoremap dv :call MyDVMap()<CR>
+nnoremap ds :call MyDVMap('Ghdiffsplit')<CR>
+nnoremap dv :call MyDVMap('Gvdiffsplit')<CR>
+" nnoremap dh :if &diff<bar>execute 'normal d2o'<bar>else<bar>execute 'normal xh'<bar>endif<CR>
+" nnoremap dl :if &diff<bar>execute 'normal d3o'<bar>else<bar>execute 'normal x'<bar>endif<CR>
 " open git blame, or close it if inside blame window
 nnoremap gb :if &filetype==#'fugitiveblame'<bar>execute 'normal gq'<bar>else<bar>execute 'G blame'<bar>endif<CR>
 nnoremap gQ :<C-U>Gedit<CR>
+nnoremap gw :Gwrite<CR>
 
 " Range-aware Glog function for normal and visual mode.
 function! s:RunGlogRelevantSide(forceFromStart) range
@@ -300,6 +316,10 @@ function! s:RunGlogRelevantSide(forceFromStart) range
   endif
 endfunction
 
+nnoremap gl :Gclog! -500<CR>
+xnoremap gl :call <SID>RunGlogRelevantSide(0)<CR>
+nnoremap gL :call <SID>RunGlogRelevantSide(1)<CR>
+xnoremap gL :call <SID>RunGlogRelevantSide(0)<CR>
 nnoremap <leader>gl :Gclog! -500<CR>
 xnoremap <leader>gl :call <SID>RunGlogRelevantSide(0)<CR>
 nnoremap <leader>gL :call <SID>RunGlogRelevantSide(1)<CR>

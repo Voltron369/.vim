@@ -57,7 +57,10 @@ see |gerardfzf|
 
                                                                       *gerardgit*
 Git~
-/ or +         Toggle :Git |fugitive-summary|
+/ or +  Toggle :Git |fugitive-summary|
+gb      git blame toggle                                          |:Git_blame|
+gQ      toggle HEAD/working (|:Gedit|)
+gw      git add %                                                    |:Gwrite|
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                          :   populate command line with branch
                          ;   populate command line with add worktree
@@ -79,12 +82,12 @@ Git~
 :CHistory     fzf quickfix |:chistory|
                                                                       *gitlog*
 Git Log:~
-⎵ gc    fzf git log                                                |:Commits|
+gl       git log in quickfix                                        |:Gclog|
+{v}gl    git log for range of current file in location list (diff with dP)
+gL       git log of current file in location list (diff with dP)
+gc       fzf git log                                                |:Commits|
 {v}⎵ gc fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
-⎵ gl    git log in quickfix                                        |:Gclog|
-{v}⎵ gl git log for range of current file in location list (diff with dP)
-⎵ gL    git log of current file in location list (diff with dP)
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
@@ -92,17 +95,15 @@ Git Log:~
 ⎵ ms    git log vs merge-base (status only)
                                                                      *gitdiff*
 Git Diff:~
-
 do      git gutter diff orig or diff obtain (|do|)          |:GitGutterDiffOrig|
 d2o/d3o for three way fugitive merge                            |:Gdiffsplit!|
 dp      diff previous or diff put (|dp|)                          |:diffsplit| #
 dP      diff previous (even if in diff mode)                    |:diffsplit| #
 dq      quit diff
 dQ      quit diff and go to working                                   |:Gedit|
+ds/dh   git diff split (|fugitive_ds|)                            |:Ghdiffsplit|
 dv      git diff split (|fugitive_dv|)                            |:Gvdiffsplit|
-gb      git blame toggle                                          |:Git_blame|
-gQ      toggle HEAD/working (|:Gedit|)
-⎵ df    git gutter fold                                       |:GitGutterFold|
+⎵ df    git gutter diff fold                                  |:GitGutterFold|
 ⎵ do    git gutter diff orig (new tab)                    |:GitGutterDiffOrig|
 ⎵ dp    diff previous (new tab)                                 |:diffsplit| #
 
