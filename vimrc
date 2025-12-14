@@ -4,6 +4,7 @@ let mapleader = "\ "
 
 set spell
 augroup markdownSpell
+   au!
    autocmd FileType gitcommit setlocal spellcapcheck=
    autocmd FileType git setlocal nospell
    autocmd Filetype man setlocal nolist
@@ -243,7 +244,7 @@ function! MyDVMap(cmd)
          wincmd p
       endif
    else
-      execute a:cmd . '!'
+      execute a:cmd
    endif
 endfunction
 
@@ -266,11 +267,14 @@ endfunction
 " git maps
 nnoremap + <Cmd>Git<CR>
 nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
-nnoremap dh :call MyDVMap('Ghdiffsplit')<CR>
+nnoremap dh :call MyDVMap('Ghdiffsplit!')<CR>
+nnoremap dH :call MyDVMap('Ghdiffsplit')<CR>
 nnoremap dq :call CloseDiff()<CR>
 nnoremap dQ :call CloseDiff() \| if get(b:, 'fugitive_type', '') == 'blob' \| Gedit \| endif<CR>
-nnoremap ds :call MyDVMap('Ghdiffsplit')<CR>
-nnoremap dv :call MyDVMap('Gvdiffsplit')<CR>
+nnoremap ds :call MyDVMap('Ghdiffsplit!')<CR>
+nnoremap dS :call MyDVMap('Ghdiffsplit')<CR>
+nnoremap dv :call MyDVMap('Gvdiffsplit!')<CR>
+nnoremap dV :call MyDVMap('Gvdiffsplit')<CR>
 " nnoremap dh :if &diff<bar>execute 'normal d2o'<bar>else<bar>execute 'normal xh'<bar>endif<CR>
 " nnoremap dl :if &diff<bar>execute 'normal d3o'<bar>else<bar>execute 'normal x'<bar>endif<CR>
 " open git blame, or close it if inside blame window
@@ -281,10 +285,10 @@ nnoremap gw :Gwrite<CR>
 " Range-aware Glog function for normal and visual mode.
 function! s:RunGlogRelevantSide(forceFromStart) range
   let l:fname = expand('%')
-  let l:side = matchstr(l:fname, '/\zs[23]\ze/')
+  let l:side = matchstr(l:fname, '//\zs[23]\ze/')
   let l:target = l:side ==# '2' ? 'HEAD'
-        \: l:side ==# '3' ? 'MERGE_HEAD'
-        \: ''
+        \ : l:side ==# '3' ? 'MERGE_HEAD'
+        \ : ''
   let l:range_prefix = a:forceFromStart ? ':0' : a:firstline != a:lastline ? printf(":%d,%d", a:firstline, a:lastline) : ''
 
   if l:target ==# ''

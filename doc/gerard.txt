@@ -13,6 +13,7 @@ CUSTOM BINDINGS                                                         *gerard*
 ⎵ gg/ag   |:GGrep|/|:Ag|
 gd        Go To Definition or default |gd|           |CocAction('jumpDefinition')|
 gr        Fzf References                           |CocAction('jumpReferences')|
+gl        git log in quickfix                      |:Gclog|
 m<CR>     |:Make|
 `<Space>  |:Dispatch|
 ⎵ gc      |:Commits|
@@ -40,8 +41,8 @@ Find:~
 ⎵ f       |:GFiles|
 ⎵ F       |:Files|      (for gitignored dirs, use ":cd dir|Files")
 ⎵ ag      |:Ag|         (for gitignored dirs, use ":cd dir|Ag")
-⎵ gc      |:Commits|
-⎵ gC      |:BCommits|
+{v}⎵ gc   |:Commits|
+{v}⎵ gC   |:BCommits|
 ⎵ gg      fzf git grep
 ⎵ gb      |:GBranches|
 ⎵ gw      |:GWorktree|
@@ -85,9 +86,6 @@ Git Log:~
 gl       git log in quickfix                                        |:Gclog|
 {v}gl    git log for range of current file in location list (diff with dP)
 gL       git log of current file in location list (diff with dP)
-gc       fzf git log                                                |:Commits|
-{v}⎵ gc fzf git log %  (supports visual select of code lines)      |:BCommits|
-⎵ gC    fzf git log %  (supports visual select of code lines)      |:BCommits|
 ⎵ gn    git log in quickfix (filenames only)
 ⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
@@ -101,8 +99,10 @@ dp      diff previous or diff put (|dp|)                          |:diffsplit| #
 dP      diff previous (even if in diff mode)                    |:diffsplit| #
 dq      quit diff
 dQ      quit diff and go to working                                   |:Gedit|
-ds/dh   git diff split (|fugitive_ds|)                            |:Ghdiffsplit|
-dv      git diff split (|fugitive_dv|)                            |:Gvdiffsplit|
+ds/dh   three way merge or ancestor hdiff (|fugitive_ds|)         |:Gdiffsplit!|
+dS/dH   git hdiff vs index or working                           |:Ghdiffsplit|
+dv      three way merge or ancestor vdiff (|fugitive_dv|)         |:Gdiffsplit!|
+dV      git vdiff vs index or working                           |:Gvdiffsplit|
 ⎵ df    git gutter diff fold                                  |:GitGutterFold|
 ⎵ do    git gutter diff orig (new tab)                    |:GitGutterDiffOrig|
 ⎵ dp    diff previous (new tab)                                 |:diffsplit| #
