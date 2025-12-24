@@ -476,7 +476,11 @@ function! DiffObtainOrGitGutter(count)
        call feedkeys(":diffget \<Tab>\<Tab>", 't')
     endtry
   else
-    GitGutterDiffOrig
+    if empty(FugitiveGitDir())
+       DiffOrig
+    else
+       GitGutterDiffOrig
+    endif
   endif
 endfunction
 
