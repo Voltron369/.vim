@@ -236,7 +236,7 @@ cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos()-1))<CR>
 augroup FugitiveToggle
   autocmd!
   autocmd Filetype fugitive nnoremap <buffer> + :close \| wincmd p<CR>
-  autocmd Filetype fugitive nnoremap <buffer> \ :close \| wincmd p<CR>
+  autocmd Filetype fugitive nnoremap <buffer> \ :e #<CR>
 augroup END
 
 function! CloseDiff()
@@ -279,9 +279,28 @@ function! s:AutoCloseLocList()
     endif
 endfunction
 
+" Open fugitive summary in current window and jump to the current file in Unstaged (or staged), closing diff
+function! s:jump_to_git_status() abort
+   if empty(FugitiveGitDir())
+      echo "Not a git repository"
+      return
+   endif
+
+   if &diff
+      call fugitive#DiffClose()
+   endif
+
+   Gedit! :
+
+   normal gsgU
+
+   call search('\s\+\V' . escape(fnamemodify(FugitiveReal(expand("#")), ":p:."), '\') . '\m$')
+
+   normal! zz
+endfunction
+
 " git maps
-nnoremap + <Cmd>Git<CR>
-nnoremap \ <Cmd>vertical Git \| vertical resize 80<CR>
+nnoremap + <Cmd>vertical Git \| vertical resize 80<CR>
 nnoremap dh :call MyDVMap('Ghdiffsplit!')<CR>
 nnoremap dH :call MyDVMap('Ghdiffsplit')<CR>
 nnoremap dq :call CloseDiff()<CR>
@@ -295,6 +314,8 @@ nnoremap dV :call MyDVMap('Gvdiffsplit')<CR>
 " open git blame, or close it if inside blame window
 nnoremap gb :if &filetype==#'fugitiveblame'<bar>execute 'normal gq'<bar>else<bar>execute 'G blame'<bar>endif<CR>
 nnoremap gQ :<C-U>Gedit<CR>
+nnoremap \ :call <SID>jump_to_git_status()<CR>
+nnoremap <leader>\ :GFiles?<CR>
 nnoremap gw :Gwrite<CR>
 
 " Range-aware Glog function for normal and visual mode.
