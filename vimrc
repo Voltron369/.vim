@@ -279,6 +279,17 @@ function! s:AutoCloseLocList()
     endif
 endfunction
 
+augroup FugitiveAutoCloseBlame
+  autocmd!
+  autocmd BufWinLeave * if &scrollbind && &filetype != 'fugitiveblame'
+    \ | let s:left_win = winnr() - 1
+    \ | if s:left_win > 0 && getwinvar(s:left_win, '&filetype') ==# 'fugitiveblame'
+    \      && getwinvar(s:left_win, '&scrollbind')
+    \ |   execute s:left_win . 'close'
+    \ | endif
+    \ | endif
+augroup END
+
 " Open fugitive summary in current window and jump to the current file in Unstaged (or staged), closing diff
 function! s:jump_to_git_status() abort
    if empty(FugitiveGitDir())
