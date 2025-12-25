@@ -376,19 +376,26 @@ nnoremap <leader>gw :GWorktree<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 nnoremap <leader>gB :GBrowse<CR>
 
-function! DiffCommand(cmd)
-   if &diff
-      execute a:cmd
+function! LocListMap(cmd)
+   let l:isdiff = &diff
+   try
+      if v:count
+         execute v:count . a:cmd
+      else
+         execute a:cmd
+      endif
+   catch /.*/
+      echo v:exception
+   endtry
+   if l:isdiff
       diffthis
-   else
-      execute a:cmd
    endif
 endfunction
 
-nnoremap [L :call DiffCommand('lfirst')<CR>
-nnoremap [l :call DiffCommand('lprev')<CR>
-nnoremap ]l :call DiffCommand('lnext')<CR>
-nnoremap ]L :call DiffCommand('llast')<CR>
+nnoremap [L <Cmd>call LocListMap('lfirst')<CR>
+nnoremap [l <Cmd>call LocListMap('lprev')<CR>
+nnoremap ]l <Cmd>call LocListMap('lnext')<CR>
+nnoremap ]L <Cmd>call LocListMap('llast')<CR>
 
 " fzf
 nnoremap <leader>ag :Ag<CR>
