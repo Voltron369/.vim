@@ -62,6 +62,7 @@ Git~
 gb      git blame toggle                                          |:Git_blame|
 gQ      toggle HEAD/working (|:Gedit|)
 gw      git add %                                                    |:Gwrite|
+gW      git add % and |:tabclose|                                      |:Gwrite|
 :GBranches    fzf git branches/checkout/merge/etc (|fzf-checkout|)
                          :   populate command line with branch
                          ;   populate command line with add worktree
