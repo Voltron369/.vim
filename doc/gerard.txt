@@ -24,7 +24,7 @@ m<CR>     |:Make|
 
 Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
-⎵ qq      close tab and go to previous tab
+⎵ qq      |:tabclose|
 gq        quit window.  If last, close tab and go to previous tab
 dq        quit diff
 dQ        quit diff and go to working (|:Gedit|)
