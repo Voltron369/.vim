@@ -327,6 +327,7 @@ nnoremap gQ :<C-U>Gedit<CR>
 nnoremap \ :call <SID>jump_to_git_status()<CR>
 nnoremap <leader>\ :GFiles?<CR>
 nnoremap gw :Gwrite<CR>
+nnoremap gW :Gwrite!<Bar>tabclose<CR>
 
 " Range-aware Glog function for normal and visual mode.
 function! s:RunGlogRelevantSide(forceFromStart) range
