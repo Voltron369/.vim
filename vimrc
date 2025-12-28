@@ -385,6 +385,7 @@ xnoremap <leader>gC :BCommits<CR>
 nnoremap <leader>gb :GBranches<CR>
 nnoremap <leader>gw :GWorktree<CR>
 nnoremap <leader>gn :Gclog! -500 --name-only<CR>
+nnoremap <leader>gp :Gclog! -500 --patch<CR>
 nnoremap <leader>gB :GBrowse<CR>
 
 function! LocListMap(cmd)

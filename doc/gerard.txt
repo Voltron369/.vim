@@ -88,6 +88,7 @@ gl       git log in quickfix                                        |:Gclog|
 {v}gl    git log for range of current file in location list (diff with dP)
 gL       git log of current file in location list (diff with dP)
 ⎵ gn    git log in quickfix (filenames only)
+⎵ gp    git log --patch in quickfix (shows diffs)
 ⎵ gB    git url in github                                          |:GBrowse|
 ⎵ ml    git log vs merge-base
 ⎵ mn    git log vs merge-base (filenames only)
