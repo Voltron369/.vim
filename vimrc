@@ -484,7 +484,7 @@ if exists(":DiffOrig") != 2
 endif
 nnoremap <leader>df :GitGutterFold<CR>
 
-function! DiffObtainOrGitGutter(count)
+function! DiffObtainOrDiff(count)
   if &diff
     try
       let l:count_str = a:count ? a:count : ""
@@ -497,7 +497,7 @@ function! DiffObtainOrGitGutter(count)
     if empty(FugitiveGitDir())
        DiffOrig
     else
-       GitGutterDiffOrig
+       call MyDVMap('Gdiffsplit!')
     endif
   endif
 endfunction
@@ -513,7 +513,7 @@ function! DiffPutOrSplit(count)
   endif
 endfunction
 
-nnoremap <silent> do :<C-U>call DiffObtainOrGitGutter(v:count)<CR>
+nnoremap <silent> do :<C-U>call DiffObtainOrDiff(v:count)<CR>
 nnoremap <silent> dp :<C-U>call DiffPutOrSplit(v:count)<CR>
 nnoremap <silent> dP :<C-U>diffsplit #<bar>wincmd x<bar>wincmd p<CR>
 
