@@ -176,13 +176,14 @@ Ctrl-L        Also clears search highlighting (|:noh|) and calls |:diffupdate|
 Git-Gutter:~
 ⎵ hs    hunk stage (|gitgutter-<Leader>hs|)
 ⎵ hu    hunk undo  (|gitgutter-<Leader>hu|)
-] c     next hunk  (|gitgutter-]c|>
-[ c     prev hunk  (|gitgutter-[c|>
+] c     next hunk  (|gitgutter-]c|)
+[ c     prev hunk  (|gitgutter-[c|)
 
 text-object:~
 ic/ac   classobj
 if/af   funcobj
-ih/ah   hunk (|gitgutter-ic|)
+ih/ah   git hunk
+i,/a,   func arg (|argumentative-text-objects|)
 
 colorscheme:~
 gerard        dark

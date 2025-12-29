@@ -112,6 +112,7 @@ call plug#begin()
     Plug 'tpope/vim-abolish'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+    Plug 'PeterRincker/vim-argumentative'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'antoinemadec/coc-fzf'
     " use FZF :Commits instead of GV
