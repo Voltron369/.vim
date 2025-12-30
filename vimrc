@@ -413,6 +413,8 @@ nnoremap ]L <Cmd>call LocListMap('llast')<CR>
 " fzf
 nnoremap <leader>ag :Ag<CR>
 tnoremap <C-w><leader>ag <C-w>:Ag<CR>
+nnoremap <leader>rg :Rg<CR>
+tnoremap <C-w><leader>rg <C-w>:Rg<CR>
 nnoremap <leader>b :Buffers<CR>
 tnoremap <C-w><leader>b <C-w>:Buffers<CR>
 nnoremap <leader>f :GFiles<CR>
@@ -544,11 +546,21 @@ helptags ~/.vim/doc
 colorscheme gerard
 
 
-if executable('ag')
+if executable('rg')
     " Note we extract the column as well as the file and line number
-    set grepprg=ag\ --nogroup\ --nocolor\ --column
-    set grepformat=%f:%l:%c%m
+    set grepprg=rg\ --vimgrep\ $*
+    set grepformat^=%f:%l:%c:%m,%f
+    " %f supports "grep -l" which lists just the names of the files with matches
+elseif executable('ag')
+    " Note we extract the column as well as the file and line number
+    set grepprg=ag\ --vimgrep\ $*
+    set grepformat^=%f:%l:%c:%m,%f
+    " %f supports "grep -l" which lists just the names of the files with matches
 endif
+
+" automatically open quickfix or location list
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 
 " implement :GGrep
 " https://github.com/junegunn/fzf.vim#example-git-grep-wrapper

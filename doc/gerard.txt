@@ -10,7 +10,7 @@ CUSTOM BINDINGS                                                         *gerard*
 -         netrw |:Explore|
 / or +    Toggle :Git |fugitive-summary|
 ⎵ f/F     |:GFiles|/|:Files|
-⎵ gg/ag   |:GGrep|/|:Ag|
+⎵ rg      |:Rg|         (for gitignored dirs, use ":cd dir|Rg")
 gd        Go To Definition or default |gd|           |CocAction('jumpDefinition')|
 gr        Fzf References                           |CocAction('jumpReferences')|
 gl        git log in quickfix                      |:Gclog|
@@ -20,7 +20,6 @@ m<CR>     |:Make|
 ⎵ u       Toggle Undo Tree
 ⎵ s       |:AbortDispatch|
 ⎵ S       |:AbortDispatchAll|   kills all other tmux panes     *AbortDispatchAll*
-
 
 Tabs and Windows:~
 ⎵ c       close tab and go to previous tab
@@ -46,12 +45,14 @@ Find:~
 ⎵ gg      fzf git grep
 ⎵ gb      |:GBranches|
 ⎵ gw      |:GWorktree|
+⎵ rg      |:Rg|         (for gitignored dirs, use ":cd dir|Rg")
 Ctrl-/    Search in File                                               |:BLines|
 q:        fzf command |:History|:                                 |q:| or |c_CTRL-F|
 q/        fzf search |:History|/                                  |q/|| or |c_CTRL-F|
 q?        fzf vim help |:Helptags|
+grepprg   rg or ag if installed.  grep -l will list the filenames only
 
-
+:CocSearch  |coc-refactor-buffer| using rg                            |:CocSearch|
 :Messages   fzf error |:messages|
 :CHistory   fzf quickfix |:chistory|
 see |gerardfzf|
