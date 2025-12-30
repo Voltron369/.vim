@@ -392,6 +392,9 @@ nnoremap <leader>gB :GBrowse<CR>
 function! LocListMap(cmd)
    let l:isdiff = &diff
    try
+      " split then close so the other diff window will stay in diff mode (if there is only one)
+      wincmd s
+      wincmd p
       if v:count
          execute v:count . a:cmd
       else
@@ -403,6 +406,8 @@ function! LocListMap(cmd)
    if l:isdiff
       diffthis
    endif
+   wincmd p
+   wincmd c
 endfunction
 
 nnoremap [L <Cmd>call LocListMap('lfirst')<CR>
