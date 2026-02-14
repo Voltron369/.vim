@@ -586,6 +586,12 @@ endif
 
 command! AbortDispatchAll exe ':!tmux kill-pane -a -t $TMUX_PANE'
 
+augroup terminal_settings
+   autocmd!
+   autocmd TerminalWinOpen * setlocal nonumber norelativenumber signcolumn=no nolist
+   autocmd BufEnter * if &buftype ==# 'terminal' | setlocal nonumber norelativenumber signcolumn=no nolist
+augroup END
+
 let g:oscyank_term = 'default'
 augroup oscyank
 au!
