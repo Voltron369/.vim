@@ -337,7 +337,7 @@ function! s:RunGlogRelevantSide(forceFromStart) range
   let l:target = l:side ==# '2' ? 'HEAD'
         \ : l:side ==# '3' ? 'MERGE_HEAD'
         \ : ''
-  let l:range_prefix = a:forceFromStart ? ':0' : a:firstline != a:lastline ? printf(":%d,%d", a:firstline, a:lastline) : ''
+  let l:range_prefix = a:forceFromStart ? ':0' : printf(":%d,%d", a:firstline, a:lastline)
 
   if l:target ==# ''
     execute l:range_prefix . 'Gllog! -500'
