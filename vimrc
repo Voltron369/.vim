@@ -452,9 +452,9 @@ nnoremap <leader>gD :!git difftool -y HEAD<CR>
 
 " diff working vs master merge-base
 nnoremap <leader>mF :call <sid>CoutToQF(system('git diff --name-only $(git merge-base master HEAD)')) \| copen<CR>
-nnoremap <leader>mf :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- <cfile>'<CR>
-nnoremap <leader>md :exe 'G difftool -y' trim(system('git merge-base master HEAD')) '-- %'<CR>
-nnoremap <leader>mD :!git difftool -y $(git merge-base master HEAD)<CR>
+nnoremap <leader>mf :exe 'G difftool -y --merge-base master -- <cfile>'<CR>
+nnoremap <leader>md :exe 'G difftool -y --merge-base master -- %'<CR>
+nnoremap <leader>mD :!git difftool -y --merge-base master<CR>
 
 " diff HEAD vs master merge-base
 nnoremap <leader>pF :call <sid>CoutToQF(system('git diff --name-only master...')) \| copen<CR>
