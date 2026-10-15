@@ -389,14 +389,15 @@ nnoremap <leader>gn :Gclog! -500 --name-only<CR>
 nnoremap <leader>gp :Gclog! -500 --patch<CR>
 nnoremap <leader>gB :GBrowse<CR>
 
-function! LocListMap(cmd)
+function! LocListMap(cmd, ...)
+   let l:count = a:0 ? a:1 : v:count
    let l:isdiff = &diff
    try
       " split then close so the other diff window will stay in diff mode (if there is only one)
       wincmd s
       wincmd p
-      if v:count
-         execute v:count . a:cmd
+      if l:count
+         execute l:count . a:cmd
       else
          execute a:cmd
       endif
@@ -414,6 +415,23 @@ nnoremap [L <Cmd>call LocListMap('lfirst')<CR>
 nnoremap [l <Cmd>call LocListMap('lprev')<CR>
 nnoremap ]l <Cmd>call LocListMap('lnext')<CR>
 nnoremap ]L <Cmd>call LocListMap('llast')<CR>
+
+" <CR> in location list: jump to entry but keep the file window's diff
+function! s:LocListEnter() abort
+   let l:filewin = getwininfo(win_getid())[0].loclist ? getloclist(0, {'filewinid': 0}).filewinid : 0
+   if !l:filewin || !getwinvar(l:filewin, '&diff')
+      execute "normal! \<CR>"
+      return
+   endif
+   let l:idx = line('.')
+   call win_gotoid(l:filewin)
+   call LocListMap('ll', l:idx)
+endfunction
+
+augroup LocListEnter
+   autocmd!
+   autocmd FileType qf nnoremap <buffer> <silent> <CR> <Cmd>call <SID>LocListEnter()<CR>
+augroup END
 
 " fzf
 nnoremap <leader>ag :Ag<CR>
@@ -732,3 +750,5 @@ augroup my_airline_plugins
    autocmd VimEnter * runtime! my_airline_plugins/airline/**/*.vim
 augroup END
 
+" weird macOS bug: vinegar normal map for "-" is broken
+nnoremap - :execute 'Ex ' . escape(expand('%:p:h'), ' ')<CR>
