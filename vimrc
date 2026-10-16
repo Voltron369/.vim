@@ -279,16 +279,25 @@ function! s:AutoCloseLocList()
     endif
 endfunction
 
+" Close a fugitive blame window once the window it was opened from no longer shows the blamed buffer
+" Deferred so it runs after the triggering command (and fugitive's own blame handling) has finished
+
 augroup FugitiveAutoCloseBlame
   autocmd!
-  autocmd BufWinLeave * if &scrollbind && &filetype != 'fugitiveblame'
-    \ | let s:left_win = winnr() - 1
-    \ | if s:left_win > 0 && getwinvar(s:left_win, '&filetype') ==# 'fugitiveblame'
-    \      && getwinvar(s:left_win, '&scrollbind')
-    \ |   execute s:left_win . 'close'
-    \ | endif
-    \ | endif
+  autocmd BufEnter,WinClosed * call timer_start(0, {-> s:CloseOrphanBlame()})
 augroup END
+
+function! s:CloseOrphanBlame() abort
+   for l:win in getwininfo()
+      if l:win.tabnr != tabpagenr() || getbufvar(l:win.bufnr, '&filetype') !=# 'fugitiveblame'
+         continue
+      endif
+      let l:state = FugitiveResult(l:win.bufnr)
+      if has_key(l:state, 'origin_winid') && winbufnr(l:state.origin_winid) != l:state.origin_bufnr
+         silent! execute win_id2win(l:win.winid) . 'close'
+      endif
+   endfor
+endfunction
 
 " Open fugitive summary in current window and jump to the current file in Unstaged (or staged), closing diff
 function! s:jump_to_git_status() abort
