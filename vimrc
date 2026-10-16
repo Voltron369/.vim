@@ -279,6 +279,29 @@ function! s:AutoCloseLocList()
     endif
 endfunction
 
+" Close a window's location list when the window switches to a file not in the list
+augroup CloseLocListOnFileChange
+   autocmd!
+   autocmd BufEnter * call s:CloseLocListOnFileChange()
+augroup END
+
+function! s:CloseLocListOnFileChange()
+   if &buftype ==# 'quickfix'
+      return
+   endif
+   let l:file = FugitiveReal(expand('<afile>:p'))
+   let l:prev = get(w:, 'loclist_file', '')
+   let w:loclist_file = l:file
+   if empty(l:prev) || l:file ==# l:prev
+      return
+   endif
+   " jumping to one of the list's own entries is navigation (e.g. Gllog commits)
+   if (index(map(getloclist(0), 'v:val.bufnr'), str2nr(expand('<abuf>'))) >= 0)
+      return
+   endif
+   lclose
+endfunction
+
 " Close a fugitive blame window once the window it was opened from no longer shows the blamed buffer
 " Deferred so it runs after the triggering command (and fugitive's own blame handling) has finished
 
